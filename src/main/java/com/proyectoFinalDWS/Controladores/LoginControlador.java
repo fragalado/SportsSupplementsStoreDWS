@@ -3,6 +3,9 @@ package com.proyectoFinalDWS.Controladores;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 
@@ -12,6 +15,7 @@ import com.proyectoFinalDWS.DTOs.UsuarioDTO;
  * Fecha: 25/01/2024
  */
 @Controller
+@RequestMapping("/acceso")
 public class LoginControlador {
 	
 	/**
@@ -19,7 +23,7 @@ public class LoginControlador {
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
-	@GetMapping("/acceso/login")
+	@GetMapping("/login")
 	public String vistaLogin(Model model) {
 		// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
 		model.addAttribute("usuarioDTO", new UsuarioDTO());
@@ -33,7 +37,7 @@ public class LoginControlador {
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
-	@GetMapping("/acceso/register")
+	@GetMapping("/register")
 	public String vistaRegister(Model model) {
 		// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
 		model.addAttribute("usuarioDTO", new UsuarioDTO());
@@ -47,12 +51,17 @@ public class LoginControlador {
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
-	@GetMapping("/acceso/modificar-password")
+	@GetMapping("/modificar-password")
 	public String vistaModificarContrasenya(Model model) {
 		// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
 		model.addAttribute("usuarioDTO", new UsuarioDTO());
 		
 		// Devolvemos la vista register
 		return "modificarContrasenya";
+	}
+	
+	@PostMapping("/register")
+	public String registrarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario) {
+		return "redirect:/acceso/register?success";
 	}
 }

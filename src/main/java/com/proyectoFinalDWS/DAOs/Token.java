@@ -36,7 +36,7 @@ public class Token {
 	private Calendar fch_fin_token;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_usuario")
+	@JoinColumn(name = "idUsuario")
 	private Usuario usuario;
 	
 	// Constructores

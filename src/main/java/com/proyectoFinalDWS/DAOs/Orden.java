@@ -38,7 +38,7 @@ public class Orden {
 	private Calendar fch_orden;
 	
 	@ManyToOne
-	@JoinColumn(name = "idUsuario")
+	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 	
 	@OneToMany(mappedBy = "orden")

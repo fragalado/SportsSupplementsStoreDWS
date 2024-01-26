@@ -37,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			builder = User.withUsername(username); // Iniciamos la configuración del usuario
 			builder.disabled(false); // Indica que el usuario no está deshabilitado
 			builder.password(usuarioEncontrado.getPsswd_usuario()); // Configuramos la contraseña del usuario
-			builder.authorities(usuarioEncontrado.getAcceso().getCod_acceso()); // Configuramos los roles del usuario
+			builder.authorities("ROLE_" + usuarioEncontrado.getAcceso().getCod_acceso().toUpperCase()); // Configuramos los roles del usuario
 		} else {
 			System.out.println("Usuario no encontrado");
 			throw new UsernameNotFoundException("Usuario no encontrado");

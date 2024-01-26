@@ -25,29 +25,29 @@ public class Usuario {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idUsuario;
+    private long id_usuario;
 	
 	@Column(name = "nombre_usuario", nullable = false)
-	private String nombreUsuario;
+	private String nombre_usuario;
 	
 	@Column(name = "tlf_usuario", nullable = false)
-	private String tlfUsuario;
+	private String tlf_usuario;
 	
 	@Column(name = "email_usuario", nullable = false)
-	private String emailUsuario;
+	private String email_usuario;
 	
 	@Column(name = "psswd_usuario", nullable = false)
-	private String psswdUsuario;
+	private String psswd_usuario;
 	
 	@ManyToOne
 	@JoinColumn(name = "idAcceso")
 	private Acceso acceso;
 	
 	@Column(name = "estaActivado_usuario", nullable = false)
-	private boolean estaActivadoUsuario;
+	private boolean estaActivado_usuario;
 	
 	@Column(name = "rutaImagen_usuario", nullable = true)
-	private String rutaImagenUsuario;
+	private String rutaImagen_usuario;
 
 	@OneToMany(mappedBy = "usuario")
     private List<Token> listaToken;
@@ -62,12 +62,12 @@ public class Usuario {
     
     public Usuario(String nombre_usuario, String tlf_usuario, String email_usuario, String psswd_usuario, boolean estaActivado_usuario, String rutaImagen_usuario)
     {
-        this.nombreUsuario = nombre_usuario;
-        this.tlfUsuario = tlf_usuario;
-        this.emailUsuario = email_usuario;
-        this.psswdUsuario = psswd_usuario;
-        this.estaActivadoUsuario = estaActivado_usuario;
-        this.rutaImagenUsuario = rutaImagen_usuario;
+        this.nombre_usuario = nombre_usuario;
+        this.tlf_usuario = tlf_usuario;
+        this.email_usuario = email_usuario;
+        this.psswd_usuario = psswd_usuario;
+        this.estaActivado_usuario = estaActivado_usuario;
+        this.rutaImagen_usuario = rutaImagen_usuario;
     }
 
     public Usuario() {}
@@ -75,43 +75,43 @@ public class Usuario {
     // Getter y Setter
     
 	public long getId_usuario() {
-		return idUsuario;
+		return id_usuario;
 	}
 
 	public void setId_usuario(long id_usuario) {
-		this.idUsuario = id_usuario;
+		this.id_usuario = id_usuario;
 	}
 
 	public String getNombre_usuario() {
-		return nombreUsuario;
+		return nombre_usuario;
 	}
 
 	public void setNombre_usuario(String nombre_usuario) {
-		this.nombreUsuario = nombre_usuario;
+		this.nombre_usuario = nombre_usuario;
 	}
 
 	public String getTlf_usuario() {
-		return tlfUsuario;
+		return tlf_usuario;
 	}
 
 	public void setTlf_usuario(String tlf_usuario) {
-		this.tlfUsuario = tlf_usuario;
+		this.tlf_usuario = tlf_usuario;
 	}
 
 	public String getEmail_usuario() {
-		return emailUsuario;
+		return email_usuario;
 	}
 
 	public void setEmail_usuario(String email_usuario) {
-		this.emailUsuario = email_usuario;
+		this.email_usuario = email_usuario;
 	}
 
 	public String getPsswd_usuario() {
-		return psswdUsuario;
+		return psswd_usuario;
 	}
 
 	public void setPsswd_usuario(String psswd_usuario) {
-		this.psswdUsuario = psswd_usuario;
+		this.psswd_usuario = psswd_usuario;
 	}
 
 	public Acceso getAcceso() {
@@ -123,19 +123,19 @@ public class Usuario {
 	}
 
 	public boolean isEstaActivado_usuario() {
-		return estaActivadoUsuario;
+		return estaActivado_usuario;
 	}
 
 	public void setEstaActivado_usuario(boolean estaActivado_usuario) {
-		this.estaActivadoUsuario = estaActivado_usuario;
+		this.estaActivado_usuario = estaActivado_usuario;
 	}
 
 	public String getRutaImagen_usuario() {
-		return rutaImagenUsuario;
+		return rutaImagen_usuario;
 	}
 
 	public void setRutaImagen_usuario(String rutaImagen_usuario) {
-		this.rutaImagenUsuario = rutaImagen_usuario;
+		this.rutaImagen_usuario = rutaImagen_usuario;
 	}
     
 }

@@ -36,6 +36,13 @@ public class Acceso {
 	
 	// Constructores
 	
+	public Acceso(long id_acceso, String cod_acceso, String desc_acceso) {
+		super();
+		this.id_acceso = id_acceso;
+		this.cod_acceso = cod_acceso;
+		this.desc_acceso = desc_acceso;
+	}
+	
 	public Acceso(String cod_acceso, String desc_acceso) {
 		super();
 		this.cod_acceso = cod_acceso;

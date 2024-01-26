@@ -1,6 +1,8 @@
 package com.proyectoFinalDWS.Repositorios;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.proyectoFinalDWS.DAOs.Usuario;
 
@@ -15,5 +17,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	 * @param email El email a buscar
 	 * @return Devuelve el usuario encontrado
 	 */
-	public Usuario findByEmailUsuario(String email);
+	@Query("SELECT u FROM Usuario u WHERE u.email_usuario= :email")
+	public Usuario findByEmailUsuario(@Param("email") String email);
 }

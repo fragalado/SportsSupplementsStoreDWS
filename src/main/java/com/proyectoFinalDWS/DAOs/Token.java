@@ -41,10 +41,11 @@ public class Token {
 	
 	// Constructores
 	
-	public Token(String cod_token, Calendar fch_fin_token) {
+	public Token(String cod_token, Calendar fch_fin_token, Usuario usuario) {
 		super();
 		this.cod_token = cod_token;
 		this.fch_fin_token = fch_fin_token;
+		this.usuario = usuario;
 	}
 	
 	public Token() {

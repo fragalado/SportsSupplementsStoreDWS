@@ -9,6 +9,8 @@ import com.proyectoFinalDWS.DAOs.Usuario;
 /**
  * Repositorio que dará servicio a Usuario.
  * Extiende de JpaRepository para realizar operaciones CRUD y otras consultas
+ * @author Fran Gallego
+ * Fecha: 25/01/2024
  */
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	

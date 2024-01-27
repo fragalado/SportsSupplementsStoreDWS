@@ -35,7 +35,7 @@ public class LoginControlador {
 	public String vistaLogin(Model model, HttpServletRequest request) {
 		// Control de sesión
 		if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USU")) {
-			return "home";
+			return "redirect:/home";
 		}
 
 		// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
@@ -55,7 +55,7 @@ public class LoginControlador {
 	public String vistaRegister(Model model, HttpServletRequest request) {
 		// Control de sesión
 		if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USU")) {
-			return "home";
+			return "redirect:/home";
 		}
 
 		// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
@@ -72,12 +72,55 @@ public class LoginControlador {
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
 	@GetMapping("/modificar-password")
-	public String vistaModificarContrasenya(Model model) {
+	public String vistaModificarContrasenya(Model model, HttpServletRequest request) {
+		// Control de sesión
+		if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USU")) {
+			return "redirect:/home";
+		}
+		
 		// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
 		model.addAttribute("usuarioDTO", new UsuarioDTO());
 
 		// Devolvemos la vista register
 		return "modificarContrasenya";
+	}
+	
+	@GetMapping("/estado-cuenta")
+	public String vistaActivarCuenta(Model model, HttpServletRequest request) {
+		// Control de sesión
+		if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USU")) {
+			return "redirect:/home";
+		}
+		
+		// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
+		model.addAttribute("usuarioDTO", new UsuarioDTO());
+
+		// Devolvemos la vista register
+		return "confirmarEmail";
+	}
+	
+	@GetMapping("/activar-cuenta")
+	public String activarCuenta(@ModelAttribute("tk") String token, HttpServletRequest request) {
+		// Control de sesión
+		if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USU")) {
+			return "redirect:/home";
+		}
+		
+		// Controlamos que el token no este vacio
+		if(token.isEmpty()) {
+			return "redirect:/acceso/login";
+		}
+		
+		// Si el token no esta vacio vamos a activar la cuenta
+		boolean ok = accesoImpl.activaCuenta(token);
+		
+		if(ok) {
+			// Redirigimos a estado-cuenta con un parametro success
+			return "redirect:/acceso/estado-cuenta?success";
+		} else {
+			// Redirigimos a estado-cuenta con un parametro de error
+			return "redirect:/acceso/estado-cuenta?error";
+		}
 	}
 
 	@PostMapping("/register")

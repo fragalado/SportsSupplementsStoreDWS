@@ -3,15 +3,13 @@ package com.proyectoFinalDWS.Seguridad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @Configuration // Indica que esta clase es de configuración
 @EnableMethodSecurity
@@ -19,6 +17,11 @@ public class SeguridadConfig {
 	
 	@Autowired
 	UserDetailsService userDetailsService;
+	
+	@Bean
+    public AuthenticationFailureHandler customAuthenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -56,6 +59,7 @@ public class SeguridadConfig {
 						.loginPage("/acceso/login") // Establece la página de inicio de sesión personalizada
 						.defaultSuccessUrl("/home", true) // Establece la url de redirección después de un inicio exitoso
 						.loginProcessingUrl("/acceso/login") // Establece la url de procesamiento del formulario de login
+						.failureHandler(customAuthenticationFailureHandler())
 			)
 			// Configura el proceso de cierre de sesión
 			.logout(logout ->

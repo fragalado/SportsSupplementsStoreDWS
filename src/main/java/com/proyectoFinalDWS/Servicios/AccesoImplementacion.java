@@ -1,13 +1,17 @@
 package com.proyectoFinalDWS.Servicios;
 
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.proyectoFinalDWS.DAOs.Acceso;
+import com.proyectoFinalDWS.DAOs.Token;
 import com.proyectoFinalDWS.DAOs.Usuario;
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
+import com.proyectoFinalDWS.Repositorios.TokenRepository;
 import com.proyectoFinalDWS.Repositorios.UsuarioRepository;
 import com.proyectoFinalDWS.Utiles.Util;
 
@@ -26,7 +30,13 @@ public class AccesoImplementacion implements AccesoInterfaz {
 	private UsuarioRepository usuarioRepositorio;
 	
 	@Autowired
+	private TokenRepository tokenRepositorio;
+	
+	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private EmailImplementacion emailImpl;
 
 	@Override
 	public Boolean registrarUsuario(UsuarioDTO usuario) {
@@ -54,9 +64,12 @@ public class AccesoImplementacion implements AccesoInterfaz {
 			
 			// Lo guardamos en la base de datos
 			Usuario usuarioDevuelto =  usuarioRepositorio.save(usuarioDAO);
-			System.out.println(usuarioDevuelto.getId_usuario());
 			
 			// Si el Usuario devuelto es distinto de null es porque se ha registrado correctamente
+			if(usuarioDevuelto != null) {
+				// Enviamos el correo
+				emailImpl.enviarEmail("http://localhost:8080/acceso/activar-cuenta", true, usuarioDevuelto);
+			}
 			return usuarioDevuelto != null;
 		} catch (IllegalArgumentException  e) {
 			System.out.println("[Error-AccesoImplementacion-registrarUsuario] Error el usuario es nulo");
@@ -69,5 +82,48 @@ public class AccesoImplementacion implements AccesoInterfaz {
 			return null;
 		}
 	}
+
+	@Override
+	public boolean activaCuenta(String token) {
+		try {
+			// Obtenemos el token de la base de datos
+			Token tokenDao = tokenRepositorio.findByCodToken(token);
+			
+			// Ahora comprobamos si el token no ha caducado
+			// Obtenemos la fecha actual
+			Calendar fechaActual = Calendar.getInstance();
+			
+			// Comparamos la fechaActual con la fecha del token
+			if (fechaActual.compareTo(tokenDao.getFch_fin_token()) < 0 || fechaActual.compareTo(tokenDao.getFch_fin_token()) == 0) {
+				// La fecha actual es menor que la fecha del token o son iguales, luego seguimos con el proceso
+				Usuario usuarioDao = tokenDao.getUsuario();
+				
+				// Modificamos la propiedad estaActivado y la ponemos en true
+				usuarioDao.setEstaActivado_usuario(true);
+				
+				// Actualizamos en la base de datos
+				Usuario usuarioDevuelto =  usuarioRepositorio.save(usuarioDao);
+				if(usuarioDevuelto != null && usuarioDevuelto.isEstaActivado_usuario()) {
+					return true; // El usuario ha sido activado
+				} else {
+					return false; // El usuario no ha sido activado
+				}
+	        } else {
+	        	// La fecha actual es mayor que la fecha del token, luego ha caducado
+	        	return false;
+	        }
+		} catch (NullPointerException e) {
+			System.out.println("[Error-AccesoImplementacion-activaCuenta] Error al intentar compararse un calendario nulo.");
+			return false;
+		} catch (IllegalArgumentException e) {
+			System.out.println("[Error-AccesoImplementacion-activaCuenta] Error objeto nulo o invalido.");
+			return false;
+		} catch (OptimisticLockingFailureException e) {
+			System.out.println("[Error-AccesoImplementacion-activaCuenta] Error de concurrencia optimista.");
+			return false;
+		}
+	}
+	
+	
 
 }

@@ -35,7 +35,7 @@ public class EmailImplementacion implements EmailInterfaz {
 	private TokenRepository tokenRepositorio;
 
 	@Override
-	public void enviarEmail(String direccion, boolean esActivarCuenta, Usuario usuario) {
+	public boolean enviarEmail(String direccion, boolean esActivarCuenta, Usuario usuario) {
 
 		try {
 			// Generamos un token
@@ -72,16 +72,22 @@ public class EmailImplementacion implements EmailInterfaz {
 			mailSender.send(message);
 
 			System.out.println("Email enviado correctamente");
+			return true;
 		} catch (IllegalArgumentException e) {
 			System.out.println("[Error-EmailImplementacion-enviarEmail] Error el objeto pasado es nulo");
+			return false;
 		} catch (OptimisticLockingFailureException e) {
 			System.out.println("[Error-EmailImplementacion-enviarEmail] Error de concurrencia optimista");
+			return false;
 		} catch (MailAuthenticationException e) {
 			System.out.println("[Error-EmailImplementacion-enviarEmail] Error al autentificar el mail");
+			return false;
 		} catch (MailSendException e) {
 			System.out.println("[Error-EmailImplementacion-enviarEmail] Error al enviar el email");
+			return false;
 		} catch (MessagingException e) {
 			System.out.println("[Error-EmailImplementacion-enviarEmail] Error general mail");
+			return false;
 		}
 	}
 

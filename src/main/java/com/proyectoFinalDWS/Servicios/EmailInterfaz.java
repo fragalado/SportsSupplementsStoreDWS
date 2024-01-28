@@ -15,5 +15,5 @@ public interface EmailInterfaz {
 	 * @param esActivarCuenta Boolean para saber si es correo para recuperar contraseña o para activar cuenta.
 	 * @param usuario Objeto Usuario (DAO)
 	 */
-	public void enviarEmail(String direccion, boolean esActivarCuenta, Usuario usuario);
+	public boolean enviarEmail(String direccion, boolean esActivarCuenta, Usuario usuario);
 }

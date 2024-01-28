@@ -123,6 +123,28 @@ public class AccesoImplementacion implements AccesoInterfaz {
 			return false;
 		}
 	}
+
+	@Override
+	public Boolean restablePassword(UsuarioDTO usuarioDto) {
+		try {
+			// Obtenemos el usuario de la base de datos
+			Usuario usuarioEncontrado = usuarioRepositorio.findByEmailUsuario(usuarioDto.getEmail_usuario());
+			
+			// Si usuarioEncontrado es null devolvemos false
+			if(usuarioEncontrado == null)
+				return false; // El email introducido no existe
+			
+			// Si llega aqui es porque se ha encontrado el usuario.
+			boolean ok = emailImpl.enviarEmail("http://localhost:8080/acceso/cambiar-password", false, usuarioEncontrado);
+			
+			if(ok)
+				return true; // Se ha enviado el correo correctamente
+			else 
+				return null; // Se ha producido un error al enviar el correo
+		} catch (Exception e) {
+			return null; // Se ha producido un error al enviar el correo
+		}
+	}
 	
 	
 

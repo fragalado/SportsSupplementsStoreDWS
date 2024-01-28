@@ -21,5 +21,14 @@ public interface AccesoInterfaz {
 	 * @param token El token.
 	 * @return Devuelve true si se ha activado la cuenta o false si no.
 	 */
-	public boolean activaCuenta(String token); 
+	public boolean activaCuenta(String token);
+	
+	/**
+	 * Método que obtiene un usuario de la base de datos, crea un token, lo guarda en la base de datos el token y envía un correo al email del usuario.
+	 * @param usuarioDto Objeto usuario que contiene el email
+	 * @return Devuelve true si se ha enviado el correo, false si no se ha encontrado el email en la base de datos o null si se ha producido un error.
+	 */
+	public Boolean restablePassword(UsuarioDTO usuarioDto);
+	
+	 
 }

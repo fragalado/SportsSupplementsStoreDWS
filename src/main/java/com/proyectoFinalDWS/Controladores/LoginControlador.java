@@ -1,5 +1,7 @@
 package com.proyectoFinalDWS.Controladores;
 
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.proyectoFinalDWS.DAOs.Token;
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
+import com.proyectoFinalDWS.Repositorios.TokenRepository;
 import com.proyectoFinalDWS.Servicios.AccesoImplementacion;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +28,9 @@ public class LoginControlador {
 
 	@Autowired
 	private AccesoImplementacion accesoImpl;
+	
+	@Autowired
+	private TokenRepository tokenRepositorio;
 
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/acceso/login".
@@ -85,6 +92,12 @@ public class LoginControlador {
 		return "modificarContrasenya";
 	}
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/acceso/estado-cuenta"
+	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return El nombre de la vista que se mostrará al usuario
+	 */
 	@GetMapping("/estado-cuenta")
 	public String vistaActivarCuenta(Model model, HttpServletRequest request) {
 		// Control de sesión
@@ -99,6 +112,78 @@ public class LoginControlador {
 		return "confirmarEmail";
 	}
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/acceso/cambia-password"
+	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return El nombre de la vista que se mostrará al usuario
+	 */
+	@GetMapping("/cambiar-password")
+	public String vistaCambiaPassword(@ModelAttribute("tk") String token, Model model, HttpServletRequest request) {
+		// Control de sesión
+		if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USU")) {
+			return "redirect:/home";
+		}
+
+		// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
+		model.addAttribute("usuarioDTO", new UsuarioDTO());
+		// Controlamos que el token no este vacio
+		if(token.isEmpty()) {
+			return "redirect:/acceso/login";
+		}
+		
+		// Si el token no esta vacio devolvemos la vista con el token
+		return "cambiarPassword";
+	}
+
+	@PostMapping("/register")
+	public String registrarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario) {
+		try {
+			Boolean ok = accesoImpl.registrarUsuario(usuario);
+
+			if (ok) {
+				// Se ha registrado el usuario correctamente
+				return "redirect:/acceso/register?success";
+			} else if (ok == null) {
+				// Se ha producido un error al registrar el usuario
+				return "redirect:/acceso/register?error";
+			} else {
+				// El email ya existe
+				return "redirect:/acceso/register?email";
+			}
+		} catch (Exception e) {
+			System.out.println("[Error-LoginControlador-registrarUsuario] Error al registrar al usuario");
+			return "redirect:/acceso/register?error";
+		}
+	}
+	
+	@PostMapping("/modificar-password")
+	public String restablecerPassword(@ModelAttribute("usuarioDTO") UsuarioDTO usuario) {
+		try {
+			Boolean ok = accesoImpl.restablePassword(usuario);
+
+			if (ok) {
+				// Se ha enviado el correo al usuario
+				return "redirect:/acceso/modificar-password?success";
+			} else if (ok == null) {
+				// Se ha producido un error
+				return "redirect:/acceso/modificar-password?error";
+			} else {
+				// El email introducido no existe
+				return "redirect:/acceso/modificar-password?email";
+			}
+		} catch (Exception e) {
+			System.out.println("[Error-LoginControlador-restablecerPassowrd] Error al mandar correo para restablecer contraseña");
+			return "redirect:/acceso/modificar-password?error";
+		}
+	}
+
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/acceso/activar-cuenta"
+	 * @param token Código del token
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return El nombre de la vista que se mostrará al usuario
+	 */
 	@GetMapping("/activar-cuenta")
 	public String activarCuenta(@ModelAttribute("tk") String token, HttpServletRequest request) {
 		// Control de sesión
@@ -122,25 +207,12 @@ public class LoginControlador {
 			return "redirect:/acceso/estado-cuenta?error";
 		}
 	}
-
-	@PostMapping("/register")
-	public String registrarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario) {
-		try {
-			Boolean ok = accesoImpl.registrarUsuario(usuario);
-
-			if (ok) {
-				// Se ha registrado el usuario correctamente
-				return "redirect:/acceso/register?success";
-			} else if (ok == null) {
-				// Se ha producido un error al registrar el usuario
-				return "redirect:/acceso/register?error";
-			} else {
-				// El email ya existe
-				return "redirect:/acceso/register?email";
-			}
-		} catch (Exception e) {
-			System.out.println("[Error-LoginControlador-registrarUsuario] Error al registrar al usuario");
-			return "redirect:/acceso/register?error";
-		}
+	
+	@PostMapping("/cambiar-password")
+	public String cambiaPassword(@ModelAttribute("tk") String token, @ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO) {
+		// TODO
+		System.out.println("Token: " + token);
+		System.out.println(usuarioDTO.getPsswd_usuario());
+		return "redirect:/acceso/cambiar-password?success";
 	}
 }

@@ -2,6 +2,7 @@ package com.proyectoFinalDWS.DAOs;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -49,7 +50,7 @@ public class Usuario {
 	@Column(name = "rutaImagen_usuario", nullable = true)
 	private String rutaImagen_usuario;
 
-	@OneToMany(mappedBy = "usuario")
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
     private List<Token> listaToken;
 	
 	@OneToMany(mappedBy = "usuario")

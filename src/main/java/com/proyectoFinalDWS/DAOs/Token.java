@@ -2,6 +2,7 @@ package com.proyectoFinalDWS.DAOs;
 
 import java.util.Calendar;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,7 +36,7 @@ public class Token {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar fch_fin_token;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 	

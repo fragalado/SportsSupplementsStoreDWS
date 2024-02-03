@@ -14,6 +14,7 @@ import jakarta.persistence.Table;
  * Entidad Suplemento que hace referencia a la tabla Suplementos de la base de datos
  * @autor Fran Gallego
  * Fecha: 25/01/2024
+ * Fecha Modificacion: 03/02/2024, se ha añadido nueva propiedad rutaImagen_suplemento (String) y sus respectivos get y set
  */
 @Entity
 @Table(name = "Suplementos", schema = "gbp_operacional2")
@@ -40,19 +41,23 @@ public class Suplemento {
 	@Column(name = "marca_suplemento", nullable = false)
 	private String marca_suplemento;
 	
+	@Column(name = "rutaImagen_suplemento", nullable = false)
+	private String rutaImagen_suplemento;
+	
 	@OneToMany(mappedBy = "suplemento")
 	private List<Carrito> listaCarrito;
 	
 	// Constructores
 	
 	public Suplemento(String nombre_suplemento, String desc_suplemento, long precio_suplemento, String tipo_suplemento,
-			String marca_suplemento) {
+			String marca_suplemento, String rutaImagen_suplemento) {
 		super();
 		this.nombre_suplemento = nombre_suplemento;
 		this.desc_suplemento = desc_suplemento;
 		this.precio_suplemento = precio_suplemento;
 		this.tipo_suplemento = tipo_suplemento;
 		this.marca_suplemento = marca_suplemento;
+		this.rutaImagen_suplemento = rutaImagen_suplemento;
 	}
 	
 	public Suplemento() {
@@ -107,6 +112,14 @@ public class Suplemento {
 
 	public void setMarca_suplemento(String marca_suplemento) {
 		this.marca_suplemento = marca_suplemento;
+	}
+	
+	public String getRutaImagen_suplemento() {
+		return rutaImagen_suplemento;
+	}
+	
+	public void setRutaImagen_suplemento(String rutaImagen_suplemento) {
+		this.rutaImagen_suplemento = rutaImagen_suplemento;
 	}
 	
 }

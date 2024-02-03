@@ -16,34 +16,7 @@ public class UsuarioDTO {
     private boolean estaActivado_usuario = false;
     private String rutaImagen_usuario;
 
-    // Constructores
-
-    public UsuarioDTO(long id_usuario, String nombre_usuario, String tlf_usuario, String email_usuario, String psswd_usuario, String rutaImagen_usuario)
-    {
-        this.id_usuario = id_usuario;
-        this.nombre_usuario = nombre_usuario;
-        this.tlf_usuario = tlf_usuario;
-        this.email_usuario = email_usuario;
-        this.psswd_usuario = psswd_usuario;
-        id_acceso = 1;
-        estaActivado_usuario = false;
-        this.rutaImagen_usuario = rutaImagen_usuario;
-    }
-
-    public UsuarioDTO(String nombre_usuario, String tlf_usuario, String email_usuario, String psswd_usuario, String rutaImagen_usuario)
-    {
-        this.nombre_usuario = nombre_usuario;
-        this.tlf_usuario = tlf_usuario;
-        this.email_usuario = email_usuario;
-        this.psswd_usuario = psswd_usuario;
-        id_acceso = 1;
-        estaActivado_usuario = false;
-        this.rutaImagen_usuario = rutaImagen_usuario;
-    }
-
-    public UsuarioDTO()
-    {
-    }
+    // Constructores -> Constructor vacío
 
     // Getter y Setter
 

@@ -1,6 +1,11 @@
 package com.proyectoFinalDWS.Utiles;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.proyectoFinalDWS.DAOs.Suplemento;
 import com.proyectoFinalDWS.DAOs.Usuario;
+import com.proyectoFinalDWS.DTOs.SuplementoDTO;
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 
 /**
@@ -57,6 +62,70 @@ public class Util {
 		} catch (Exception e) {
 			// Error al convertir
 			System.out.println("[Error-Util-usuarioADto] Error al convertir el Usuario a DTO");
+			return null;
+		}
+	}
+	
+	/**
+	 * Método que convierte una lista de Usuarios (DAO) a DTO
+	 * @param listaUsuariosDao Lista de tipo Usuario (DAO)
+	 * @return Devuelve la lista de usuarios convertida a DTO
+	 */
+	public static List<UsuarioDTO> listaUsuariosADto(List<Usuario> listaUsuariosDao){
+		try {
+			// Lista donde guardaremos los usuarios convertidos
+			List<UsuarioDTO> listaUsuariosDto = new ArrayList<UsuarioDTO>();
+			
+			// Convertimos
+			for (Usuario aux : listaUsuariosDao) {
+				UsuarioDTO usuario = new UsuarioDTO();
+				usuario.setId_usuario(aux.getId_usuario());
+				usuario.setNombre_usuario(aux.getNombre_usuario());
+				usuario.setEmail_usuario(aux.getEmail_usuario());
+				usuario.setTlf_usuario(aux.getTlf_usuario());
+				usuario.setId_acceso(aux.getAcceso().getId_acceso());
+				usuario.setPsswd_usuario(aux.getPsswd_usuario());
+				usuario.setRutaImagen_usuario(aux.getRutaImagen_usuario());
+				listaUsuariosDto.add(usuario);
+			}
+			
+			// Devolvemos la nueva lista
+			return listaUsuariosDto;
+		} catch (Exception e) {
+			// Error al convertir
+			System.out.println("[Error-Util-listaUsuariosADto] Error al convertir el Usuario (DAO) a DTO");
+			return null;
+		}
+	}
+	
+	/**
+	 * Método que convierte una lista de Suplementos (DAO) a DTO
+	 * @param listaSuplementosDao Lista de tipo Suplemento (DAO)
+	 * @return Devuelve la lista de suplementos convertida a DTO
+	 */
+	public static List<SuplementoDTO> listaSuplementosADto(List<Suplemento> listaSuplementosDao){
+		try {
+			// Lista donde guardaremos los suplementos convertidos
+			List<SuplementoDTO> listaSuplementosDto = new ArrayList<SuplementoDTO>();
+			
+			// Convertimos
+			for (Suplemento aux : listaSuplementosDao) {
+				SuplementoDTO suplemento = new SuplementoDTO();
+				suplemento.setId_suplemento(aux.getId_suplemento());
+				suplemento.setNombre_suplemento(aux.getNombre_suplemento());
+				suplemento.setDesc_suplemento(aux.getDesc_suplemento());
+				suplemento.setMarca_suplemento(aux.getMarca_suplemento());
+				suplemento.setTipo_suplemento(aux.getTipo_suplemento());
+				suplemento.setPrecio_suplemento(aux.getPrecio_suplemento());
+				suplemento.setRutaImagen_suplemento(aux.getRutaImagen_suplemento());
+				listaSuplementosDto.add(suplemento);
+			}
+			
+			// Devolvemos la nueva lista
+			return listaSuplementosDto;
+		} catch (Exception e) {
+			// Error al convertir
+			System.out.println("[Error-Util-listaSuplementosADto] Error al convertir el Suplemento (DAO) a DTO");
 			return null;
 		}
 	}

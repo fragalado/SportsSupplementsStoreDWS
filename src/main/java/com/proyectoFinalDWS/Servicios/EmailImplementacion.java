@@ -44,7 +44,7 @@ public class EmailImplementacion implements EmailInterfaz {
 			
 			// Creamos la fecha limite para añadir al token
 			Calendar fecha = Calendar.getInstance();
-			fecha.add(Calendar.MINUTE, 5);
+			fecha.add(Calendar.MINUTE, 10); // 10 minutos
 			
 			// Creamos el token y lo guardamos en la base de datos
 			Token tokenDao = new Token(token, fecha, usuario);

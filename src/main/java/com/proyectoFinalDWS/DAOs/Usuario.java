@@ -37,7 +37,7 @@ public class Usuario {
 	@Column(name = "email_usuario", nullable = false)
 	private String email_usuario;
 	
-	@Column(name = "psswd_usuario", nullable = false)
+	@Column(name = "psswd_usuario", nullable = false, updatable = false)
 	private String psswd_usuario;
 	
 	@ManyToOne

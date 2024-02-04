@@ -3,6 +3,7 @@ package com.proyectoFinalDWS.Utiles;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.proyectoFinalDWS.DAOs.Acceso;
 import com.proyectoFinalDWS.DAOs.Suplemento;
 import com.proyectoFinalDWS.DAOs.Usuario;
 import com.proyectoFinalDWS.DTOs.SuplementoDTO;
@@ -30,6 +31,10 @@ public class Util {
 			usuarioDao.setEstaActivado_usuario(usuarioDto.isEstaActivado_usuario());
 			usuarioDao.setPsswd_usuario(usuarioDto.getPsswd_usuario());
 			usuarioDao.setRutaImagen_usuario(usuarioDto.getRutaImagen_usuario());
+			if(usuarioDto.getId_acceso() == 1)
+				usuarioDao.setAcceso(new Acceso(1, "Usu", "Usuarios de la tienda"));
+			else
+				usuarioDao.setAcceso(new Acceso(2, "Admin", "Administrador de la tienda"));
 			
 			// Devolvemos el usuarioDao
 			return usuarioDao;

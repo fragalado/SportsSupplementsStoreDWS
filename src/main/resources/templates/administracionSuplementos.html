@@ -95,8 +95,8 @@
 							<tr th:if="${listaSuplementosDTO != null && listaSuplementosDTO.size() < 1}">
 								<td colspan="7" style="text-align: center">No existe ningún suplemento.</td>
 							</tr>
-							<tr th:each="suplementoDTO: ${listaSuplementosDTO}">
-								<th scope="row">1</th>
+							<tr th:each="suplementoDTO, stat: ${listaSuplementosDTO}">
+								<th scope="row" th:text="${stat.index + 1}"></th>
 								<td th:text="${suplementoDTO.getNombre_suplemento}"></td>
 								<td th:text="${suplementoDTO.getDesc_suplemento}"></td>
 								<td th:text="${suplementoDTO.getPrecio_suplemento}"></td>
@@ -104,8 +104,8 @@
 								<td th:text="${suplementoDTO.getMarca_suplemento}"></td>
 								<td>
 									<i class="fa-solid fa-pen-to-square" style="color: green; padding-left: 15px;"></i>
-									<i class="fa-solid fa-trash" style="color: red; padding-left: 35px;"
-										onclick="compruebaEliminar()"></i>
+									<i class="fa-solid fa-trash" style="color: red; padding-left: 35px;" th:attr="data-idSuplemento=${suplementoDTO.getId_suplemento()}"
+										onclick="compruebaEliminar(event)"></i>
 								</td>
 							</tr>
 						</tbody>
@@ -115,7 +115,8 @@
 		</main>
 	</div>
 	<script>
-		function compruebaEliminar(id_suplemento) {
+		function compruebaEliminar(event) {
+			const id_suplemento = event.currentTarget.getAttribute("data-idSuplemento");
 	        Swal.fire({
 	            title: "¿Estás seguro?",
 	            text: "No se podrán revertir los cambios!",
@@ -132,10 +133,26 @@
 	                const baseUrl = window.location.origin;
 	
 	                // Redirige a la nueva URL (/Admin/BorrarSuplemento)
-	                window.location.href = baseUrl + '/Admin/BorrarSuplemento/' + id_suplemento;
+	                window.location.href = baseUrl + '/admin/borra-suplemento/' + id_suplemento;
 	            }
 	        });
     	}
+	</script>
+	
+	<script th:if="${param.success}">
+		Swal.fire({
+            title: "Éxito!",
+            text: "El suplemento se ha borrado con éxito!",
+            icon: "success"
+        });
+	</script>
+	
+	<script th:if="${param.error}">
+		Swal.fire({
+            title: "Error!",
+            text: "El suplemento no se ha podido eliminar!",
+            icon: "error"
+        });
 	</script>
 </body>
 

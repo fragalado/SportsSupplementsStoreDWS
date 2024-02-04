@@ -30,4 +30,24 @@ public interface AdminInterfaz {
 	 * @return Devuelve true si se ha eliminado o false si no.
 	 */
 	public boolean borraUsuarioPorId(long id_usuario);
+	
+	/**
+	 * Método que borra un suplemento de la base de datos por el id_suplemento
+	 * @param id_suplemento Id del suplemento a eliminar
+	 * @return Devuelve true si se ha eliminado o false si no.
+	 */
+	public boolean borraSuplementoPorId(long id_suplemento);
+	
+	/**
+	 * Método que obtiene un usuario de la base de datos por el id del usuario
+	 * @return Devuelve el usuario encontrado o null en caso de no encontrarlo
+	 */
+	public UsuarioDTO obtieneUsuarioPorId(long id_usuario);
+	
+	/**
+	 * Actualiza un usuario pasado por parámetros en la base de datos
+	 * @param usuarioDTO Usuario a actualizar
+	 * @return Devuelve true si se ha actulizado correctamente o false si no.
+	 */
+	public boolean actualizaUsuario(UsuarioDTO usuarioDTO);
 }

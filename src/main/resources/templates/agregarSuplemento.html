@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Administracion Usuarios - ProyectoFinalDIW</title>
+	<title>Agrega Suplemento - ProyectoFinalDWS</title>
 	<!-- Bootstrap -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"
@@ -73,96 +73,60 @@
 	
 	<div class="container">
 		<main role="main" class="pb-3">
-			<div class="row tablaAdmin">
+			<div class="row">
 				<div class="col">
-					<div style="margin-bottom: 5px;">
-						<a class="btn btn-outline-secondary" role="button" th:href="@{/admin/administracion-usuarios}">Usuarios</a>
-						<a class="btn btn-outline-secondary"  role="button" th:href="@{/admin/administracion-suplementos}">Productos</a>
+					<div class="contenedor">
+						<div class="contenedor-imagen">
+							<img th:src="@{/img/usuarios/profile.jpg}" class="card-img-top imagen" alt="Foto de suplemento genérico"
+								id="profile-pic">
+						</div>
+						<div class="inputs-form">
+							<form method="post" th:action="@{/admin/agregar-suplemento}" th:object="${suplementoDTO}"  enctype="multipart/form-data">
+								<div class="mb-3">
+									<label for="imagenForm" class="btn btn-primary botonImagen">Añadir imagen</label>
+									<input type="file" accept="image/jpeg, image/png, image/jpg" id="imagenForm"
+										style="display: none;" name="imagenFile" required>
+								</div>
+								<div class="mb-3">
+									<label for="nombreForm" class="form-label">Nombre</label>
+									<input type="text" class="form-control inputVistaEditar" id="nombreForm" th:field="*{nombre_suplemento}" required>
+								</div>
+								<div class="mb-3">
+									<label for="descForm" class="form-label">Descripcion</label>
+									<textarea class="form-control inputVistaEditar" id="descForm" th:field="*{desc_suplemento}" rows="3"
+										required></textarea>
+								</div>
+								<div class="mb-3">
+									<label for="precioForm" class="form-label">Precio</label>
+									<input type="text" class="form-control inputVistaEditar" id="precioForm" th:field="*{precio_suplemento}" required>
+								</div>
+								<div class="mb-3">
+									<label for="marcaForm" class="form-label">Marca</label>
+									<input type="text" class="form-control inputVistaEditar" id="marcaForm" th:field="*{marca_suplemento}" required>
+								</div>
+								<div class="mb-3">
+									<label for="tipoForm" class="form-label">Tipo</label>
+									<input type="text" class="form-control inputVistaEditar" id="tipoForm" th:field="*{tipo_suplemento}" required>
+								</div>
+								<input type="text" class="form-control" name="id_suplemento" th:field="*{id_suplemento}"
+									style="display:none">
+								<button type="submit" class="btn btn-primary">Enviar</button>
+							</form>
+							<a th:href="@{/admin/administracion-suplementos}"
+								class="btn btn-primary botonVolver">Volver</a>
+						</div>
 					</div>
-					<table class="table table-dark table-hover">
-						<thead>
-							<tr>
-								<th scope="col">#</th>
-								<th scope="col">Nombre</th>
-								<th scope="col">Email</th>
-								<th scope="col">Rol</th>
-								<th scope="col">Editar/Eliminar</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:if="${listaUsuariosDTO != null && listaUsuariosDTO.size() < 1}">
-								<td colspan="5" style="text-align: center">No existe ningún usuario.</td>
-							</tr>
-							<tr th:each="usuarioDTO, stat: ${listaUsuariosDTO}">
-								<th scope="row" th:text="${stat.index + 1}"></th>
-								<td th:text="${usuarioDTO.getNombre_usuario()}"></td>
-								<td th:text="${usuarioDTO.getEmail_usuario()}"></td>
-								<td th:if="${usuarioDTO.getId_acceso() == 2}">Admin</td>
-								<td th:if="${usuarioDTO.getId_acceso() == 1}">Usuario</td>
-								<td>
-									<a th:href="@{/admin/editar-usuario/} + ${usuarioDTO.getId_usuario()}"><i class="fa-solid fa-pen-to-square" style="color: green; padding-left: 15px;"></i></a>
-									<i class="fa-solid fa-trash" style="color: red; margin-left: 35px; cursor: pointer;" 
-										th:attr="data-idUsuario=${usuarioDTO.getId_usuario()}, data-idAcceso=${usuarioDTO.getId_acceso()}" 
-										onclick="compruebaEsAdmin(event)"></i>
-								</td>
-							</tr>
-						</tbody>
-					</table>
 				</div>
 			</div>
 		</main>
 	</div>
 	<script>
-		function compruebaEsAdmin(event) {
-			const id_acceso = event.currentTarget.getAttribute("data-idAcceso");
-			const id_usuario = event.currentTarget.getAttribute("data-idUsuario");
-			if (id_acceso != 2) {
-				compruebaEliminar(id_usuario);
-			} else {
-				Swal.fire({
-					title: "Error!",
-					text: "No puedes borrar un Administrador!",
-					icon: "error"
-				});
-			}
-		}
-
-		function compruebaEliminar(id_usuario) {
-			Swal.fire({
-				title: "¿Estás seguro?",
-				text: "No se podrán revertir los cambios!",
-				icon: "warning",
-				showCancelButton: true,
-				confirmButtonColor: "#3085d6",
-				cancelButtonColor: "#d33",
-				confirmButtonText: "Si, eliminar!"
-			}).then((result) => {
-				if (result.isConfirmed) {
-					// Eliminamos
-					// Obtén la ruta base de la URL actual (localhost:1234)
-					const baseUrl = window.location.origin;
-
-					// Redirige a la nueva URL (/Admin/BorrarUsuario)
-					window.location.href = baseUrl + '/admin/borra-usuario/' + id_usuario;
-				}
-			});
-		}
-	</script>
+	    let profilePic = document.getElementById("profile-pic");
+	    let inputFile = document.getElementById("imagenForm");
 	
-	<script th:if="${param.success}">
-		Swal.fire({
-            title: "Éxito!",
-            text: "El usuario se ha borrado con éxito!",
-            icon: "success"
-        });
-	</script>
-	
-	<script th:if="${param.error}">
-		Swal.fire({
-            title: "Error!",
-            text: "El usuario no se ha podido eliminar!",
-            icon: "error"
-        });
+	    inputFile.onchange = function () {
+	        profilePic.src = URL.createObjectURL(inputFile.files[0]);
+	    }
 	</script>
 </body>
 

@@ -47,7 +47,27 @@ public interface AdminInterfaz {
 	/**
 	 * Actualiza un usuario pasado por parámetros en la base de datos
 	 * @param usuarioDTO Usuario a actualizar
-	 * @return Devuelve true si se ha actulizado correctamente o false si no.
+	 * @return Devuelve true si se ha actualizado correctamente o false si no.
 	 */
 	public boolean actualizaUsuario(UsuarioDTO usuarioDTO);
+	
+	/**
+	 * Método que obtiene un suplemento de la base de datos por el id del suplemento
+	 * @return Devuelve el suplemento encontrado o null en caso de no encontrarlo
+	 */
+	public SuplementoDTO obtieneSuplementoPorId(long id_suplemento);
+	
+	/**
+	 * Actualiza un suplemento pasado por parámetros en la base de datos
+	 * @param suplementoDTO Suplemento a actualizar
+	 * @return Devuelve true si se ha actualizado correctamente o false si no.
+	 */
+	public boolean actualizaSuplemento(SuplementoDTO suplementoDTO);
+	
+	/**
+	 * Método que agrega a la base de datos un nuevo suplemento.
+	 * @param suplementoDTO Suplemento que se va a añadir
+	 * @return Devuelve true si se ha añadido correctamente o false si se ha producido un error.
+	 */
+	public boolean agregaSuplemento(SuplementoDTO suplementoDTO);
 }

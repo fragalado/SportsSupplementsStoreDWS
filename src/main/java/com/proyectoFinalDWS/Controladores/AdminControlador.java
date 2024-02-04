@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.proyectoFinalDWS.DAOs.Suplemento;
+import com.proyectoFinalDWS.DTOs.SuplementoDTO;
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 import com.proyectoFinalDWS.Servicios.AdminImplementacion;
 
@@ -85,6 +87,37 @@ public class AdminControlador {
 		
 		// Devolvemos la vista
 		return "editarUsuario";
+	}
+	
+	@GetMapping("/editar-suplemento/{id_suplemento}")
+	public String vistaEditarSuplemento(@PathVariable long id_suplemento, Model model, HttpServletRequest request) {
+		// Control de sesión
+		if(!request.isUserInRole("ROLE_ADMIN")) {
+			return "redirect:/home";
+		}
+		
+		// Obtenemos el suplemento de la base de datos y lo agregamos al modelo
+		SuplementoDTO suplementoDTO = adminImplementacion.obtieneSuplementoPorId(id_suplemento);
+		
+		// Lo agregamos al modelo
+		model.addAttribute("suplementoDTO", suplementoDTO);
+		
+		// Devolvemos la vista
+		return "editarSuplemento";
+	}
+	
+	@GetMapping("/agrega-suplemento")
+	public String vistaAgregarSuplemento(Model model, HttpServletRequest request) {
+		// Control de sesión
+		if(!request.isUserInRole("ROLE_ADMIN")) {
+			return "redirect:/home";
+		}
+		
+		// Agregamos al modelo un objeto suplemento
+		model.addAttribute("suplementoDTO", new SuplementoDTO());
+		
+		// Devolvemos la vista
+		return "agregarSuplemento";
 	}
 	
 	@GetMapping("/borra-usuario/{id_usuario}")
@@ -158,4 +191,81 @@ public class AdminControlador {
 			return "redirect:/admin/administracion-usuarios?usuarioEditadoError";
 		}
 	}
+	
+	@PostMapping("/editar-suplemento")
+	public String editaSuplemento(@ModelAttribute("suplementoDTO") SuplementoDTO suplementoDTO, @RequestPart("imagenFile") MultipartFile imagenFile, HttpServletRequest request) {
+		// Control de sesión
+		if(!request.isUserInRole("ROLE_ADMIN")) {
+			return "redirect:/home";
+		}
+		
+		try {
+			if (imagenFile != null && !imagenFile.isEmpty()) {
+	            // Genera un nombre único para la imagen
+	            String nombreImagen = UUID.randomUUID().toString() + "." + StringUtils.getFilenameExtension(imagenFile.getOriginalFilename());
+
+	            // Combina la ruta de la carpeta con el nombre de la imagen
+	            String rutaCompleta = Paths.get("src", "main", "resources", "static", "img", "suplementos", nombreImagen).toString();
+
+	            // Guarda la imagen en el sistema de archivos
+	            try {
+	                Files.copy(imagenFile.getInputStream(), Paths.get(rutaCompleta), StandardCopyOption.REPLACE_EXISTING);
+	            } catch (IOException e) {
+	                // Manejar la excepción según sea necesario
+	                e.printStackTrace();
+	            }
+
+	            // Almacena la ruta de la imagen en la entidad SuplementoDTO
+	            suplementoDTO.setRutaImagen_suplemento("/img/suplementos/" + nombreImagen);
+	        }
+			// Agregamos el suplemento a la base de datos
+			boolean ok = adminImplementacion.actualizaSuplemento(suplementoDTO);
+			
+			if(ok)
+				return "redirect:/admin/administracion-suplementos?suplementoEditadoSuccess";
+			else
+				return "redirect:/admin/administracion-suplementos?suplementoEditadoError";
+		} catch (Exception e) {
+			return "redirect:/admin/administracion-suplementos?suplementoEditadoError";
+		}
+	}
+	
+	@PostMapping("/agregar-suplemento")
+	public String agregaSuplemento(@ModelAttribute("suplementoDTO") SuplementoDTO suplementoDTO, @RequestPart("imagenFile") MultipartFile imagenFile, HttpServletRequest request) {
+		// Control de sesión
+		if(!request.isUserInRole("ROLE_ADMIN")) {
+			return "redirect:/home";
+		}
+		
+		try {
+			if (imagenFile != null && !imagenFile.isEmpty()) {
+	            // Genera un nombre único para la imagen
+	            String nombreImagen = UUID.randomUUID().toString() + "." + StringUtils.getFilenameExtension(imagenFile.getOriginalFilename());
+
+	            // Combina la ruta de la carpeta con el nombre de la imagen
+	            String rutaCompleta = Paths.get("src", "main", "resources", "static", "img", "suplementos", nombreImagen).toString();
+
+	            // Guarda la imagen en el sistema de archivos
+	            try {
+	                Files.copy(imagenFile.getInputStream(), Paths.get(rutaCompleta), StandardCopyOption.REPLACE_EXISTING);
+	            } catch (IOException e) {
+	                // Manejar la excepción según sea necesario
+	                e.printStackTrace();
+	            }
+
+	            // Almacena la ruta de la imagen en la entidad SuplementoDTO
+	            suplementoDTO.setRutaImagen_suplemento("/img/suplementos/" + nombreImagen);
+	        }
+			// Agregamos el suplemento a la base de datos
+			boolean ok = adminImplementacion.agregaSuplemento(suplementoDTO);
+			
+			if(ok)
+				return "redirect:/admin/administracion-suplementos?suplementoAgregadoSuccess";
+			else
+				return "redirect:/admin/administracion-suplementos?suplementoAgregadoError";
+		} catch (Exception e) {
+			return "redirect:/admin/administracion-suplementos?suplementoAgregadoError";
+		}
+	}
+	
 }

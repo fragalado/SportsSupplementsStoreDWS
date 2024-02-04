@@ -134,4 +134,54 @@ public class Util {
 			return null;
 		}
 	}
+	
+	/**
+	 * Método que convierte un objeto de tipo Suplemento (DAO) a SuplementoDTO
+	 * @return Devuelve el suplemento convertido a DTO
+	 */
+	public static SuplementoDTO suplementoADto(Suplemento suplementoDAO) {
+		try {
+			// Convertimos el suplementoDAO a suplementoDto
+			SuplementoDTO suplementoDTO = new SuplementoDTO();
+			suplementoDTO.setId_suplemento(suplementoDAO.getId_suplemento());
+			suplementoDTO.setNombre_suplemento(suplementoDAO.getNombre_suplemento());
+			suplementoDTO.setDesc_suplemento(suplementoDAO.getDesc_suplemento());
+			suplementoDTO.setMarca_suplemento(suplementoDAO.getMarca_suplemento());
+			suplementoDTO.setTipo_suplemento(suplementoDAO.getTipo_suplemento());
+			suplementoDTO.setPrecio_suplemento(suplementoDAO.getPrecio_suplemento());
+			suplementoDTO.setRutaImagen_suplemento(suplementoDAO.getRutaImagen_suplemento());
+			
+			// Devolvemos el suplementoDTO
+			return suplementoDTO;
+		} catch (Exception e) {
+			// Error al convertir
+			System.out.println("[Error-Util-suplementoADto] Error al convertir el Suplemento a DTO");
+			return null;
+		}
+	}
+	
+	/**
+	 * Método que convierte un objeto de tipo SuplementoDTO a DAO
+	 * @return Devuelve el suplemento convertido a DAO
+	 */
+	public static Suplemento suplementoADao(SuplementoDTO suplementoDTO) {
+		try {
+			// Convertimos el suplementoDTO a suplementoDAO
+			Suplemento suplementoDAO = new Suplemento();
+			suplementoDAO.setId_suplemento(suplementoDTO.getId_suplemento());
+			suplementoDAO.setNombre_suplemento(suplementoDTO.getNombre_suplemento());
+			suplementoDAO.setDesc_suplemento(suplementoDTO.getDesc_suplemento());
+			suplementoDAO.setMarca_suplemento(suplementoDTO.getMarca_suplemento());
+			suplementoDAO.setTipo_suplemento(suplementoDTO.getTipo_suplemento());
+			suplementoDAO.setPrecio_suplemento(suplementoDTO.getPrecio_suplemento());
+			suplementoDAO.setRutaImagen_suplemento(suplementoDTO.getRutaImagen_suplemento());
+			
+			// Devolvemos el suplementoDAO
+			return suplementoDAO;
+		} catch (Exception e) {
+			// Error al convertir
+			System.out.println("[Error-Util-suplementoADao] Error al convertir el Suplemento a DAO");
+			return null;
+		}
+	}
 }

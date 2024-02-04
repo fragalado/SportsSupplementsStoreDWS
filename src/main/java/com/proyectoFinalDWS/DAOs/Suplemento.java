@@ -33,7 +33,7 @@ public class Suplemento {
 	private String desc_suplemento;
 	
 	@Column(name = "precio_suplemento", nullable = false)
-	private long precio_suplemento;
+	private float precio_suplemento;
 	
 	@Column(name = "tipo_suplemento", nullable = false)
 	private String tipo_suplemento;
@@ -49,7 +49,7 @@ public class Suplemento {
 	
 	// Constructores
 	
-	public Suplemento(String nombre_suplemento, String desc_suplemento, long precio_suplemento, String tipo_suplemento,
+	public Suplemento(String nombre_suplemento, String desc_suplemento, float precio_suplemento, String tipo_suplemento,
 			String marca_suplemento, String rutaImagen_suplemento) {
 		super();
 		this.nombre_suplemento = nombre_suplemento;
@@ -90,11 +90,11 @@ public class Suplemento {
 		this.desc_suplemento = desc_suplemento;
 	}
 
-	public long getPrecio_suplemento() {
+	public float getPrecio_suplemento() {
 		return precio_suplemento;
 	}
 
-	public void setPrecio_suplemento(long precio_suplemento) {
+	public void setPrecio_suplemento(float precio_suplemento) {
 		this.precio_suplemento = precio_suplemento;
 	}
 

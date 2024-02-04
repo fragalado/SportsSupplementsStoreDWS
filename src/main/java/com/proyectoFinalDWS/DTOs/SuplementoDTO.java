@@ -11,7 +11,7 @@ public class SuplementoDTO {
 	private long id_suplemento;
 	private String nombre_suplemento;
 	private String desc_suplemento;
-	private long precio_suplemento;
+	private float precio_suplemento;
 	private String tipo_suplemento;
 	private String marca_suplemento;
 	private String rutaImagen_suplemento;
@@ -40,10 +40,10 @@ public class SuplementoDTO {
 	public void setDesc_suplemento(String desc_suplemento) {
 		this.desc_suplemento = desc_suplemento;
 	}
-	public long getPrecio_suplemento() {
+	public float getPrecio_suplemento() {
 		return precio_suplemento;
 	}
-	public void setPrecio_suplemento(long precio_suplemento) {
+	public void setPrecio_suplemento(float precio_suplemento) {
 		this.precio_suplemento = precio_suplemento;
 	}
 	public String getTipo_suplemento() {

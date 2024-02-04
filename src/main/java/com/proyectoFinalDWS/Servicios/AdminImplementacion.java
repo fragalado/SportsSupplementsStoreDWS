@@ -150,4 +150,67 @@ public class AdminImplementacion implements AdminInterfaz {
 		}
 	}
 
+	@Override
+	public SuplementoDTO obtieneSuplementoPorId(long id_suplemento) {
+		try {
+			// Obtenemos el suplemento
+			Optional<Suplemento> suplementoEncontrado = suplementoRepositorio.findById(id_suplemento);
+			
+			// Comprobamos si no se ha encontrado el suplemento
+			if(!suplementoEncontrado.isPresent())
+				return null;
+			
+			// Si se ha encontrado vamos a convertir el suplemento de DAO a DTO
+			SuplementoDTO suplementoDTO = Util.suplementoADto(suplementoEncontrado.get());
+			
+			// Devolvemos el suplemento convertido a DTO
+			return suplementoDTO;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public boolean agregaSuplemento(SuplementoDTO suplementoDTO) {
+		try {
+			// Convertimos el suplemento de DTO a DAO
+			Suplemento suplementoDAO = Util.suplementoADao(suplementoDTO);
+			
+			// Agregamos el suplemento a la base de datos
+			Suplemento suplementoDevuelto = suplementoRepositorio.save(suplementoDAO);
+			
+			// Comprobamos si se ha añadido
+			if(suplementoDevuelto != null)
+				return true; // Se ha añadido correctamente
+			
+			return false; // Si se ha producido algún error
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean actualizaSuplemento(SuplementoDTO suplementoDTO) {
+		try {
+			// Con el id del suplemento pasado obtenemos el suplemento de la base de datos
+			Suplemento suplementoEncontrado = suplementoRepositorio.findById(suplementoDTO.getId_suplemento()).get();
+			
+			// Actualizamos algunos datos del suplementoEncontrado con el suplementoDTO
+			suplementoEncontrado.setNombre_suplemento(suplementoDTO.getNombre_suplemento());
+			suplementoEncontrado.setDesc_suplemento(suplementoDTO.getDesc_suplemento());
+			suplementoEncontrado.setMarca_suplemento(suplementoDTO.getMarca_suplemento());
+			suplementoEncontrado.setTipo_suplemento(suplementoDTO.getTipo_suplemento());
+			suplementoEncontrado.setPrecio_suplemento(suplementoDTO.getPrecio_suplemento());
+			if(suplementoDTO.getRutaImagen_suplemento() != null)
+				suplementoEncontrado.setRutaImagen_suplemento(suplementoDTO.getTipo_suplemento());
+			
+			// Actualizamos el suplemento
+			suplementoRepositorio.save(suplementoEncontrado);
+			
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 }

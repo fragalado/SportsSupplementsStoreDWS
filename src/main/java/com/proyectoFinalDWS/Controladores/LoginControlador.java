@@ -1,6 +1,6 @@
 package com.proyectoFinalDWS.Controladores;
 
-import java.util.Calendar;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.proyectoFinalDWS.DAOs.Token;
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
-import com.proyectoFinalDWS.Repositorios.TokenRepository;
-import com.proyectoFinalDWS.Servicios.AccesoImplementacion;
+import com.proyectoFinalDWS.Servicios.UsuarioImplementacion;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -27,10 +25,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public class LoginControlador {
 
 	@Autowired
-	private AccesoImplementacion accesoImpl;
-	
-	@Autowired
-	private TokenRepository tokenRepositorio;
+	private UsuarioImplementacion usuarioImplementacion;
 
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/acceso/login".
@@ -139,7 +134,7 @@ public class LoginControlador {
 	@PostMapping("/register")
 	public String registrarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario) {
 		try {
-			Boolean ok = accesoImpl.registrarUsuario(usuario);
+			Boolean ok = usuarioImplementacion.registrarUsuario(usuario);
 
 			if (ok) {
 				// Se ha registrado el usuario correctamente
@@ -160,7 +155,7 @@ public class LoginControlador {
 	@PostMapping("/modificar-password")
 	public String restablecerPassword(@ModelAttribute("usuarioDTO") UsuarioDTO usuario) {
 		try {
-			Boolean ok = accesoImpl.restablePassword(usuario);
+			Boolean ok = usuarioImplementacion.restablePassword(usuario);
 
 			if (ok) {
 				// Se ha enviado el correo al usuario
@@ -197,7 +192,7 @@ public class LoginControlador {
 		}
 		
 		// Si el token no esta vacio vamos a activar la cuenta
-		boolean ok = accesoImpl.activaCuenta(token);
+		boolean ok = usuarioImplementacion.activaCuenta(token);
 		
 		if(ok) {
 			// Redirigimos a estado-cuenta con un parametro success

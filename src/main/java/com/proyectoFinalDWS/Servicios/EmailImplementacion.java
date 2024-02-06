@@ -32,7 +32,7 @@ public class EmailImplementacion implements EmailInterfaz {
 	private JavaMailSender mailSender; // Interfaz de Spring para enviar correos
 	
 	@Autowired
-	private TokenRepository tokenRepositorio;
+	private TokenImplementacion tokenImplementacion;
 
 	@Override
 	public boolean enviarEmail(String direccion, boolean esActivarCuenta, Usuario usuario) {
@@ -48,31 +48,38 @@ public class EmailImplementacion implements EmailInterfaz {
 			
 			// Creamos el token y lo guardamos en la base de datos
 			Token tokenDao = new Token(token, fecha, usuario);
-			tokenRepositorio.save(tokenDao);
+			boolean ok = tokenImplementacion.guardaToken(tokenDao);
 			
-			// Enviamos el correo
-			String asuntoEmail = "";
-			if(esActivarCuenta) {
-				asuntoEmail = "Activar cuenta";
-			} else {
-				asuntoEmail = "Modificar contraseña";
-			}
-			
-			// Creamos un objeto MimeMessage en vez de SimpleMailMessage para poder poner estilos
-			MimeMessage message = mailSender.createMimeMessage();
-			// Creamos un objeto MimeMessageHelper para facilitar la creacion del mensaje.
-			// Pasamos el objeto MimeMessage, true para habilitar la opcion de contenido mixto y la codificacion utf-8
-			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-			helper.setFrom("suplementoStore@frangallegodorado.es");
-			helper.setTo(usuario.getEmail_usuario());
-			helper.setSubject(asuntoEmail);
-			helper.setText(mensajeCorreo(tokenDao.getCod_token(), direccion, esActivarCuenta), true);
-			
-			// Enviamos el correo utilizando el JavaMailSender
-			mailSender.send(message);
+			// Comprobamos si se ha guardado el token
+			// Si no se ha guardado no enviaremos el correo
+			if(ok) {
+				// Enviamos el correo
+				String asuntoEmail = "";
+				if(esActivarCuenta) {
+					asuntoEmail = "Activar cuenta";
+				} else {
+					asuntoEmail = "Modificar contraseña";
+				}
+				
+				// Creamos un objeto MimeMessage en vez de SimpleMailMessage para poder poner estilos
+				MimeMessage message = mailSender.createMimeMessage();
+				// Creamos un objeto MimeMessageHelper para facilitar la creacion del mensaje.
+				// Pasamos el objeto MimeMessage, true para habilitar la opcion de contenido mixto y la codificacion utf-8
+				MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+				helper.setFrom("suplementoStore@frangallegodorado.es");
+				helper.setTo(usuario.getEmail_usuario());
+				helper.setSubject(asuntoEmail);
+				helper.setText(mensajeCorreo(tokenDao.getCod_token(), direccion, esActivarCuenta), true);
+				
+				// Enviamos el correo utilizando el JavaMailSender
+				mailSender.send(message);
 
-			System.out.println("Email enviado correctamente");
-			return true;
+				System.out.println("Email enviado correctamente");
+				return true;
+			} else {
+				return false;
+			}
+
 		} catch (IllegalArgumentException e) {
 			System.out.println("[Error-EmailImplementacion-enviarEmail] Error el objeto pasado es nulo");
 			return false;

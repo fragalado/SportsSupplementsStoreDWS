@@ -121,7 +121,8 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			usuarioEncontrado.setNombre_usuario(usuarioDTO.getNombre_usuario());
 			usuarioEncontrado.setEmail_usuario(usuarioDTO.getEmail_usuario());
 			usuarioEncontrado.setTlf_usuario(usuarioDTO.getTlf_usuario());
-			usuarioEncontrado.setRutaImagen_usuario(usuarioDTO.getRutaImagen_usuario());
+			if(usuarioDTO.getImagen_usuario() != null)
+				usuarioEncontrado.setImagen_usuario(Util.convertirAByteArray(usuarioDTO.getImagen_usuario()));
 			
 			// Actualizamos el usuario
 			usuarioRepositorio.save(usuarioEncontrado);

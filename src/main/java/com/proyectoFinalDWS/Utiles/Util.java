@@ -1,6 +1,7 @@
 package com.proyectoFinalDWS.Utiles;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import com.proyectoFinalDWS.DAOs.Acceso;
@@ -30,7 +31,7 @@ public class Util {
 			usuarioDao.setTlf_usuario(usuarioDto.getTlf_usuario());
 			usuarioDao.setEstaActivado_usuario(usuarioDto.isEstaActivado_usuario());
 			usuarioDao.setPsswd_usuario(usuarioDto.getPsswd_usuario());
-			usuarioDao.setRutaImagen_usuario(usuarioDto.getRutaImagen_usuario());
+			usuarioDao.setImagen_usuario(convertirAByteArray(usuarioDto.getImagen_usuario()));
 			if(usuarioDto.getId_acceso() == 1)
 				usuarioDao.setAcceso(new Acceso(1, "Usu", "Usuarios de la tienda"));
 			else
@@ -59,7 +60,7 @@ public class Util {
 			usuarioDto.setTlf_usuario(usuarioDao.getTlf_usuario());
 			usuarioDto.setEstaActivado_usuario(usuarioDao.isEstaActivado_usuario());
 			usuarioDto.setPsswd_usuario(usuarioDao.getPsswd_usuario());
-			usuarioDto.setRutaImagen_usuario(usuarioDao.getRutaImagen_usuario());
+			usuarioDto.setImagen_usuario(convertirABase64(usuarioDao.getImagen_usuario()));
 			usuarioDto.setId_acceso(usuarioDao.getAcceso().getId_acceso());
 			
 			// Devolvemos el usuarioDto
@@ -90,7 +91,7 @@ public class Util {
 				usuario.setTlf_usuario(aux.getTlf_usuario());
 				usuario.setId_acceso(aux.getAcceso().getId_acceso());
 				usuario.setPsswd_usuario(aux.getPsswd_usuario());
-				usuario.setRutaImagen_usuario(aux.getRutaImagen_usuario());
+				usuario.setImagen_usuario(convertirABase64(aux.getImagen_usuario()));
 				listaUsuariosDto.add(usuario);
 			}
 			
@@ -183,5 +184,19 @@ public class Util {
 			System.out.println("[Error-Util-suplementoADao] Error al convertir el Suplemento a DAO");
 			return null;
 		}
+	}
+	
+	public static String convertirABase64(byte[] datos) {
+		if(datos != null && datos.length > 0)
+			return Base64.getEncoder().encodeToString(datos);
+		
+		return null;
+	}
+	
+	public static byte[] convertirAByteArray(String base64) {
+		if(base64 != null && !base64.isEmpty())
+			return Base64.getDecoder().decode(base64);
+		
+		return null;
 	}
 }

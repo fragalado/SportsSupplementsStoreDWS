@@ -26,6 +26,7 @@ import com.proyectoFinalDWS.DTOs.SuplementoDTO;
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 import com.proyectoFinalDWS.Servicios.SuplementoImplementacion;
 import com.proyectoFinalDWS.Servicios.UsuarioImplementacion;
+import com.proyectoFinalDWS.Utiles.Util;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -166,24 +167,12 @@ public class AdminControlador {
 		}
 		
 		try {
-			if (imagenFile != null && !imagenFile.isEmpty()) {
-	            // Genera un nombre único para la imagen
-	            String nombreImagen = UUID.randomUUID().toString() + "." + StringUtils.getFilenameExtension(imagenFile.getOriginalFilename());
-
-	            // Combina la ruta de la carpeta con el nombre de la imagen
-	            String rutaCompleta = Paths.get("src", "main", "resources", "static", "img", "usuarios", nombreImagen).toString();
-
-	            // Guarda la imagen en el sistema de archivos
-	            try {
-	                Files.copy(imagenFile.getInputStream(), Paths.get(rutaCompleta), StandardCopyOption.REPLACE_EXISTING);
-	            } catch (IOException e) {
-	                // Manejar la excepción según sea necesario
-	                e.printStackTrace();
-	            }
-
-	            // Almacena la ruta de la imagen en la entidad Usuario
-	            usuario.setRutaImagen_usuario("/img/usuarios/" + nombreImagen);
-	        }
+			// Pasamos la imagen a String
+			String foto = Util.convertirABase64(imagenFile.getBytes());
+			
+			// Le añadimos la imagen al usuarioDTO
+			usuario.setImagen_usuario(foto);
+			
 			// Actualizamos el usuario
 			boolean ok = usuarioImplementacion.actualizaUsuario(usuario);
 			

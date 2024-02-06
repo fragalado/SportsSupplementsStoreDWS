@@ -47,8 +47,8 @@ public class Usuario {
 	@Column(name = "estaActivado_usuario", nullable = false)
 	private boolean estaActivado_usuario;
 	
-	@Column(name = "rutaImagen_usuario", nullable = true)
-	private String rutaImagen_usuario;
+	@Column(name = "imagen_usuario", nullable = true)
+	private byte[] imagen_usuario;
 
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
     private List<Token> listaToken;
@@ -61,14 +61,14 @@ public class Usuario {
 
     // Constructores
     
-    public Usuario(String nombre_usuario, String tlf_usuario, String email_usuario, String psswd_usuario, boolean estaActivado_usuario, String rutaImagen_usuario)
+    public Usuario(String nombre_usuario, String tlf_usuario, String email_usuario, String psswd_usuario, boolean estaActivado_usuario, byte[] imagen_usuario)
     {
         this.nombre_usuario = nombre_usuario;
         this.tlf_usuario = tlf_usuario;
         this.email_usuario = email_usuario;
         this.psswd_usuario = psswd_usuario;
         this.estaActivado_usuario = estaActivado_usuario;
-        this.rutaImagen_usuario = rutaImagen_usuario;
+        this.imagen_usuario = imagen_usuario;
     }
 
     public Usuario() {}
@@ -131,12 +131,12 @@ public class Usuario {
 		this.estaActivado_usuario = estaActivado_usuario;
 	}
 
-	public String getRutaImagen_usuario() {
-		return rutaImagen_usuario;
+	public byte[] getImagen_usuario() {
+		return imagen_usuario;
 	}
 
-	public void setRutaImagen_usuario(String rutaImagen_usuario) {
-		this.rutaImagen_usuario = rutaImagen_usuario;
+	public void setImagen_usuario(byte[] imagen_usuario) {
+		this.imagen_usuario = imagen_usuario;
 	}
     
 }

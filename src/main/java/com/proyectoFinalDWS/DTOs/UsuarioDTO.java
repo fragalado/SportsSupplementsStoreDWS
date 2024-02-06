@@ -14,7 +14,7 @@ public class UsuarioDTO {
     private String psswd_usuario;
     private long id_acceso = 1;
     private boolean estaActivado_usuario = false;
-    private String rutaImagen_usuario;
+    private String imagen_usuario;
 
     // Constructores -> Constructor vacío
 
@@ -76,12 +76,12 @@ public class UsuarioDTO {
 		this.estaActivado_usuario = estaActivado_usuario;
 	}
 
-	public String getRutaImagen_usuario() {
-		return rutaImagen_usuario;
+	public String getImagen_usuario() {
+		return imagen_usuario;
 	}
 
-	public void setRutaImagen_usuario(String rutaImagen_usuario) {
-		this.rutaImagen_usuario = rutaImagen_usuario;
+	public void setImagen_usuario(String imagen_usuario) {
+		this.imagen_usuario = imagen_usuario;
 	}
     
 }

@@ -77,9 +77,9 @@
 				<div class="col">
 					<div class="contenedor">
 						<div class="contenedor-imagen">
-							<img th:if="${usuarioDTO.getRutaImagen_usuario() != null}" th:src="${usuarioDTO.getRutaImagen_usuario()}" class="card-img-top imagen" alt="Foto de perfil del usuario"
+							<img th:if="${usuarioDTO.getImagen_usuario() != null}" th:src="'data:image/png;base64, '+ ${usuarioDTO.getImagen_usuario()}" class="card-img-top imagen" alt="Foto de perfil del usuario"
 								id="profile-pic">
-							<img th:if="${usuarioDTO.getRutaImagen_usuario() == null}" th:src="@{/img/usuarios/profile.jpg}" class="card-img-top imagen" alt="Foto de perfil del usuario"
+							<img th:if="${usuarioDTO.getImagen_usuario() == null}" th:src="@{/img/usuarios/profile.jpg}" class="card-img-top imagen" alt="Foto de perfil del usuario"
 								id="profile-pic">
 						</div>
 						<div class="inputs-form">

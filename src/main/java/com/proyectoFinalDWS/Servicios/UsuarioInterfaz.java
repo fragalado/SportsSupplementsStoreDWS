@@ -68,5 +68,13 @@ public interface UsuarioInterfaz {
 	 * @param usuarioDto Objeto usuario que contiene el email
 	 * @return Devuelve true si se ha enviado el correo, false si no se ha encontrado el email en la base de datos o null si se ha producido un error.
 	 */
-	public Boolean restablePassword(UsuarioDTO usuarioDto);
+	public Boolean restablecePassword(UsuarioDTO usuarioDto);
+	
+	/**
+	 * Método que cambia la contraseña de un usuario
+	 * @param token Token
+	 * @param usuarioDTO Objeto usuario con las nuevas contraseñas
+	 * @return Devuelte true si se ha cambiado las contraseñas con éxito o false si ha ocurrido un error.
+	 */
+	public boolean modificaPassword(String token, UsuarioDTO usuarioDTO);
 }

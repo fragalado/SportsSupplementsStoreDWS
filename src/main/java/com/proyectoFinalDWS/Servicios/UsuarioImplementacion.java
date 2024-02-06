@@ -219,7 +219,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	}
 
 	@Override
-	public Boolean restablePassword(UsuarioDTO usuarioDto) {
+	public Boolean restablecePassword(UsuarioDTO usuarioDto) {
 		try {
 			// Obtenemos el usuario de la base de datos
 			Usuario usuarioEncontrado = usuarioRepositorio.findByEmailUsuario(usuarioDto.getEmail_usuario());
@@ -237,6 +237,40 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 				return null; // Se ha producido un error al enviar el correo
 		} catch (Exception e) {
 			return null; // Se ha producido un error al enviar el correo
+		}
+	}
+
+	@Override
+	public boolean modificaPassword(String token, UsuarioDTO usuarioDTO) {
+		try {
+			// Obtenemos el token
+			Token tokenDao = tokenImplementacion.obtieneToken(token);
+			
+			// Ahora comprobamos si el token no ha caducado
+			// Obtenemos la fecha actual
+			Calendar fechaActual = Calendar.getInstance();
+
+			// Comparamos la fechaActual con la fecha del token
+			if (fechaActual.compareTo(tokenDao.getFch_fin_token()) < 0
+					|| fechaActual.compareTo(tokenDao.getFch_fin_token()) == 0) {
+				// La fecha actual es menor que la fecha del token o son iguales, luego seguimos
+				// con el proceso
+				Usuario usuarioDao = tokenDao.getUsuario();
+
+				// Modificamos la contraseña
+				usuarioDao.setPsswd_usuario(passwordEncoder.encode(usuarioDTO.getPsswd_usuario()));
+
+				// Actualizamos en la base de datos
+				usuarioRepositorio.save(usuarioDao);
+				
+				return true;
+			} else {
+				// La fecha actual es mayor que la fecha del token, luego ha caducado
+				return false;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			return false;
 		}
 	}
 

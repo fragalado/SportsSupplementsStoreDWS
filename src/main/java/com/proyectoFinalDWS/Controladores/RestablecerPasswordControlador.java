@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 import com.proyectoFinalDWS.Servicios.UsuarioImplementacion;
@@ -57,22 +58,27 @@ public class RestablecerPasswordControlador {
 		if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USU")) {
 			return "redirect:/home";
 		}
-
-		// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
-		model.addAttribute("usuarioDTO", new UsuarioDTO());
+		
 		// Controlamos que el token no este vacio
 		if(token.isEmpty()) {
 			return "redirect:/login";
 		}
 		
-		// Si el token no esta vacio devolvemos la vista con el token
+		// Si el token no esta vacio:
+		// Agregamos al model el token
+		model.addAttribute("token", token);
+
+		// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
+		model.addAttribute("usuarioDTO", new UsuarioDTO());
+		
+		// Devolvemos la vista
 		return "cambiarPassword";
 	}
 	
 	@PostMapping()
 	public String restablecerPassword(@ModelAttribute("usuarioDTO") UsuarioDTO usuario) {
 		try {
-			Boolean ok = usuarioImplementacion.restablePassword(usuario);
+			Boolean ok = usuarioImplementacion.restablecePassword(usuario);
 
 			if (ok) {
 				// Se ha enviado el correo al usuario
@@ -91,10 +97,23 @@ public class RestablecerPasswordControlador {
 	}
 	
 	@PostMapping("/cambiar-password")
-	public String cambiaPassword(@ModelAttribute("tk") String token, @ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO) {
-		// TODO
-		System.out.println("Token: " + token);
-		System.out.println(usuarioDTO.getPsswd_usuario());
-		return "redirect:/restablecer/cambiar-password?success";
+	public String cambiaPassword(@RequestParam String token, @ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO) {
+		try {
+			// Comprobamos que las contraseñas introducidas sean iguales
+			if(!usuarioDTO.getPsswd_usuario().equals(usuarioDTO.getEmail_usuario()))
+				return "redirect:/restablecer/cambiar-password?password&tk="+token;
+			
+			// Si son iguales modificamos la contraseña del usuario
+			boolean ok = usuarioImplementacion.modificaPassword(token, usuarioDTO);
+			
+			// Controlamos la respuesta
+			if(ok)
+				return "redirect:/restablecer/cambiar-password?success&tk="+token;
+			else
+				return "redirect:/restablecer/cambiar-password?error&tk="+token;
+		} catch (Exception e) {
+			// TODO
+			return "redirect:/restablecer/cambiar-password?error&tk="+token;
+		}
 	}
 }

@@ -19,12 +19,12 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 		
 		System.out.println(exception);
 		if(exception instanceof BadCredentialsException) {
-			// Controlamos el error de cuenta no activada
-			response.sendRedirect("/acceso/login?activada");
+			// Controlamos el error de contraseña o email incorrectos
+			response.sendRedirect("/acceso/login?email");
 		}
 		if(exception instanceof InternalAuthenticationServiceException) {
-			// Controlamos el error de email o contraseña incorrecta
-			response.sendRedirect("/acceso/login?email");
+			// Controlamos el error de cuenta no activada
+			response.sendRedirect("/acceso/login?activada");
 		}
 	}
 

@@ -24,7 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.proyectoFinalDWS.DAOs.Suplemento;
 import com.proyectoFinalDWS.DTOs.SuplementoDTO;
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
-import com.proyectoFinalDWS.Servicios.AdminImplementacion;
+import com.proyectoFinalDWS.Servicios.SuplementoImplementacion;
+import com.proyectoFinalDWS.Servicios.UsuarioImplementacion;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -38,7 +39,10 @@ import jakarta.servlet.http.HttpServletRequest;
 public class AdminControlador {
 	
 	@Autowired
-	private AdminImplementacion adminImplementacion;
+	private SuplementoImplementacion suplementoImplementacion;
+	
+	@Autowired
+	private UsuarioImplementacion usuarioImplementacion;
 	
 	@GetMapping("/administracion-usuarios")
 	public String vistaAdministracionUsuarios(Model model, HttpServletRequest request) {
@@ -48,7 +52,7 @@ public class AdminControlador {
 		}
 		
 		// Obtenemos una lista con todos los usuarios y la ordenamos por el id_acceso
-		List<UsuarioDTO> listaUsuarios = adminImplementacion.obtieneTodosLosUsuarios().stream()
+		List<UsuarioDTO> listaUsuarios = usuarioImplementacion.obtieneTodosLosUsuarios().stream()
 																					  .sorted(Comparator.comparingLong(UsuarioDTO::getId_acceso).reversed())
 																					  .collect(Collectors.toList());
 		// Agregamos la lista al modelo
@@ -66,7 +70,7 @@ public class AdminControlador {
 		}
 		
 		// Obtenemos una lista con todos los suplementos y lo agregamos al modelo
-		model.addAttribute("listaSuplementosDTO", adminImplementacion.obtieneTodosLosSuplementos());
+		model.addAttribute("listaSuplementosDTO", suplementoImplementacion.obtieneTodosLosSuplementos());
 		
 		// Devolvemos la vista
 		return "administracionSuplementos";
@@ -80,7 +84,7 @@ public class AdminControlador {
 		}
 		
 		// Obtenemos el usuario de la base de datos y lo agregamos al modelo
-		UsuarioDTO usuarioDTO = adminImplementacion.obtieneUsuarioPorId(id_usuario);
+		UsuarioDTO usuarioDTO = usuarioImplementacion.obtieneUsuarioPorId(id_usuario);
 		
 		// Lo agregamos al modelo
 		model.addAttribute("usuarioDTO", usuarioDTO);
@@ -97,7 +101,7 @@ public class AdminControlador {
 		}
 		
 		// Obtenemos el suplemento de la base de datos y lo agregamos al modelo
-		SuplementoDTO suplementoDTO = adminImplementacion.obtieneSuplementoPorId(id_suplemento);
+		SuplementoDTO suplementoDTO = suplementoImplementacion.obtieneSuplementoPorId(id_suplemento);
 		
 		// Lo agregamos al modelo
 		model.addAttribute("suplementoDTO", suplementoDTO);
@@ -128,7 +132,7 @@ public class AdminControlador {
 		}
 		
 		// Eliminamos el usuario por el id_usuario
-		boolean ok = adminImplementacion.borraUsuarioPorId(id_usuario);
+		boolean ok = usuarioImplementacion.borraUsuarioPorId(id_usuario);
 		
 		// Devolvemos la vista con un parametro segun se haya elimando o no
 		if(ok)
@@ -145,7 +149,7 @@ public class AdminControlador {
 		}
 		
 		// Eliminamos el suplemento por el id_suplemento
-		boolean ok = adminImplementacion.borraSuplementoPorId(id_suplemento);
+		boolean ok = suplementoImplementacion.borraSuplementoPorId(id_suplemento);
 		
 		// Devolvemos la vista con un parametro segun se haya elimando o no
 		if(ok)
@@ -181,7 +185,7 @@ public class AdminControlador {
 	            usuario.setRutaImagen_usuario("/img/usuarios/" + nombreImagen);
 	        }
 			// Actualizamos el usuario
-			boolean ok = adminImplementacion.actualizaUsuario(usuario);
+			boolean ok = usuarioImplementacion.actualizaUsuario(usuario);
 			
 			if(ok)
 				return "redirect:/admin/administracion-usuarios?usuarioEditadoSuccess";
@@ -219,7 +223,7 @@ public class AdminControlador {
 	            suplementoDTO.setRutaImagen_suplemento("/img/suplementos/" + nombreImagen);
 	        }
 			// Agregamos el suplemento a la base de datos
-			boolean ok = adminImplementacion.actualizaSuplemento(suplementoDTO);
+			boolean ok = suplementoImplementacion.actualizaSuplemento(suplementoDTO);
 			
 			if(ok)
 				return "redirect:/admin/administracion-suplementos?suplementoEditadoSuccess";
@@ -257,7 +261,7 @@ public class AdminControlador {
 	            suplementoDTO.setRutaImagen_suplemento("/img/suplementos/" + nombreImagen);
 	        }
 			// Agregamos el suplemento a la base de datos
-			boolean ok = adminImplementacion.agregaSuplemento(suplementoDTO);
+			boolean ok = suplementoImplementacion.agregaSuplemento(suplementoDTO);
 			
 			if(ok)
 				return "redirect:/admin/administracion-suplementos?suplementoAgregadoSuccess";

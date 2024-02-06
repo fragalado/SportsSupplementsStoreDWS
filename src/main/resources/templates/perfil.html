@@ -76,7 +76,7 @@
 						<img th:if="${usuarioDTO.getRutaImagen_usuario() == null}" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Profile-720.png" class="img-fluid imagenPerfil" alt="dwa">
 						<img th:if="${usuarioDTO.getRutaImagen_usuario() != null}" th:src="${usuarioDTO.getRutaImagen_usuario()}" class="img-fluid imagenPerfil" alt="dwa">
 						<h2 class="nombrePerfil" th:text="${usuarioDTO.getNombre_usuario()}">Francisco José</h2>
-						<a class="btn btn-primary botonVolverPerfil" th:href="@{/acceso/logout}">Cerrar sesión</a>
+						<a class="btn btn-primary botonVolverPerfil" th:href="@{/logout}">Cerrar sesión</a>
 					</div>
 				</div>
 			</div>

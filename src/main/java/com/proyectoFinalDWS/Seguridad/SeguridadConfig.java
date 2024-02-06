@@ -49,23 +49,23 @@ public class SeguridadConfig {
 			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(authRequest -> {
 				// Permite acceso a estas url
-				authRequest.requestMatchers("/", "/acceso/**", "/css/**", "/js/**", "/img/**").permitAll();
+				authRequest.requestMatchers("/", "/login", "/register", "/restablecer/**", "/activa-cuenta/**", "/css/**", "/js/**", "/img/**").permitAll();
 				// Autenticación para cualquier otra solicitud
 				authRequest.anyRequest().authenticated();
 				}
 			)
 			.formLogin(login -> 
 					login
-						.loginPage("/acceso/login") // Establece la página de inicio de sesión personalizada
+						.loginPage("/login") // Establece la página de inicio de sesión personalizada
 						.defaultSuccessUrl("/home", true) // Establece la url de redirección después de un inicio exitoso
-						.loginProcessingUrl("/acceso/login") // Establece la url de procesamiento del formulario de login
+						.loginProcessingUrl("/login") // Establece la url de procesamiento del formulario de login
 						.failureHandler(customAuthenticationFailureHandler())
 			)
 			// Configura el proceso de cierre de sesión
 			.logout(logout ->
 					logout
-						.logoutUrl("/acceso/logout") // Establece la url de cierre de sesión personalizada
-						.logoutSuccessUrl("/acceso/login?logout") // Establece la url de redirección despues de un logout exitoso
+						.logoutUrl("/logout") // Establece la url de cierre de sesión personalizada
+						.logoutSuccessUrl("/login?logout") // Establece la url de redirección despues de un logout exitoso
 			);
     	
 //        // Configura un proveedor de autenticación personalizado.

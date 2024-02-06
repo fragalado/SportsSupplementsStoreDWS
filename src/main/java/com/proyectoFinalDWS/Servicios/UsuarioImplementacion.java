@@ -162,7 +162,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			// Si el Usuario devuelto es distinto de null es porque se ha registrado correctamente
 			if(usuarioDevuelto != null) {
 				// Enviamos el correo
-				emailImplementacion.enviarEmail("http://localhost:8080/acceso/activar-cuenta", true, usuarioDevuelto);
+				emailImplementacion.enviarEmail("http://localhost:8080/activa-cuenta/activar", true, usuarioDevuelto);
 			}
 			return usuarioDevuelto != null;
 		} catch (IllegalArgumentException  e) {
@@ -229,7 +229,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 				return false; // El email introducido no existe
 			
 			// Si llega aqui es porque se ha encontrado el usuario.
-			boolean ok = emailImplementacion.enviarEmail("http://localhost:8080/acceso/cambiar-password", false, usuarioEncontrado);
+			boolean ok = emailImplementacion.enviarEmail("http://localhost:8080/restablecer/cambiar-password", false, usuarioEncontrado);
 			
 			if(ok)
 				return true; // Se ha enviado el correo correctamente

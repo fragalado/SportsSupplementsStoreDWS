@@ -115,8 +115,8 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 			suplementoEncontrado.setMarca_suplemento(suplementoDTO.getMarca_suplemento());
 			suplementoEncontrado.setTipo_suplemento(suplementoDTO.getTipo_suplemento());
 			suplementoEncontrado.setPrecio_suplemento(suplementoDTO.getPrecio_suplemento());
-			if(suplementoDTO.getRutaImagen_suplemento() != null)
-				suplementoEncontrado.setRutaImagen_suplemento(suplementoDTO.getTipo_suplemento());
+			if(suplementoDTO.getImagen_suplemento() != null)
+				suplementoEncontrado.setImagen_suplemento(Util.convertirAByteArray(suplementoDTO.getImagen_suplemento()));
 			
 			// Actualizamos el suplemento
 			suplementoRepositorio.save(suplementoEncontrado);

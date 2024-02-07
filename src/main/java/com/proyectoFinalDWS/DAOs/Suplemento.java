@@ -41,8 +41,8 @@ public class Suplemento {
 	@Column(name = "marca_suplemento", nullable = false)
 	private String marca_suplemento;
 	
-	@Column(name = "rutaImagen_suplemento", nullable = false)
-	private String rutaImagen_suplemento;
+	@Column(name = "imagen_suplemento", nullable = false)
+	private byte[] imagen_suplemento;
 	
 	@OneToMany(mappedBy = "suplemento")
 	private List<Carrito> listaCarrito;
@@ -50,14 +50,14 @@ public class Suplemento {
 	// Constructores
 	
 	public Suplemento(String nombre_suplemento, String desc_suplemento, float precio_suplemento, String tipo_suplemento,
-			String marca_suplemento, String rutaImagen_suplemento) {
+			String marca_suplemento, byte[] imagen_suplemento) {
 		super();
 		this.nombre_suplemento = nombre_suplemento;
 		this.desc_suplemento = desc_suplemento;
 		this.precio_suplemento = precio_suplemento;
 		this.tipo_suplemento = tipo_suplemento;
 		this.marca_suplemento = marca_suplemento;
-		this.rutaImagen_suplemento = rutaImagen_suplemento;
+		this.imagen_suplemento = imagen_suplemento;
 	}
 	
 	public Suplemento() {
@@ -114,12 +114,12 @@ public class Suplemento {
 		this.marca_suplemento = marca_suplemento;
 	}
 	
-	public String getRutaImagen_suplemento() {
-		return rutaImagen_suplemento;
+	public byte[] getImagen_suplemento() {
+		return imagen_suplemento;
 	}
 	
-	public void setRutaImagen_suplemento(String rutaImagen_suplemento) {
-		this.rutaImagen_suplemento = rutaImagen_suplemento;
+	public void setImagen_suplemento(byte[] imagen_suplemento) {
+		this.imagen_suplemento = imagen_suplemento;
 	}
 	
 }

@@ -14,7 +14,7 @@ public class SuplementoDTO {
 	private float precio_suplemento;
 	private String tipo_suplemento;
 	private String marca_suplemento;
-	private String rutaImagen_suplemento;
+	private String imagen_suplemento;
 	
 	// Constructores
 	
@@ -58,11 +58,11 @@ public class SuplementoDTO {
 	public void setMarca_suplemento(String marca_suplemento) {
 		this.marca_suplemento = marca_suplemento;
 	}
-	public String getRutaImagen_suplemento() {
-		return rutaImagen_suplemento;
+	public String getImagen_suplemento() {
+		return imagen_suplemento;
 	}
-	public void setRutaImagen_suplemento(String rutaImagen_suplemento) {
-		this.rutaImagen_suplemento = rutaImagen_suplemento;
+	public void setImagen_suplemento(String imagen_suplemento) {
+		this.imagen_suplemento = imagen_suplemento;
 	}
 	
 	

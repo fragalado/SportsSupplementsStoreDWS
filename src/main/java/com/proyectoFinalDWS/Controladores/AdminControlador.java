@@ -1,18 +1,12 @@
 package com.proyectoFinalDWS.Controladores;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.proyectoFinalDWS.DAOs.Suplemento;
 import com.proyectoFinalDWS.DTOs.SuplementoDTO;
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 import com.proyectoFinalDWS.Servicios.SuplementoImplementacion;
@@ -193,24 +186,12 @@ public class AdminControlador {
 		}
 		
 		try {
-			if (imagenFile != null && !imagenFile.isEmpty()) {
-	            // Genera un nombre único para la imagen
-	            String nombreImagen = UUID.randomUUID().toString() + "." + StringUtils.getFilenameExtension(imagenFile.getOriginalFilename());
-
-	            // Combina la ruta de la carpeta con el nombre de la imagen
-	            String rutaCompleta = Paths.get("src", "main", "resources", "static", "img", "suplementos", nombreImagen).toString();
-
-	            // Guarda la imagen en el sistema de archivos
-	            try {
-	                Files.copy(imagenFile.getInputStream(), Paths.get(rutaCompleta), StandardCopyOption.REPLACE_EXISTING);
-	            } catch (IOException e) {
-	                // Manejar la excepción según sea necesario
-	                e.printStackTrace();
-	            }
-
-	            // Almacena la ruta de la imagen en la entidad SuplementoDTO
-	            suplementoDTO.setRutaImagen_suplemento("/img/suplementos/" + nombreImagen);
-	        }
+			// Pasamos la imagen a String
+			String foto = Util.convertirABase64(imagenFile.getBytes());
+			
+			// Le añadimos la imagen al usuarioDTO
+			suplementoDTO.setImagen_suplemento(foto);
+			
 			// Agregamos el suplemento a la base de datos
 			boolean ok = suplementoImplementacion.actualizaSuplemento(suplementoDTO);
 			
@@ -231,24 +212,12 @@ public class AdminControlador {
 		}
 		
 		try {
-			if (imagenFile != null && !imagenFile.isEmpty()) {
-	            // Genera un nombre único para la imagen
-	            String nombreImagen = UUID.randomUUID().toString() + "." + StringUtils.getFilenameExtension(imagenFile.getOriginalFilename());
-
-	            // Combina la ruta de la carpeta con el nombre de la imagen
-	            String rutaCompleta = Paths.get("src", "main", "resources", "static", "img", "suplementos", nombreImagen).toString();
-
-	            // Guarda la imagen en el sistema de archivos
-	            try {
-	                Files.copy(imagenFile.getInputStream(), Paths.get(rutaCompleta), StandardCopyOption.REPLACE_EXISTING);
-	            } catch (IOException e) {
-	                // Manejar la excepción según sea necesario
-	                e.printStackTrace();
-	            }
-
-	            // Almacena la ruta de la imagen en la entidad SuplementoDTO
-	            suplementoDTO.setRutaImagen_suplemento("/img/suplementos/" + nombreImagen);
-	        }
+			// Pasamos la imagen a String
+			String foto = Util.convertirABase64(imagenFile.getBytes());
+			
+			// Le añadimos la imagen al suplementoDTO
+			suplementoDTO.setImagen_suplemento(foto);
+			
 			// Agregamos el suplemento a la base de datos
 			boolean ok = suplementoImplementacion.agregaSuplemento(suplementoDTO);
 			

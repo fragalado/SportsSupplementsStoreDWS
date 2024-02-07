@@ -123,7 +123,7 @@ public class Util {
 				suplemento.setMarca_suplemento(aux.getMarca_suplemento());
 				suplemento.setTipo_suplemento(aux.getTipo_suplemento());
 				suplemento.setPrecio_suplemento(aux.getPrecio_suplemento());
-				suplemento.setRutaImagen_suplemento(aux.getRutaImagen_suplemento());
+				suplemento.setImagen_suplemento(convertirABase64(aux.getImagen_suplemento()));
 				listaSuplementosDto.add(suplemento);
 			}
 			
@@ -150,7 +150,7 @@ public class Util {
 			suplementoDTO.setMarca_suplemento(suplementoDAO.getMarca_suplemento());
 			suplementoDTO.setTipo_suplemento(suplementoDAO.getTipo_suplemento());
 			suplementoDTO.setPrecio_suplemento(suplementoDAO.getPrecio_suplemento());
-			suplementoDTO.setRutaImagen_suplemento(suplementoDAO.getRutaImagen_suplemento());
+			suplementoDTO.setImagen_suplemento(convertirABase64(suplementoDAO.getImagen_suplemento()));
 			
 			// Devolvemos el suplementoDTO
 			return suplementoDTO;
@@ -175,7 +175,7 @@ public class Util {
 			suplementoDAO.setMarca_suplemento(suplementoDTO.getMarca_suplemento());
 			suplementoDAO.setTipo_suplemento(suplementoDTO.getTipo_suplemento());
 			suplementoDAO.setPrecio_suplemento(suplementoDTO.getPrecio_suplemento());
-			suplementoDAO.setRutaImagen_suplemento(suplementoDTO.getRutaImagen_suplemento());
+			suplementoDAO.setImagen_suplemento(convertirAByteArray(suplementoDTO.getImagen_suplemento()));
 			
 			// Devolvemos el suplementoDAO
 			return suplementoDAO;

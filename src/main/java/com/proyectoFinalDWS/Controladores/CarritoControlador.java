@@ -26,25 +26,40 @@ public class CarritoControlador {
 	@Autowired
 	private CarritoImplementacion carritoImplementacion;
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/carrito"
+	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param authentication Objeto Authentication que proporciona Spring security que contiene los datos de la sesión
+	 * @return Devuelve el nombre de la vista
+	 */
 	@GetMapping()
 	public String vistaCarrito(Model model, Authentication authentication) {
 		
-		// Obtenemos el carrito del usuario
-		List<CarritoDTO> listaCarritoDTO = carritoImplementacion.obtieneCarritoUsuario(authentication.getName());
-		
-		// Añadimos al modelo una lista de carrito DTO
-		if(listaCarritoDTO == null)
-			model.addAttribute("listaCarritoDTO", new ArrayList<CarritoDTO>());
-		else {
-			model.addAttribute("listaCarritoDTO", listaCarritoDTO);
-			model.addAttribute("precioTotal", carritoImplementacion.obtienePrecioTotalCarrito(authentication.getName()));
+		try {
+			// Obtenemos el carrito del usuario
+			List<CarritoDTO> listaCarritoDTO = carritoImplementacion.obtieneCarritoUsuario(authentication.getName());
+
+			// Añadimos al modelo una lista de carrito DTO
+			if (listaCarritoDTO == null)
+				model.addAttribute("listaCarritoDTO", new ArrayList<CarritoDTO>());
+			else {
+				model.addAttribute("listaCarritoDTO", listaCarritoDTO);
+				model.addAttribute("precioTotal",
+						carritoImplementacion.obtienePrecioTotalCarrito(authentication.getName()));
+			}
+
+			// Devolvemos la vista
+			return "carrito";
+		} catch (Exception e) {
+			return "redirect:/home";
 		}
-			
-		
-		// Devolvemos la vista
-		return "carrito";
 	}
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/carrito/borra-suplemento/{id_carrito}"
+	 * @param id_carrito Id del carrito a borrar
+	 * @return Devuelve el nombre de la vista
+	 */
 	@GetMapping("/borra-suplemento/{id_carrito}")
 	public String borraSuplementoCarrito(@PathVariable("id_carrito") long id_carrito) {
 		try {

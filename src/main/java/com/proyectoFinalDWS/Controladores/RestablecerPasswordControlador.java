@@ -28,53 +28,56 @@ public class RestablecerPasswordControlador {
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/restablecer".
-	 * 
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
 	@GetMapping()
-	public String vistaModificarContrasenya(Model model, HttpServletRequest request) {
-		// Control de sesión
-		if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USU")) {
-			return "redirect:/home";
-		}
+	public String vistaModificarContrasenya(Model model) {
 		
-		// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
-		model.addAttribute("usuarioDTO", new UsuarioDTO());
+		try {
+			// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
+			model.addAttribute("usuarioDTO", new UsuarioDTO());
 
-		// Devolvemos la vista register
-		return "modificarContrasenya";
+			// Devolvemos la vista register
+			return "modificarContrasenya";
+		} catch (Exception e) {
+			return "modificarContrasenya";
+		}
 	}
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/restablecer/cambia-password"
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
-	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
 	@GetMapping("/cambiar-password")
-	public String vistaCambiaPassword(@ModelAttribute("tk") String token, Model model, HttpServletRequest request) {
-		// Control de sesión
-		if (request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USU")) {
-			return "redirect:/home";
-		}
+	public String vistaCambiaPassword(@ModelAttribute("tk") String token, Model model) {
 		
-		// Controlamos que el token no este vacio
-		if(token.isEmpty()) {
-			return "redirect:/login";
-		}
-		
-		// Si el token no esta vacio:
-		// Agregamos al model el token
-		model.addAttribute("token", token);
+		try {
+			// Controlamos que el token no este vacio
+			if (token.isEmpty()) {
+				return "redirect:/login";
+			}
 
-		// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
-		model.addAttribute("usuarioDTO", new UsuarioDTO());
-		
-		// Devolvemos la vista
-		return "cambiarPassword";
+			// Si el token no esta vacio:
+			// Agregamos al model el token
+			model.addAttribute("token", token);
+
+			// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
+			model.addAttribute("usuarioDTO", new UsuarioDTO());
+
+			// Devolvemos la vista
+			return "cambiarPassword";
+		} catch (Exception e) {
+			return "cambiarPassword";
+		}
 	}
 	
+	/**
+	 * Método que maneja las solicitudes POST para la ruta "/restablecer"
+	 * @param usuario Objeto UsuarioDTO que contiene los datos del formulario
+	 * @return Devuelve el nombre de la vista
+	 */
 	@PostMapping()
 	public String restablecerPassword(@ModelAttribute("usuarioDTO") UsuarioDTO usuario) {
 		try {
@@ -96,6 +99,12 @@ public class RestablecerPasswordControlador {
 		}
 	}
 	
+	/**
+	 * Método que maneja las solicitudes POST para la ruta "/restablecer/cambiar-password"
+	 * @param token Token
+	 * @param usuario Objeto UsuarioDTO que contiene los datos del formulario
+	 * @return Devuelve el nombre de la vista
+	 */
 	@PostMapping("/cambiar-password")
 	public String cambiaPassword(@RequestParam String token, @ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO) {
 		try {

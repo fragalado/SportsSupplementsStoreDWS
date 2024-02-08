@@ -15,8 +15,6 @@ import com.proyectoFinalDWS.DTOs.SuplementoDTO;
 import com.proyectoFinalDWS.Servicios.CarritoImplementacion;
 import com.proyectoFinalDWS.Servicios.SuplementoImplementacion;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 /**
  * Clase controlador para la vista Nutrición
  * @author Fran Gallego
@@ -32,24 +30,42 @@ public class NutricionControlador {
 	@Autowired
 	private CarritoImplementacion carritoImplementacion;
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/nutricion/{tipo}"
+	 * @param tipo Tipo del suplemento que se va a mostrar (1:Proteína; 2:Creatina; 3:Todo)
+	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @return Devuelve el nombre de la vista
+	 */
 	@GetMapping("/{tipo}")
-	public String vistaNutricion(@PathVariable int tipo, Model model, HttpServletRequest request) {
+	public String vistaNutricion(@PathVariable int tipo, Model model) {
 		
-		// Obtenemos todos los suplementos
-		List<SuplementoDTO> listaSuplementosDTO = suplementoImplementacion.obtieneTodosLosSuplementos();
-		
-		if(tipo == 1)
-			listaSuplementosDTO = listaSuplementosDTO.stream().filter(x -> x.getTipo_suplemento().equals("Proteína")).collect(Collectors.toList());
-		else if(tipo == 2)
-			listaSuplementosDTO = listaSuplementosDTO.stream().filter(x -> x.getTipo_suplemento().equals("Creatina")).collect(Collectors.toList());
-		
-		// Añadimos la lista al modelo
-		model.addAttribute("listaSuplementosDTO", listaSuplementosDTO);
-		
-		// Devolvemos la vista
-		return "suplementos";
+		try {
+			// Obtenemos todos los suplementos
+			List<SuplementoDTO> listaSuplementosDTO = suplementoImplementacion.obtieneTodosLosSuplementos();
+
+			if (tipo == 1)
+				listaSuplementosDTO = listaSuplementosDTO.stream()
+						.filter(x -> x.getTipo_suplemento().equals("Proteína")).collect(Collectors.toList());
+			else if (tipo == 2)
+				listaSuplementosDTO = listaSuplementosDTO.stream()
+						.filter(x -> x.getTipo_suplemento().equals("Creatina")).collect(Collectors.toList());
+
+			// Añadimos la lista al modelo
+			model.addAttribute("listaSuplementosDTO", listaSuplementosDTO);
+
+			// Devolvemos la vista
+			return "suplementos";
+		} catch (Exception e) {
+			return "suplementos";
+		}
 	}
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/nutricion/agrega-carrito/{id_suplemento}"
+	 * @param id_suplemento Id del suplemento a agregar al carrito
+	 * @param autentificacion Objeto Authentication que proporciona Spring security que contiene los datos de la sesión
+	 * @return Devuelve el nombre de la vista
+	 */
 	@GetMapping("/agrega-carrito/{id_suplemento}")
 	public String agregaSuplementoCarrito(@PathVariable("id_suplemento") long id_suplemento, Authentication autentificacion) {
 		try {

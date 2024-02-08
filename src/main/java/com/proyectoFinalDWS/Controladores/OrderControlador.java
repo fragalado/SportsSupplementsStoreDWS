@@ -7,11 +7,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import com.proyectoFinalDWS.Paypal.PaypalImplementacion;
 
+/**
+ * Controlador para la operación de compra con paypal
+ * @author Fran Gallego
+ * Fecha: 08/02/2024
+ */
 @Controller
 @RequestMapping("/comprar")
 public class OrderControlador {
@@ -19,11 +23,11 @@ public class OrderControlador {
 	@Autowired
 	private PaypalImplementacion paypalImplementacion;
 	
-	@GetMapping()
-	public String vistaComprar() {
-		return "comprar";
-	}
-	
+	/**
+	 * 
+	 * @param total
+	 * @return
+	 */
 	@PostMapping()
 	public String payment(@RequestParam Double total) {
 		try {
@@ -36,11 +40,19 @@ public class OrderControlador {
         }
 	}
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/comprar/cancel"
+	 * @return Devuelve un redireccionamiento a /carrito?cancel
+	 */
 	@GetMapping("/cancel")
 	public String cancelPay() {
 		return "redirect:/carrito?cancel";
 	}
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/comprar/success"
+	 * @return Devuelve un redireccionamiento a /carrito?success
+	 */
 	@GetMapping("/success")
 	public String successPay() {
 		return "redirect:/carrito?success";

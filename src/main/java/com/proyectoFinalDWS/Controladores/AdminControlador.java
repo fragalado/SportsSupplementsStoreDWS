@@ -38,128 +38,214 @@ public class AdminControlador {
 	@Autowired
 	private UsuarioImplementacion usuarioImplementacion;
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/admin/estado/administracion-usuarios"
+	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return Devuelve el nombre de la vista
+	 */
 	@GetMapping("/administracion-usuarios")
 	public String vistaAdministracionUsuarios(Model model, HttpServletRequest request) {
-		// Control de sesión
-		if(!request.isUserInRole("ROLE_ADMIN")) {
+		try {
+			// Control de sesión
+			if(!request.isUserInRole("ROLE_ADMIN")) {
+				return "redirect:/home";
+			}
+			
+			// Obtenemos una lista con todos los usuarios y la ordenamos por el id_acceso
+			List<UsuarioDTO> listaUsuarios = usuarioImplementacion.obtieneTodosLosUsuarios().stream()
+																						  .sorted(Comparator.comparingLong(UsuarioDTO::getId_acceso).reversed())
+																						  .collect(Collectors.toList());
+			// Agregamos la lista al modelo
+			model.addAttribute("listaUsuariosDTO", listaUsuarios);
+			
+			// Devolvemos la vista
+			return "administracionUsuarios";
+		} catch (Exception e) {
 			return "redirect:/home";
 		}
-		
-		// Obtenemos una lista con todos los usuarios y la ordenamos por el id_acceso
-		List<UsuarioDTO> listaUsuarios = usuarioImplementacion.obtieneTodosLosUsuarios().stream()
-																					  .sorted(Comparator.comparingLong(UsuarioDTO::getId_acceso).reversed())
-																					  .collect(Collectors.toList());
-		// Agregamos la lista al modelo
-		model.addAttribute("listaUsuariosDTO", listaUsuarios);
-		
-		// Devolvemos la vista
-		return "administracionUsuarios";
 	}
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/admin/administracion-suplementos"
+	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return Devuelve el nombre de la vista
+	 */
 	@GetMapping("/administracion-suplementos")
 	public String vistaAdministracionSuplementos(Model model, HttpServletRequest request) {
-		// Control de sesión
-		if(!request.isUserInRole("ROLE_ADMIN")) {
+
+		try {
+			// Control de sesión
+			if (!request.isUserInRole("ROLE_ADMIN")) {
+				return "redirect:/home";
+			}
+
+			// Obtenemos una lista con todos los suplementos y lo agregamos al modelo
+			model.addAttribute("listaSuplementosDTO", suplementoImplementacion.obtieneTodosLosSuplementos());
+
+			// Devolvemos la vista
+			return "administracionSuplementos";
+		} catch (Exception e) {
 			return "redirect:/home";
 		}
-		
-		// Obtenemos una lista con todos los suplementos y lo agregamos al modelo
-		model.addAttribute("listaSuplementosDTO", suplementoImplementacion.obtieneTodosLosSuplementos());
-		
-		// Devolvemos la vista
-		return "administracionSuplementos";
 	}
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/admin/editar-usuario/{id_usuario}"
+	 * @param id_usuario Id del usuario a editar
+	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return Devuelve el nombre de la vista
+	 */
 	@GetMapping("/editar-usuario/{id_usuario}")
 	public String vistaEditarUsuario(@PathVariable long id_usuario, Model model, HttpServletRequest request) {
-		// Control de sesión
-		if(!request.isUserInRole("ROLE_ADMIN")) {
+
+		try {
+			// Control de sesión
+			if (!request.isUserInRole("ROLE_ADMIN")) {
+				return "redirect:/home";
+			}
+
+			// Obtenemos el usuario de la base de datos y lo agregamos al modelo
+			UsuarioDTO usuarioDTO = usuarioImplementacion.obtieneUsuarioPorId(id_usuario);
+
+			// Lo agregamos al modelo
+			model.addAttribute("usuarioDTO", usuarioDTO);
+
+			// Devolvemos la vista
+			return "editarUsuario";
+		} catch (Exception e) {
 			return "redirect:/home";
 		}
-		
-		// Obtenemos el usuario de la base de datos y lo agregamos al modelo
-		UsuarioDTO usuarioDTO = usuarioImplementacion.obtieneUsuarioPorId(id_usuario);
-		
-		// Lo agregamos al modelo
-		model.addAttribute("usuarioDTO", usuarioDTO);
-		
-		// Devolvemos la vista
-		return "editarUsuario";
 	}
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/admin/editar-suplemento/{id_suplemento}"
+	 * @param id_suplemento Id del suplemento a editar
+	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return Devuelve el nombre de la vista
+	 */
 	@GetMapping("/editar-suplemento/{id_suplemento}")
 	public String vistaEditarSuplemento(@PathVariable long id_suplemento, Model model, HttpServletRequest request) {
-		// Control de sesión
-		if(!request.isUserInRole("ROLE_ADMIN")) {
+
+		try {
+			// Control de sesión
+			if (!request.isUserInRole("ROLE_ADMIN")) {
+				return "redirect:/home";
+			}
+
+			// Obtenemos el suplemento de la base de datos y lo agregamos al modelo
+			SuplementoDTO suplementoDTO = suplementoImplementacion.obtieneSuplementoPorId(id_suplemento);
+
+			// Lo agregamos al modelo
+			model.addAttribute("suplementoDTO", suplementoDTO);
+
+			// Devolvemos la vista
+			return "editarSuplemento";
+		} catch (Exception e) {
 			return "redirect:/home";
 		}
-		
-		// Obtenemos el suplemento de la base de datos y lo agregamos al modelo
-		SuplementoDTO suplementoDTO = suplementoImplementacion.obtieneSuplementoPorId(id_suplemento);
-		
-		// Lo agregamos al modelo
-		model.addAttribute("suplementoDTO", suplementoDTO);
-		
-		// Devolvemos la vista
-		return "editarSuplemento";
 	}
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/admin/agrega-suplemento"
+	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return Devuelve el nombre de la vista
+	 */
 	@GetMapping("/agrega-suplemento")
 	public String vistaAgregarSuplemento(Model model, HttpServletRequest request) {
-		// Control de sesión
-		if(!request.isUserInRole("ROLE_ADMIN")) {
+
+		try {
+			// Control de sesión
+			if (!request.isUserInRole("ROLE_ADMIN")) {
+				return "redirect:/home";
+			}
+
+			// Agregamos al modelo un objeto suplemento
+			model.addAttribute("suplementoDTO", new SuplementoDTO());
+
+			// Devolvemos la vista
+			return "agregarSuplemento";
+		} catch (Exception e) {
 			return "redirect:/home";
 		}
-		
-		// Agregamos al modelo un objeto suplemento
-		model.addAttribute("suplementoDTO", new SuplementoDTO());
-		
-		// Devolvemos la vista
-		return "agregarSuplemento";
 	}
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/admin/borra-usuario/{id_usuario}"
+	 * @param id_usuario Id del usuario a borrar
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return Devuelve el nombre de la vista
+	 */
 	@GetMapping("/borra-usuario/{id_usuario}")
 	public String borraUsuario(@PathVariable long id_usuario, HttpServletRequest request) {
-		// Control de sesión
-		if(!request.isUserInRole("ROLE_ADMIN")) {
-			return "redirect:/home";
-		}
-		
-		// Eliminamos el usuario por el id_usuario
-		boolean ok = usuarioImplementacion.borraUsuarioPorId(id_usuario);
-		
-		// Devolvemos la vista con un parametro segun se haya elimando o no
-		if(ok)
-			return "redirect:/admin/administracion-usuarios?success";
-		else
+
+		try {
+			// Control de sesión
+			if (!request.isUserInRole("ROLE_ADMIN")) {
+				return "redirect:/home";
+			}
+
+			// Eliminamos el usuario por el id_usuario
+			boolean ok = usuarioImplementacion.borraUsuarioPorId(id_usuario);
+
+			// Devolvemos la vista con un parametro segun se haya elimando o no
+			if (ok)
+				return "redirect:/admin/administracion-usuarios?success";
+			else
+				return "redirect:/admin/administracion-usuarios?error";
+		} catch (Exception e) {
 			return "redirect:/admin/administracion-usuarios?error";
+		}
 	}
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/admin/borra-suplemento/{id_suplemento}"
+	 * @param id_suplemento Id del suplemento a borrar
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return Devuelve el nombre de la vista
+	 */
 	@GetMapping("/borra-suplemento/{id_suplemento}")
 	public String borraSuplemento(@PathVariable long id_suplemento, HttpServletRequest request) {
-		// Control de sesión
-		if(!request.isUserInRole("ROLE_ADMIN")) {
-			return "redirect:/home";
-		}
-		
-		// Eliminamos el suplemento por el id_suplemento
-		boolean ok = suplementoImplementacion.borraSuplementoPorId(id_suplemento);
-		
-		// Devolvemos la vista con un parametro segun se haya elimando o no
-		if(ok)
-			return "redirect:/admin/administracion-suplementos?success";
-		else
+
+		try {
+			// Control de sesión
+			if (!request.isUserInRole("ROLE_ADMIN")) {
+				return "redirect:/home";
+			}
+
+			// Eliminamos el suplemento por el id_suplemento
+			boolean ok = suplementoImplementacion.borraSuplementoPorId(id_suplemento);
+
+			// Devolvemos la vista con un parametro segun se haya elimando o no
+			if (ok)
+				return "redirect:/admin/administracion-suplementos?success";
+			else
+				return "redirect:/admin/administracion-suplementos?error";
+		} catch (Exception e) {
 			return "redirect:/admin/administracion-suplementos?error";
+		}
 	}
 	
+	/**
+	 * Método que maneja las solicitudes POST para la ruta "/admin/editar-usuario"
+	 * @param usuario Objeto usuario con los datos del formulario
+	 * @param imagenFile Objeto MultipartFile que contiene la imagen
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return Devuelve el nombre de la vista
+	 */
 	@PostMapping("/editar-usuario")
 	public String editaUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario, @RequestPart("imagenFile") MultipartFile imagenFile, HttpServletRequest request) {
-		// Control de sesión
-		if(!request.isUserInRole("ROLE_ADMIN")) {
-			return "redirect:/home";
-		}
 		
 		try {
+			// Control de sesión
+			if (!request.isUserInRole("ROLE_ADMIN")) {
+				return "redirect:/home";
+			}
+			
 			// Pasamos la imagen a String
 			String foto = Util.convertirABase64(imagenFile.getBytes());
 			
@@ -178,21 +264,29 @@ public class AdminControlador {
 		}
 	}
 	
+	/**
+	 * Método que maneja las solicitudes POST para la ruta "/admin/editar-suplemento"
+	 * @param suplementoDTO Objeto suplemento con los datos del formulario
+	 * @param imagenFile Objeto MultipartFile que contiene la imagen
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return Devuelve el nombre de la vista
+	 */
 	@PostMapping("/editar-suplemento")
 	public String editaSuplemento(@ModelAttribute("suplementoDTO") SuplementoDTO suplementoDTO, @RequestPart("imagenFile") MultipartFile imagenFile, HttpServletRequest request) {
-		// Control de sesión
-		if(!request.isUserInRole("ROLE_ADMIN")) {
-			return "redirect:/home";
-		}
 		
 		try {
+			// Control de sesión
+			if (!request.isUserInRole("ROLE_ADMIN")) {
+				return "redirect:/home";
+			}
+			
 			// Pasamos la imagen a String
 			String foto = Util.convertirABase64(imagenFile.getBytes());
 			
-			// Le añadimos la imagen al usuarioDTO
+			// Le añadimos la imagen al suplementoDTO
 			suplementoDTO.setImagen_suplemento(foto);
 			
-			// Agregamos el suplemento a la base de datos
+			// Actualizamos el suplemento
 			boolean ok = suplementoImplementacion.actualizaSuplemento(suplementoDTO);
 			
 			if(ok)
@@ -204,14 +298,22 @@ public class AdminControlador {
 		}
 	}
 	
+	/**
+	 * Método que maneja las solicitudes POST para la ruta "/admin/agregar-suplemento"
+	 * @param suplementoDTO Objeto suplemento con los datos del formulario
+	 * @param imagenFile Objeto MultipartFile que contiene la imagen
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return Devuelve el nombre de la vista
+	 */
 	@PostMapping("/agregar-suplemento")
 	public String agregaSuplemento(@ModelAttribute("suplementoDTO") SuplementoDTO suplementoDTO, @RequestPart("imagenFile") MultipartFile imagenFile, HttpServletRequest request) {
-		// Control de sesión
-		if(!request.isUserInRole("ROLE_ADMIN")) {
-			return "redirect:/home";
-		}
 		
 		try {
+			// Control de sesión
+			if (!request.isUserInRole("ROLE_ADMIN")) {
+				return "redirect:/home";
+			}
+			
 			// Pasamos la imagen a String
 			String foto = Util.convertirABase64(imagenFile.getBytes());
 			

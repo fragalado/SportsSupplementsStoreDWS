@@ -22,6 +22,12 @@ public class PerfilControlador {
 	@Autowired
 	private UsuarioImplementacion usuarioImplementacion;
 	
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/perfil"
+	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param authentication Objeto Authentication que proporciona Spring security que contiene los datos de la sesion
+	 * @return Devuelve el nombre de la vista
+	 */
 	@GetMapping()
 	public String vistaPerfil(Model model, Authentication authentication) {
 		try {

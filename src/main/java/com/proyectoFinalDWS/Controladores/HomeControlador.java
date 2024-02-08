@@ -23,19 +23,29 @@ public class HomeControlador {
 	@Autowired
 	private SuplementoImplementacion suplementoImplementacion;
 	
-	@GetMapping("")
+	/**
+	 * Método que maneja las solicitudes GET para la ruta "/home"
+	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @return Devuelve el nombre de la vista
+	 */
+	@GetMapping()
 	public String vistaHome(Model model) {
 		
-		// Obtenemos todos los suplementos
-		List<SuplementoDTO> listaSuplementosDTO = suplementoImplementacion.obtieneTodosLosSuplementos();
-		
-		// Ahora vamos a añadir al modelo los 6 primeros suplementos
-		if(listaSuplementosDTO.size() > 6)
-			model.addAttribute("listaSuplementosDTO", listaSuplementosDTO.stream().limit(6).collect(Collectors.toList()));
-		else
-			model.addAttribute("listaSuplementosDTO", listaSuplementosDTO.stream().limit(listaSuplementosDTO.size()).collect(Collectors.toList()));
+		try {
+			// Obtenemos todos los suplementos
+			List<SuplementoDTO> listaSuplementosDTO = suplementoImplementacion.obtieneTodosLosSuplementos();
 
-		// Devolvemos la vista register
-		return "home";
+			// Ahora vamos a añadir al modelo los 6 primeros suplementos
+			if (listaSuplementosDTO.size() > 6)
+				model.addAttribute("listaSuplementosDTO",
+						listaSuplementosDTO.stream().limit(6).collect(Collectors.toList()));
+			else
+				model.addAttribute("listaSuplementosDTO", listaSuplementosDTO);
+
+			// Devolvemos la vista home
+			return "home";
+		} catch (Exception e) {
+			return "home";
+		}
 	}
 }

@@ -20,7 +20,7 @@ import jakarta.persistence.TemporalType;
  * Fecha: 25/01/2024
  */
 @Entity
-@Table(name = "Tokens", schema = "gbp_operacional2")
+@Table(name = "Tokens", schema = "gtp_usuarios")
 public class Token {
 	
 	// Atributos

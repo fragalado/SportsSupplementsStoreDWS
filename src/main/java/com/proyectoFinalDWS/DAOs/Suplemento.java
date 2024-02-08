@@ -17,7 +17,7 @@ import jakarta.persistence.Table;
  * Fecha Modificacion: 03/02/2024, se ha añadido nueva propiedad rutaImagen_suplemento (String) y sus respectivos get y set
  */
 @Entity
-@Table(name = "Suplementos", schema = "gbp_operacional2")
+@Table(name = "Suplementos", schema = "gtp_hechos")
 public class Suplemento {
 	
 	// Atributos

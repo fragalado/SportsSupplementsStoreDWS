@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
  * Fecha: 25/01/2024
  */
 @Entity
-@Table(name = "Carritos", schema = "gbp_operacional2")
+@Table(name = "Carritos", schema = "gtp_hechos")
 public class Carrito {
 
 	// Atributos

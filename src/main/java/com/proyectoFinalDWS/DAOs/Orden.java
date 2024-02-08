@@ -21,7 +21,7 @@ import jakarta.persistence.TemporalType;
  * Fecha: 25/01/2024
  */
 @Entity
-@Table(name = "Ordenes", schema = "gbp_operacional2")
+@Table(name = "Ordenes", schema = "gtp_hechos")
 public class Orden {
 	
 	// Atributos

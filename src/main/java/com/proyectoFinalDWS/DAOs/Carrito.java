@@ -38,6 +38,9 @@ public class Carrito {
 	@Column(name = "cantidad", nullable = false)
 	private int cantidad;
 	
+	@Column(name = "estaComprado_carrito")
+	private boolean estaComprado_carrito;
+	
 	@OneToMany(mappedBy = "carrito")
 	private List<RelOrdenCarrito> listaRelacion;
 	
@@ -46,10 +49,12 @@ public class Carrito {
 	public Carrito(int cantidad) {
 		super();
 		this.cantidad = cantidad;
+		estaComprado_carrito = false;
 	}
 	
 	public Carrito() {
 		super();
+		estaComprado_carrito = false;
 	}
 	
 	// Getter y Setter
@@ -84,6 +89,14 @@ public class Carrito {
 
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
+	}
+	
+	public boolean getEstaComprado_carrito(){
+			return estaComprado_carrito;
+	}
+	
+	public void setEstaComprado_carrito(boolean estaComprado_carrito) {
+		this.estaComprado_carrito = estaComprado_carrito;
 	}
 	
 }

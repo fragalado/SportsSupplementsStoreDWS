@@ -21,6 +21,9 @@
 		href="https://cdn.jsdelivr.net/gh/eliyantosarage/font-awesome-pro@main/fontawesome-pro-6.5.1-web/css/all.min.css"
 		rel="stylesheet" asp-append-version="true">
 	<!-- Fin Font awesome -->
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" asp-append-version="true"></script>
+    <!-- Fin SweetAlert2 -->
 </head>
 
 <body>
@@ -50,7 +53,11 @@
 						<li class="nav-item perfilLink">
 							<a th:href="@{/perfil}" class="nav-link text-white">Perfil</a>
 						</li>
+						<li class="nav-item perfilLink">
+							<a th:href="@{/carrito}" class="nav-link text-white">Carrito</a>
+						</li>
 					</ul>
+					<a th:href="@{/carrito}" class="carrito"><i class="fa-regular fa-cart-shopping"></i></a>
 					<a th:href="@{/perfil}" class="iconoPerfil"><i class="fa-solid fa-user"></i></a>
 				</div>
 			</div>
@@ -60,7 +67,7 @@
 	<div class="container">
 		<main role="main" class="pb-3">
 			<!-- Suplementos -->
-			<div th:if="${listaSuplementosDTO.size() > 0}" class="row" style="margin-top: 80px">
+			<div class="row" style="margin-top: 80px">
 				<div class="col-12">
 					<div class="row">
 						<!-- Dropdown Filtrar suplemento -->
@@ -79,7 +86,13 @@
 							</ul>
 						</div>
 						<!-- Fin Dropdown Filtrar suplemento -->
-			
+						
+						<!-- No existe Suplemento -->
+						<div th:if="${listaSuplementosDTO.size() == 0}" class="col-12" style="margin-top: 80px">
+							<h3 class="text-center">No existe ningún suplemento todavía.</h3>
+						</div>
+						<!-- Fin No existe Suplemento -->
+						
 						<!-- Cards Suplementos -->
 						<div th:each="suplemento: ${listaSuplementosDTO}" class="col-lg-2 col-md-3 col-sm-4 col-6">
 							<div class="card">
@@ -87,8 +100,9 @@
 									th:alt="${suplemento.getNombre_suplemento()}" style="max-height: 200px">
 								<div class="card-body">
 									<h5 class="card-title" th:text="${suplemento.getNombre_suplemento()}"></h5>
-									<p class="card-text" th:text="${suplemento.getDesc_suplemento().substring(0, 50)} + ..."></p>
-									<a href="#" class="btn btn-primary">Añadir al carrito</a>
+									<p th:if="${suplemento.getDesc_suplemento().length > 50}" th:text="${suplemento.getDesc_suplemento().substring(0, 50)} + ..." class="card-text"></p>
+									<p th:if="${suplemento.getDesc_suplemento().length <= 50}" class="card-text" th:text="${suplemento.getDesc_suplemento()}"></p>
+									<a th:href="@{/nutricion/agrega-carrito/} + ${suplemento.getId_suplemento()}" class="btn btn-primary">Añadir al carrito</a>
 								</div>
 							</div>
 						</div>
@@ -98,15 +112,25 @@
 			</div>
 			<!-- Fin Suplementos -->
 			
-			<!-- No existe Suplemento -->
-			<div th:if="${listaSuplementosDTO.size() == 0}" class="row" style="margin-top: 80px">
-				<div class="col-12">
-					<h3>No existe ningún suplemento todavía.</h3>
-				</div>
-			</div>
-			<!-- Fin No existe Suplemento -->
+
 		</main>
 	</div>
+	
+	<script th:if="${param.success}">
+		Swal.fire({
+            title: "Éxito!",
+            text: "El suplemento se ha agregado al carrito con éxito!",
+            icon: "success"
+        });
+	</script>
+	
+	<script th:if="${param.error}">
+		Swal.fire({
+            title: "Error!",
+            text: "El suplemento no se ha podido agregar al carrito!",
+            icon: "error"
+        });
+	</script>
 </body>
 
 </html>

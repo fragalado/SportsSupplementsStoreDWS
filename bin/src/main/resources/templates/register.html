@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,29 +20,43 @@
 </head>
 <body>
 <div class="wrapper">
-        <form method="post" >
+        <form method="post" th:action="@{/register}" th:object="${usuarioDTO}">
             <h1>Registro sesión</h1>
             <div class="input-box">
-                <input type="email" placeholder="Email" name="email_usuario" required>
+                <input type="email" placeholder="Email" name="email_usuario" th:field="*{email_usuario}" required>
                 <i class="fa-solid fa-envelope"></i>
             </div>
             <div class="input-box">
-                <input type="text" placeholder="Nombre" name="nombre_usuario" required>
+                <input type="text" placeholder="Nombre" name="nombre_usuario" th:field="*{nombre_usuario}" required>
                 <i class="fa-solid fa-user"></i>
             </div>
             <div class="input-box">
-                <input type="text" placeholder="Teléfono" name="tlf_usuario" required>
+                <input type="text" placeholder="Teléfono" name="tlf_usuario" th:field="*{tlf_usuario}" required>
                 <i class="fa-solid fa-phone"></i>
             </div>
             <div class="input-box">
-                <input type="password" placeholder="Contraseña" name="psswd_usuario" required>
+                <input type="password" placeholder="Contraseña" name="psswd_usuario" th:field="*{psswd_usuario}" required>
                 <i class="fa-solid fa-lock"></i>
             </div>
-
+			
+			<!-- Control de alertas -->
+            <div th:if="${param.success}" class="alert alert-success" role="alert">
+                Se ha enviado un correo para que confirmes la cuenta!!
+            </div>
+            
+            <div th:if="${param.email}" class="alert alert-danger" role="alert">
+                El email introducido ya existe!!
+            </div>
+            
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                Se ha producido un error. Vuelve a intentarlo más tarde!!
+            </div>
+            <!-- Fin Control de alertas -->
+			
             <button type="submit" class="boton">Enviar</button>
 
             <div class="register-link">
-                <p>¿Ya estás registrado? <a >Inicia sesión</a></p>
+                <p>¿Ya estás registrado? <a th:href="@{/login}">Inicia sesión</a></p>
             </div>
         </form>
     </div>

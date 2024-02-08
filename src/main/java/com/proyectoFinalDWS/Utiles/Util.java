@@ -5,8 +5,10 @@ import java.util.Base64;
 import java.util.List;
 
 import com.proyectoFinalDWS.DAOs.Acceso;
+import com.proyectoFinalDWS.DAOs.Carrito;
 import com.proyectoFinalDWS.DAOs.Suplemento;
 import com.proyectoFinalDWS.DAOs.Usuario;
+import com.proyectoFinalDWS.DTOs.CarritoDTO;
 import com.proyectoFinalDWS.DTOs.SuplementoDTO;
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 
@@ -182,6 +184,31 @@ public class Util {
 		} catch (Exception e) {
 			// Error al convertir
 			System.out.println("[Error-Util-suplementoADao] Error al convertir el Suplemento a DAO");
+			return null;
+		}
+	}
+	
+	public static List<CarritoDTO> listaCarritoADto(List<Carrito> listaCarritoDao){
+		try {
+			// Lista donde guardaremos los carritos convertidos
+			List<CarritoDTO> listaCarritosDto = new ArrayList<CarritoDTO>();
+			
+			// Convertimos
+			for (Carrito aux : listaCarritoDao) {
+				CarritoDTO carritoDTO = new CarritoDTO();
+				carritoDTO.setId_carrito(aux.getId_carrito());
+				carritoDTO.setId_usuario(aux.getUsuario().getId_usuario());
+				carritoDTO.setSuplementoDTO(suplementoADto(aux.getSuplemento()));
+				carritoDTO.setCantidad(aux.getCantidad());
+				carritoDTO.setEstaComprado_carrito(aux.getEstaComprado_carrito());
+				listaCarritosDto.add(carritoDTO);
+			}
+			
+			// Devolvemos la nueva lista
+			return listaCarritosDto;
+		} catch (Exception e) {
+			// Error al convertir
+			System.out.println("[Error-Util-listaCarritoADto] Error al convertir la lista Carrito (DAO) a DTO");
 			return null;
 		}
 	}

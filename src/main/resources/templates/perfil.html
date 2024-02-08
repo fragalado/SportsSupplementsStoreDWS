@@ -50,7 +50,11 @@
 						<li class="nav-item perfilLink">
 							<a th:href="@{/perfil}" class="nav-link text-white">Perfil</a>
 						</li>
+						<li class="nav-item perfilLink">
+							<a th:href="@{/carrito}" class="nav-link text-white">Carrito</a>
+						</li>
 					</ul>
+					<a th:href="@{/carrito}" class="carrito"><i class="fa-regular fa-cart-shopping"></i></a>
 					<a th:href="@{/perfil}" class="iconoPerfil"><i class="fa-solid fa-user"></i></a>
 				</div>
 			</div>
@@ -62,8 +66,8 @@
 			<div class="row" style="margin-top: 25px;">
 				<div class="col">
 					<div class="divContenedorPerfil ">
-						<img th:if="${usuarioDTO.getImagen_usuario() == null}" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Profile-720.png" class="img-fluid imagenPerfil" alt="dwa">
-						<img th:if="${usuarioDTO.getImagen_usuario() != null}" th:src="'data:image/png;base64, '+ ${usuarioDTO.getImagen_usuario()}" class="img-fluid imagenPerfil" alt="dwa">
+						<img th:if="${usuarioDTO.getImagen_usuario() == null}" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Profile-720.png" class="img-fluid imagenPerfil" alt="Foto perfil usuario">
+						<img th:if="${usuarioDTO.getImagen_usuario() != null}" th:src="'data:image/png;base64, '+ ${usuarioDTO.getImagen_usuario()}" class="img-fluid imagenPerfil" alt="Foto perfil usuario">
 						<h2 class="nombrePerfil" th:text="${usuarioDTO.getNombre_usuario()}">Francisco José</h2>
 						<a class="btn btn-primary botonVolverPerfil" th:href="@{/logout}">Cerrar sesión</a>
 					</div>

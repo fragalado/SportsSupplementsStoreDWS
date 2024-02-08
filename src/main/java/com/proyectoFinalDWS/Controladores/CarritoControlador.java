@@ -35,8 +35,11 @@ public class CarritoControlador {
 		// Añadimos al modelo una lista de carrito DTO
 		if(listaCarritoDTO == null)
 			model.addAttribute("listaCarritoDTO", new ArrayList<CarritoDTO>());
-		else
-			model.addAttribute("listaCarritoDTO", listaCarritoDTO);		
+		else {
+			model.addAttribute("listaCarritoDTO", listaCarritoDTO);
+			model.addAttribute("precioTotal", carritoImplementacion.obtienePrecioTotalCarrito(authentication.getName()));
+		}
+			
 		
 		// Devolvemos la vista
 		return "carrito";

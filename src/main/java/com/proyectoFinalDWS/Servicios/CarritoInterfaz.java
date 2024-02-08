@@ -32,4 +32,11 @@ public interface CarritoInterfaz {
 	 * @return Boolean; Devuelve true si se ha agregado al carrito o false si no
 	 */
 	public boolean agregaSuplemento(long id_suplemento, String email_usuario);
+	
+	/**
+	 * Método que obtiene el precio total del carrito
+	 * @param emailUsuario Email del usuario
+	 * @return Devuelve un tipo float; Precio total del carrito
+	 */
+	public float obtienePrecioTotalCarrito(String emailUsuario);
 }

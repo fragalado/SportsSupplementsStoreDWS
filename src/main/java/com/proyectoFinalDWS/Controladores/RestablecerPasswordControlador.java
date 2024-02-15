@@ -28,13 +28,20 @@ public class RestablecerPasswordControlador {
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/restablecer".
+	 * 
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
 	@GetMapping()
-	public String vistaModificarContrasenya(Model model) {
+	public String vistaModificarContrasenya(Model model, HttpServletRequest request) {
 		
 		try {
+			// Control de sesion
+			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				return "redirect:/home";
+			}
+						
 			// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
 			model.addAttribute("usuarioDTO", new UsuarioDTO());
 
@@ -47,13 +54,20 @@ public class RestablecerPasswordControlador {
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/restablecer/cambia-password"
+	 * 
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
 	@GetMapping("/cambiar-password")
-	public String vistaCambiaPassword(@ModelAttribute("tk") String token, Model model) {
+	public String vistaCambiaPassword(@ModelAttribute("tk") String token, Model model, HttpServletRequest request) {
 		
 		try {
+			// Control de sesion
+			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				return "redirect:/home";
+			}
+			
 			// Controlamos que el token no este vacio
 			if (token.isEmpty()) {
 				return "redirect:/login";
@@ -75,12 +89,19 @@ public class RestablecerPasswordControlador {
 	
 	/**
 	 * Método que maneja las solicitudes POST para la ruta "/restablecer"
+	 * 
 	 * @param usuario Objeto UsuarioDTO que contiene los datos del formulario
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return Devuelve el nombre de la vista
 	 */
 	@PostMapping()
-	public String restablecerPassword(@ModelAttribute("usuarioDTO") UsuarioDTO usuario) {
+	public String restablecerPassword(@ModelAttribute("usuarioDTO") UsuarioDTO usuario, HttpServletRequest request) {
 		try {
+			// Control de sesion
+			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				return "redirect:/home";
+			}
+			
 			Boolean ok = usuarioImplementacion.restablecePassword(usuario);
 
 			if (ok) {
@@ -101,13 +122,20 @@ public class RestablecerPasswordControlador {
 	
 	/**
 	 * Método que maneja las solicitudes POST para la ruta "/restablecer/cambiar-password"
+	 * 
 	 * @param token Token
 	 * @param usuario Objeto UsuarioDTO que contiene los datos del formulario
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return Devuelve el nombre de la vista
 	 */
 	@PostMapping("/cambiar-password")
-	public String cambiaPassword(@RequestParam String token, @ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO) {
+	public String cambiaPassword(@RequestParam String token, @ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO, HttpServletRequest request) {
 		try {
+			// Control de sesion
+			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				return "redirect:/home";
+			}
+			
 			// Comprobamos que las contraseñas introducidas sean iguales
 			if(!usuarioDTO.getPsswd_usuario().equals(usuarioDTO.getEmail_usuario()))
 				return "redirect:/restablecer/cambiar-password?password&tk="+token;

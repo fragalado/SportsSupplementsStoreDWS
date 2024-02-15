@@ -175,6 +175,30 @@ public class AdminControlador {
 	}
 	
 	/**
+	 * Método que maneja las solicitudes GET para la ruta "/admin/agrega-usuario"
+	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
+	 * @return Devuelve el nombre de la vista
+	 */
+	@GetMapping("/agrega-usuario")
+	public String vistaAgregarUsuario(Model model, HttpServletRequest request) {
+		try {
+			// Control de sesión
+			if (!request.isUserInRole("ROLE_ADMIN")) {
+				return "redirect:/home";
+			}
+			
+			// Agregamos al modelo un objeto de tipo UsuarioDTO
+			model.addAttribute("usuarioDTO", new UsuarioDTO());
+			
+			// Devolvemos el nombre de la vista
+			return "agregarUsuario";
+		} catch (Exception e) {
+			return "redirect:/home";
+		}
+	}
+	
+	/**
 	 * Método que maneja las solicitudes GET para la ruta "/admin/borra-usuario/{id_usuario}"
 	 * @param id_usuario Id del usuario a borrar
 	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
@@ -261,6 +285,32 @@ public class AdminControlador {
 				return "redirect:/admin/administracion-usuarios?usuarioEditadoError";
 		} catch (Exception e) {
 			return "redirect:/admin/administracion-usuarios?usuarioEditadoError";
+		}
+	}
+	
+	@PostMapping("/agregar-usuario")
+	public String agregaUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO, @RequestPart("imagenFile") MultipartFile imagenFile, HttpServletRequest request) {
+		try {
+			// Control de sesión
+			if (!request.isUserInRole("ROLE_ADMIN")) {
+				return "redirect:/home";
+			}
+			
+			// Pasamos la imagen a String
+			String foto = Util.convertirABase64(imagenFile.getBytes());
+			
+			// Le añadimos la imagen al usuarioDTO
+			usuarioDTO.setImagen_usuario(foto);
+			
+			// Actualizamos el suplemento
+			boolean ok = usuarioImplementacion.agregaUsuario(usuarioDTO);
+			
+			if(ok)
+				return "redirect:/admin/administracion-usuarios?usuarioAgregadoSuccess";
+			else
+				return "redirect:/admin/administracion-usuarios?usuarioAgregadoExiste";
+		} catch (Exception e) {
+			return "redirect:/admin/administracion-usuarios?usuarioAgregadoError";
 		}
 	}
 	

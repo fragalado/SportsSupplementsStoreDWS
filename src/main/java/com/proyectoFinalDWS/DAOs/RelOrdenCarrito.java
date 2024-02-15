@@ -8,7 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-/*
+/**
  * Entidad RelOrdenCarrito que hace referencia a la tabla Rel_Orden_Carritos de la base de datos
  * @autor Fran Gallego
  * Fecha: 25/01/2024

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Editar Usuario - Tienda de Suplementos</title>
+	<title>Agrega Usuario - Tienda de Suplementos</title>
 	<!-- Bootstrap -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"
@@ -27,6 +27,7 @@
 </head>
 
 <body>
+	<!-- Navbar -->
 	<header>
 		<nav class="navbar navbar-expand-lg"
 			style="background: linear-gradient(90deg, rgba(141,148,241,1) 0%, rgba(157,141,241,1) 49%, rgba(181,141,241,1) 100%);;">
@@ -63,49 +64,58 @@
 			</div>
 		</nav>
 	</header>
+	<!-- Fin Navbar -->
 	
+	<!-- Contenedor -->
 	<div class="container">
 		<main role="main" class="pb-3">
 			<div class="row">
 				<div class="col">
 					<div class="contenedor">
+						<!-- Imagen -->
 						<div class="contenedor-imagen">
-							<img th:if="${usuarioDTO.getImagen_usuario() != null}" th:src="'data:image/png;base64, '+ ${usuarioDTO.getImagen_usuario()}" class="card-img-top imagen" alt="Foto de perfil del usuario"
-								id="profile-pic">
-							<img th:if="${usuarioDTO.getImagen_usuario() == null}" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Profile-720.png" class="card-img-top imagen" alt="Foto de perfil del usuario"
+							<img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Profile-720.png" class="card-img-top imagen" alt="Foto de suplemento genérico"
 								id="profile-pic">
 						</div>
+						<!-- Fin Imagen -->
+						
+						<!-- Formulario -->
 						<div class="inputs-form">
-							<form method="post" th:action="@{/admin/editar-usuario}" th:object="${usuarioDTO}" enctype="multipart/form-data">
+							<form method="post" th:action="@{/admin/agregar-usuario}" th:object="${usuarioDTO}"  enctype="multipart/form-data">
 								<div class="mb-3">
 									<label for="imagenForm" class="btn btn-primary botonImagen">Añadir imagen</label>
 									<input type="file" accept="image/jpeg, image/png, image/jpg" id="imagenForm"
-										style="display: none;" name="imagenFile">
+										style="display: none;" name="imagenFile" required>
 								</div>
 								<div class="mb-3">
 									<label for="emailForm" class="form-label">Email</label>
-									<input type="email" class="form-control inputVistaEditar" id="emailForm" th:field="*{email_usuario}">
+									<input type="email" class="form-control inputVistaEditar" id="emailForm" th:field="*{email_usuario}" required>
 								</div>
 								<div class="mb-3">
 									<label for="nombreForm" class="form-label">Nombre</label>
-									<input type="text" class="form-control inputVistaEditar" id="nombreForm" th:field="*{nombre_usuario}">
+									<input type="text" class="form-control inputVistaEditar" id="nombreForm" th:field="*{nombre_usuario}" required>
 								</div>
 								<div class="mb-3">
 									<label for="tlfForm" class="form-label">Teléfono</label>
-									<input type="text" class="form-control inputVistaEditar" id="tlfForm" th:field="*{tlf_usuario}">
+									<input type="text" class="form-control inputVistaEditar" id="tlfForm" th:field="*{tlf_usuario}" required>
 								</div>
-								<input type="text" class="form-control" name="id_usuario" th:field="*{id_usuario}"
-									style="display:none">
+								<div class="mb-3">
+									<label for="psswdForm" class="form-label">Contraseña</label>
+									<input type="password" class="form-control inputVistaEditar" id="psswdForm" th:field="*{psswd_usuario}" required>
+								</div>
 								<button type="submit" class="btn btn-primary">Enviar</button>
 							</form>
 							<a th:href="@{/admin/administracion-usuarios}"
 								class="btn btn-danger botonVolver">Volver</a>
 						</div>
+						<!-- Fin Formulario -->
 					</div>
 				</div>
 			</div>
 		</main>
 	</div>
+	<!-- Contenedor -->
+	
 	<script>
 	    let profilePic = document.getElementById("profile-pic");
 	    let inputFile = document.getElementById("imagenForm");

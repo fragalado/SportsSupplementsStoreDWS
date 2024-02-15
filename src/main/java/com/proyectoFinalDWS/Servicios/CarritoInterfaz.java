@@ -35,8 +35,8 @@ public interface CarritoInterfaz {
 	
 	/**
 	 * Método que obtiene el precio total del carrito
-	 * @param emailUsuario Email del usuario
+	 * @param listaCarrito Lista de tipo CarritoDTO con los carritos del usuario
 	 * @return Devuelve un tipo float; Precio total del carrito
 	 */
-	public float obtienePrecioTotalCarrito(String emailUsuario);
+	public float obtienePrecioTotalCarrito(List<CarritoDTO> listaCarrito);
 }

@@ -11,17 +11,24 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Clase para manejar los errores personalizados cuando ocurre un fallo en la autentifación
+ * Implementa la interfaz AuthenticationFailureHandler de Spring Security
+ */
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
+	// Este método se llamará cuando la autentificación falla
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
 		
-		System.out.println(exception);
+		// Verifica si la excepción es del tipo BadCredentialsException (credenciales incorrectas)
 		if(exception instanceof BadCredentialsException) {
 			// Controlamos el error de contraseña o email incorrectos
 			response.sendRedirect("/login?email");
 		}
+		
+		// Verifica si la excepción es del tipo InternalAuthenticationServiceException (cuenta no activada)
 		if(exception instanceof InternalAuthenticationServiceException) {
 			// Controlamos el error de cuenta no activada
 			response.sendRedirect("/login?activada");

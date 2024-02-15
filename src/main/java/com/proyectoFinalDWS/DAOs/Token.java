@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-/*
+/**
  * Entidad Token que hace referencia a la tabla Tokens de la base de datos
  * @autor Fran Gallego
  * Fecha: 25/01/2024

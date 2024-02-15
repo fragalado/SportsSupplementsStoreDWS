@@ -72,7 +72,7 @@
 			<div class="row tablaAdmin">
 				<div class="col">
 					<!-- Formulario -->
-					<form method="post" th:action="@{/comprar}">
+					<form method="post" th:action="@{/comprar/normal}">
 						<!-- Tabla -->
 						<table class="table table-dark table-hover text-center">
 							<thead>
@@ -100,7 +100,7 @@
 									</td>
 								</tr>
 								<tr th:if="${listaCarritoDTO != null && listaCarritoDTO.size() > 0}">
-									<td colspan="5" style="text-align: right; padding-right: 30px;">Precio total: <input name="total" th:value="${precioTotal}"></td>
+									<td colspan="5" style="text-align: right; padding-right: 30px;">Precio total: <span th:text="${precioTotal}"></span>€</td>
 								</tr>
 							</tbody>
 						</table>
@@ -109,6 +109,8 @@
 						<!-- Boton comprar -->
 						<button th:if="${listaCarritoDTO != null && listaCarritoDTO.size() > 0}" class="btn btn-primary" style="float: right;">Comprar</button>
 						<!-- Fin Boton comprar -->
+						
+						<input name="total" th:value="${precioTotal}" style="display: none;" disabled>
 					</form>
 					<!-- Fin Formulario -->
 				</div>
@@ -142,6 +144,9 @@
 		}
 	</script>
 	
+	<!-- Control de alertas -->
+	
+	<!-- Borrar carrito -->
 	<script th:if="${param.success}">
 		Swal.fire({
             title: "Éxito!",
@@ -157,6 +162,27 @@
             icon: "error"
         });
 	</script>
+	<!-- Fin Borrar carrito -->
+	
+	<!-- Compra carrito -->
+	<script th:if="${param.compraSuccess}">
+		Swal.fire({
+            title: "Éxito!",
+            text: "Se ha realizado la compra correctamente!",
+            icon: "success"
+        });
+	</script>
+	
+	<script th:if="${param.cancel}">
+		Swal.fire({
+            title: "Error!",
+            text: "Se ha cancelado la compra!",
+            icon: "error"
+        });
+	</script>
+	<!-- Fin Borrar carrito -->
+	
+	<!-- Fin Control de alertas -->
 </body>
 
 </html>

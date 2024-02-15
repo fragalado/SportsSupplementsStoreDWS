@@ -80,9 +80,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			usuarioRepositorio.deleteById(id_usuario);
 			
 			// Ahora para comprobar si se ha eliminado vamos a buscar el usuario por el id
-			Optional<Usuario> usuarioEncontrado = usuarioRepositorio.findById(id_usuario);
+			UsuarioDTO usuarioDTO = obtieneUsuarioPorId(id_usuario);
 			
-			if(!usuarioEncontrado.isPresent())
+			if(usuarioDTO == null)
 				return true; // Devolvemos true si no existe
 			
 			return false; // En caso de que se haya encontrado un usuario con el id
@@ -115,7 +115,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	public boolean actualizaUsuario(UsuarioDTO usuarioDTO) {
 		try {
 			// Con el id del usuario pasado obtenemos el usuario de la base de datos
-			Usuario usuarioEncontrado = usuarioRepositorio.findById(usuarioDTO.getId_usuario()).get();
+			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getId_usuario()));
 			
 			// Actualizamos algunos datos del usuarioEncontrado con el usuarioDTO
 			usuarioEncontrado.setNombre_usuario(usuarioDTO.getNombre_usuario());
@@ -138,7 +138,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 		//
 		try {
 			// Buscamos si existe un usuario con el email introducido
-			Usuario usuarioEncontrado = usuarioRepositorio.findByEmailUsuario(usuario.getEmail_usuario());
+			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorEmail(usuario.getEmail_usuario());
 
 			if (usuarioEncontrado != null) {
 				// Se ha encontrado un usuario con el email introducido
@@ -223,7 +223,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	public Boolean restablecePassword(UsuarioDTO usuarioDto) {
 		try {
 			// Obtenemos el usuario de la base de datos
-			Usuario usuarioEncontrado = usuarioRepositorio.findByEmailUsuario(usuarioDto.getEmail_usuario());
+			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorEmail(usuarioDto.getEmail_usuario()));
 			
 			// Si usuarioEncontrado es null devolvemos false
 			if(usuarioEncontrado == null)
@@ -271,6 +271,34 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
+			return false;
+		}
+	}
+
+	@Override
+	public boolean agregaUsuario(UsuarioDTO usuarioDTO) {
+		try {
+			// Buscamos si existe un usuario con el email introducido
+			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorEmail(usuarioDTO.getEmail_usuario());
+
+			if (usuarioEncontrado != null) {
+				// Se ha encontrado un usuario con el email introducido
+				// Luego devolveremos false
+				return false;
+			}
+			
+			// Si no se ha encontrado
+			// Encriptamos la contraseña
+			usuarioDTO.setPsswd_usuario(passwordEncoder.encode(usuarioDTO.getPsswd_usuario()));
+			
+			// Activamos la cuenta
+			usuarioDTO.setEstaActivado_usuario(true);
+			
+			// Guardamos el usuario
+			usuarioRepositorio.save(Util.usuarioADao(usuarioDTO));
+			
+			return true;
+		} catch (Exception e) {
 			return false;
 		}
 	}

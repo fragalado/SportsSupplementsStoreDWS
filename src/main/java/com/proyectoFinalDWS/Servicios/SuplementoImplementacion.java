@@ -59,6 +59,10 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 				return true; // Devolvemos true si no existe
 			
 			return false; // En caso de que se haya encontrado un suplemento con el id
+			
+			/* OTRA OPCION
+			 * return suplementoRepositorio.findById(id_suplemento).isEmpty();
+			 */
 		} catch (IllegalArgumentException e) {
 			return false;
 		}
@@ -98,6 +102,10 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 				return true; // Se ha añadido correctamente
 			
 			return false; // Si se ha producido algún error
+			
+			/* OTRA OPCION
+			 * return suplementoRepositorio.save(suplementoDAO) != null
+			 */
 		} catch (Exception e) {
 			return false;
 		}

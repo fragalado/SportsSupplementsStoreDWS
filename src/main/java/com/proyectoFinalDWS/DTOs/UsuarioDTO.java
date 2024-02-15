@@ -1,7 +1,8 @@
 package com.proyectoFinalDWS.DTOs;
 
-/*
+/**
  * Entidad UsuarioDTO
+ * @author Fran Gallego
  */
 public class UsuarioDTO {
 	

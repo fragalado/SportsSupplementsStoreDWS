@@ -11,21 +11,25 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
+/**
+ * Clase configuración para la autentificación
+ * @author Fran Gallego
+ */
 @Configuration // Indica que esta clase es de configuración
-@EnableMethodSecurity
+@EnableMethodSecurity // Habilita el uso de anotaciones de seguridad en métodos
 public class SeguridadConfig {
 	
 	@Autowired
-	UserDetailsService userDetailsService;
+	private UserDetailsService userDetailsService; // Interfaz para cargar detalles del usuario
 	
 	@Bean
     public AuthenticationFailureHandler customAuthenticationFailureHandler() {
-        return new CustomAuthenticationFailureHandler();
+        return new CustomAuthenticationFailureHandler(); // Fallos personalizados para la autentifiación
     }
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder(); // Encriptador de contraseñas
 	}
 	
 	@Bean
@@ -35,11 +39,6 @@ public class SeguridadConfig {
 		auth.setPasswordEncoder(passwordEncoder());
 		return auth;
 	}
-	
-//    @Bean
-//    AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-//	    return authConfig.getAuthenticationManager();
-//	}
 	
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -61,15 +60,12 @@ public class SeguridadConfig {
 						.loginProcessingUrl("/login") // Establece la url de procesamiento del formulario de login
 						.failureHandler(customAuthenticationFailureHandler())
 			)
-			// Configura el proceso de cierre de sesión
+			// Configura el cierre de sesión
 			.logout(logout ->
 					logout
 						.logoutUrl("/logout") // Establece la url de cierre de sesión personalizada
 						.logoutSuccessUrl("/login?logout") // Establece la url de redirección despues de un logout exitoso
 			);
-    	
-//        // Configura un proveedor de autenticación personalizado.
-//        http.authenticationProvider(authenticationProvider());
     	
     	return http.build();
     }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 import com.proyectoFinalDWS.Servicios.UsuarioImplementacion;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 /**
  * Clase controlador para la vista registro de sesión
  * @author Fran Gallego
@@ -25,13 +27,20 @@ public class RegistroControlador {
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/register".
+	 * 
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return Devuelve el nombre de la vista
 	 */
 	@GetMapping()
-	public String vistaRegister(Model model) {
+	public String vistaRegister(Model model, HttpServletRequest request) {
 
 		try {
+			// Control de sesion
+			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				return "redirect:/home";
+			}
+			
 			// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
 			model.addAttribute("usuarioDTO", new UsuarioDTO());
 
@@ -44,12 +53,19 @@ public class RegistroControlador {
 	
 	/**
 	 * Método que maneja las solicitudes POST para la ruta "/register"
+	 * 
 	 * @param usuario Objeto UsuarioDTO con los datos del formulario
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return Devuelve el nombre de la vista
 	 */
 	@PostMapping()
-	public String registrarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario) {
+	public String registrarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario, HttpServletRequest request) {
 		try {
+			// Control de sesion
+			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				return "redirect:/home";
+			}
+			
 			Boolean ok = usuarioImplementacion.registrarUsuario(usuario);
 
 			if (ok) {

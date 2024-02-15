@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
-/*
+/**
  * Entidad Orden que hace referencia a la tabla Ordenes de la base de datos
  * @autor Fran Gallego
  * Fecha: 25/01/2024

@@ -15,6 +15,7 @@ import com.proyectoFinalDWS.Servicios.SuplementoImplementacion;
 
 /**
  * Clase Controlador para las vistas relacionados con el home/bienvenida
+ * @author Fran Gallego
  */
 @Controller
 @RequestMapping("/home")

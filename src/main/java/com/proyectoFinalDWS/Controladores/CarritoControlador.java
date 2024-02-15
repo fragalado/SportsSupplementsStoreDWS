@@ -45,7 +45,7 @@ public class CarritoControlador {
 			else {
 				model.addAttribute("listaCarritoDTO", listaCarritoDTO);
 				model.addAttribute("precioTotal",
-						carritoImplementacion.obtienePrecioTotalCarrito(authentication.getName()));
+						carritoImplementacion.obtienePrecioTotalCarrito(listaCarritoDTO));
 			}
 
 			// Devolvemos la vista

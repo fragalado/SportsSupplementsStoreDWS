@@ -53,7 +53,7 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
     private List<Token> listaToken;
 	
-	@OneToMany(mappedBy = "usuario")
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	private List<Carrito> listaCarrito;
     
 	@OneToMany(mappedBy = "usuario")

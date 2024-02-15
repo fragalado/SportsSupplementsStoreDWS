@@ -22,6 +22,7 @@ public interface UsuarioInterfaz {
 	/**
 	 * Método que obtiene un usuario de la base de datos por el id del usuario
 	 * 
+	 * @param id_usuario Id del usuario a buscar
 	 * @return Devuelve el usuario encontrado o null en caso de no encontrarlo
 	 */
 	public UsuarioDTO obtieneUsuarioPorId(long id_usuario);
@@ -77,4 +78,11 @@ public interface UsuarioInterfaz {
 	 * @return Devuelte true si se ha cambiado las contraseñas con éxito o false si ha ocurrido un error.
 	 */
 	public boolean modificaPassword(String token, UsuarioDTO usuarioDTO);
+	
+	/**
+	 * Método que agrega un usuario en la base de datos
+	 * @param usuarioDTO Objeto UsuarioDTO que se va a añadir a la base de datos
+	 * @return Devuelve true si se ha agregado correctamente o false si no
+	 */
+	public boolean agregaUsuario(UsuarioDTO usuarioDTO);
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 import com.proyectoFinalDWS.Servicios.UsuarioImplementacion;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 /**
  * Clase controlador para activar cuenta usuario
  * @author Fran Gallego
@@ -24,13 +26,20 @@ public class ActivaCuentaControlador {
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/activa-cuenta/estado"
+	 * 
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
 	@GetMapping("/estado")
-	public String vistaActivarCuenta(Model model) {
+	public String vistaActivarCuenta(Model model, HttpServletRequest request) {
 		
 		try {
+			// Control de sesion
+			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				return "redirect:/home";
+			}
+			
 			// Creamos un nuevo objeto UsuarioDTO y lo agregamos al modelo
 			model.addAttribute("usuarioDTO", new UsuarioDTO());
 
@@ -43,13 +52,20 @@ public class ActivaCuentaControlador {
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/activa-cuenta/activar"
+	 * 
 	 * @param token Código del token
+	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return El nombre de la vista que se mostrará al usuario
 	 */
 	@GetMapping("/activar")
-	public String activarCuenta(@ModelAttribute("tk") String token) {
+	public String activarCuenta(@ModelAttribute("tk") String token, HttpServletRequest request) {
 		
 		try {
+			// Control de sesion
+			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				return "redirect:/home";
+			}
+			
 			// Controlamos que el token no este vacio
 			if(token.isEmpty()) {
 				return "redirect:/login";

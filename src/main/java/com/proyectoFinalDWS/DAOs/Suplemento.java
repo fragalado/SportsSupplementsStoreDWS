@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-/*
+/**
  * Entidad Suplemento que hace referencia a la tabla Suplementos de la base de datos
  * @autor Fran Gallego
  * Fecha: 25/01/2024

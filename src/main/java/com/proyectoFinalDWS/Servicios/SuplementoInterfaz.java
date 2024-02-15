@@ -30,6 +30,7 @@ public interface SuplementoInterfaz {
 	/**
 	 * Método que obtiene un suplemento de la base de datos por el id del suplemento
 	 * 
+	 * @param id_suplemento Id del suplemento a obtener
 	 * @return Devuelve el suplemento encontrado o null en caso de no encontrarlo
 	 */
 	public SuplementoDTO obtieneSuplementoPorId(long id_suplemento);

@@ -103,12 +103,9 @@ public class CarritoImplementacion implements CarritoInterfaz {
 	}
 
 	@Override
-	public float obtienePrecioTotalCarrito(String emailUsuario) {
+	public float obtienePrecioTotalCarrito(List<CarritoDTO> listaCarrito) {
 		try {
-			// Primero obtenemos el carrito
-			List<CarritoDTO> listaCarrito = obtieneCarritoUsuario(emailUsuario);
-			
-			// Ahora obtenemos el precio total
+			// Obtenemos el precio total
 			float total = 0;
 			for (CarritoDTO aux : listaCarrito)
 				total += aux.getCantidad() * aux.getSuplementoDTO().getPrecio_suplemento();

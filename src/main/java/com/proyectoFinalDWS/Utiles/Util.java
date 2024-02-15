@@ -188,6 +188,12 @@ public class Util {
 		}
 	}
 	
+	/**
+	 * Método que convierte una lista de tipo Carrito (DAO) a una lista de tipo Carrito (DTO)
+	 * 
+	 * @param listaCarritoDao Lista con objetos de tipo Carrito (DAO)
+	 * @return Devuelve una lista con objetos de tipo Carrito DTO
+	 */
 	public static List<CarritoDTO> listaCarritoADto(List<Carrito> listaCarritoDao){
 		try {
 			// Lista donde guardaremos los carritos convertidos
@@ -213,6 +219,12 @@ public class Util {
 		}
 	}
 	
+	/**
+	 * Método que convierte un array de byte a String
+	 * 
+	 * @param datos Array de bytes
+	 * @return Devuelve el el array de bytes convertido a string
+	 */
 	public static String convertirABase64(byte[] datos) {
 		if(datos != null && datos.length > 0)
 			return Base64.getEncoder().encodeToString(datos);
@@ -220,6 +232,12 @@ public class Util {
 		return null;
 	}
 	
+	/**
+	 * Método que convierte un String a un array de bytes
+	 * 
+	 * @param base64 String
+	 * @return Devuelve el string convertido a un array de bytes
+	 */
 	public static byte[] convertirAByteArray(String base64) {
 		if(base64 != null && !base64.isEmpty())
 			return Base64.getDecoder().decode(base64);

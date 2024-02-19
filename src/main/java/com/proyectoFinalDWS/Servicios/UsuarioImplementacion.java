@@ -192,8 +192,8 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			Usuario usuarioDAO = Util.usuarioADao(usuario);
 			
 			// Creamos un Acceso para añadirselo al usuario
-			Acceso accesoUsu = new Acceso(1, "Usu", "Usuarios de la tienda");
-			usuarioDAO.setAcceso(accesoUsu);
+//			Acceso accesoUsu = new Acceso(1, "Usu", "Usuarios de la tienda");
+//			usuarioDAO.setAcceso(accesoUsu);
 			
 			// Lo guardamos en la base de datos
 			Usuario usuarioDevuelto =  usuarioRepositorio.save(usuarioDAO);

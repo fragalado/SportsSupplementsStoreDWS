@@ -44,18 +44,7 @@ public class Carrito {
 	@OneToMany(mappedBy = "carrito")
 	private List<RelOrdenCarrito> listaRelacion;
 	
-	// Constructores
-
-	public Carrito(int cantidad) {
-		super();
-		this.cantidad = cantidad;
-		estaComprado_carrito = false;
-	}
-	
-	public Carrito() {
-		super();
-		estaComprado_carrito = false;
-	}
+	// Constructores -> Constructor vacio (necesario por JPA)
 	
 	// Getter y Setter
 	

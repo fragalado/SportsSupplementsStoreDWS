@@ -31,7 +31,7 @@ public class RelOrdenCarrito {
 	@JoinColumn(name = "id_carrito")
 	private Carrito carrito;
 	
-	// Constructores -> Constructor vacío
+	// Constructores -> Constructor vacío (necesario por JPA)
 	
 	// Getter y Setter
 	

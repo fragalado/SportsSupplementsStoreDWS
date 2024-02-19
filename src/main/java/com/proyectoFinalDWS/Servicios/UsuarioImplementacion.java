@@ -10,7 +10,6 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.proyectoFinalDWS.DAOs.Acceso;
 import com.proyectoFinalDWS.DAOs.Token;
 import com.proyectoFinalDWS.DAOs.Usuario;
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
@@ -190,10 +189,6 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			
 			// Convertimos el usuario (DTO) a DAO
 			Usuario usuarioDAO = Util.usuarioADao(usuario);
-			
-			// Creamos un Acceso para añadirselo al usuario
-//			Acceso accesoUsu = new Acceso(1, "Usu", "Usuarios de la tienda");
-//			usuarioDAO.setAcceso(accesoUsu);
 			
 			// Lo guardamos en la base de datos
 			Usuario usuarioDevuelto =  usuarioRepositorio.save(usuarioDAO);

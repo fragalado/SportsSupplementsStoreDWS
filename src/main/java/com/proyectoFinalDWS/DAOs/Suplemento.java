@@ -47,22 +47,7 @@ public class Suplemento {
 	@OneToMany(mappedBy = "suplemento")
 	private List<Carrito> listaCarrito;
 	
-	// Constructores
-	
-	public Suplemento(String nombre_suplemento, String desc_suplemento, float precio_suplemento, String tipo_suplemento,
-			String marca_suplemento, byte[] imagen_suplemento) {
-		super();
-		this.nombre_suplemento = nombre_suplemento;
-		this.desc_suplemento = desc_suplemento;
-		this.precio_suplemento = precio_suplemento;
-		this.tipo_suplemento = tipo_suplemento;
-		this.marca_suplemento = marca_suplemento;
-		this.imagen_suplemento = imagen_suplemento;
-	}
-	
-	public Suplemento() {
-		super();
-	}
+	// Constructores -> Constructor vacio (necesario por JPA)
 	
 	// Getter y Setter
 	

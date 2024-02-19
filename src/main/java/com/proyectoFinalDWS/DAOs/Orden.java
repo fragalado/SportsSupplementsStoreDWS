@@ -44,17 +44,7 @@ public class Orden {
 	@OneToMany(mappedBy = "orden")
 	private List<RelOrdenCarrito> listaRelacion;
 	
-	// Constructores
-	
-	public Orden(float precio_orden, Calendar fch_orden) {
-		super();
-		this.precio_orden = precio_orden;
-		this.fch_orden = fch_orden;
-	}
-	
-	public Orden() {
-		super();
-	}
+	// Constructores -> Constructor vacio (necesario por JPA)
 	
 	// Getter y Setter
 	

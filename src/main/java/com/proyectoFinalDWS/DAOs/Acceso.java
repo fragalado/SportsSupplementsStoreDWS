@@ -43,16 +43,9 @@ public class Acceso {
 		this.desc_acceso = desc_acceso;
 	}
 	
-	public Acceso(String cod_acceso, String desc_acceso) {
-		super();
-		this.cod_acceso = cod_acceso;
-		this.desc_acceso = desc_acceso;
-	}
-	
 	public Acceso() {
 		super();
 	}
-	
 	// Getter y Setter
 	
 	public long getId_acceso() {

@@ -59,19 +59,7 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario")
 	private List<Orden> listaOrden;
 
-    // Constructores
-    
-    public Usuario(String nombre_usuario, String tlf_usuario, String email_usuario, String psswd_usuario, boolean estaActivado_usuario, byte[] imagen_usuario)
-    {
-        this.nombre_usuario = nombre_usuario;
-        this.tlf_usuario = tlf_usuario;
-        this.email_usuario = email_usuario;
-        this.psswd_usuario = psswd_usuario;
-        this.estaActivado_usuario = estaActivado_usuario;
-        this.imagen_usuario = imagen_usuario;
-    }
-
-    public Usuario() {}
+    // Constructores -> Constructor vacio (necesario por JPA)
     
     // Getter y Setter
     

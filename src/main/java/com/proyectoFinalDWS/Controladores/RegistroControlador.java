@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 import com.proyectoFinalDWS.Servicios.UsuarioImplementacion;
+import com.proyectoFinalDWS.Utiles.Util;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -36,8 +37,13 @@ public class RegistroControlador {
 	public String vistaRegister(Model model, HttpServletRequest request) {
 
 		try {
+			// Log
+			Util.logInfo("RegistroControlador", "vistaRegister", "Ha entrado en vistaRegister");
+			
 			// Control de sesion
 			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				// Log
+				Util.logInfo("RegistroControlador", "vistaRegister", "El usuario ya ha iniciado sesión. Se redirige a home.");
 				return "redirect:/home";
 			}
 			
@@ -47,6 +53,8 @@ public class RegistroControlador {
 			// Devolvemos la vista register
 			return "register";
 		} catch (Exception e) {
+			// Log
+			Util.logError("RegistroControlador", "vistaRegister", "Se ha producido un error.");
 			return "register";
 		}
 	}
@@ -61,8 +69,13 @@ public class RegistroControlador {
 	@PostMapping()
 	public String registrarUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario, HttpServletRequest request) {
 		try {
+			// Log
+			Util.logInfo("RegistroControlador", "registrarUsuario", "Ha entrado en registrarUsuario");
+			
 			// Control de sesion
 			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				// Log
+				Util.logInfo("RegistroControlador", "registrarUsuario", "El usuario ya ha iniciado sesión. Se redirige a home.");
 				return "redirect:/home";
 			}
 			
@@ -79,7 +92,8 @@ public class RegistroControlador {
 				return "redirect:/register?email";
 			}
 		} catch (Exception e) {
-			System.out.println("[Error-RegistroControlador-registrarUsuario] Error al registrar al usuario");
+			// Log
+			Util.logError("RegistroControlador", "registrarUsuario", "Se ha producido un error.");
 			return "redirect:/register?error";
 		}
 	}

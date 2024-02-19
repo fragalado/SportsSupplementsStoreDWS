@@ -2,7 +2,6 @@ package com.proyectoFinalDWS.DAOs;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +27,7 @@ public class Carrito {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id_carrito;
 	
-	@ManyToOne(cascade = CascadeType.REMOVE)
+	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 	

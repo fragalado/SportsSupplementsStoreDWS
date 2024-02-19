@@ -2,6 +2,7 @@ package com.proyectoFinalDWS.Servicios;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +43,17 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public UsuarioDTO obtieneUsuarioPorEmail(String email) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion", "obtieneUsuarioPorEmail", "Ha entrado en obtieneUsuarioPorEmail");
+			
 			// Buscamos el usuario por el email
 			Usuario usuarioEncontrado = usuarioRepositorio.findByEmailUsuario(email);
 			
 			// Convertimos el usuario a DTO y lo devolvemos
 			return Util.usuarioADto(usuarioEncontrado);
 		} catch (Exception e) {
+			// Log
+			Util.logError("UsuarioImplementacion", "obtieneUsuarioPorEmail", "Se ha producido un error al obtener el usuario por el email.");
 			return null; // Devuelve null en caso de no encontrarlo
 		}
 	}
@@ -55,6 +61,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public List<UsuarioDTO> obtieneTodosLosUsuarios() {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion" ,"obtieneTodosLosUsuarios", "Ha entrado en obtieneTodosLosUsuarios");
+			
 			// Obtenemos todos los usuarios de la base de datos y lo guardamos en una lista de tipo Usuario (DAO)
 			List<Usuario> listaUsuariosDao = usuarioRepositorio.findAll();
 			
@@ -68,7 +77,8 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			 * return Util.listaUsuariosADto(usuarioRepositorio.findAll());
 			 */
 		} catch (Exception e) {
-			System.out.println("[Error-AdminImplementacion-obtieneTodosLosUsuarios] Error al obtener todos los usuarios");
+			// Log
+			Util.logError("UsuarioImplementacion" ,"obtieneTodosLosUsuarios", "Se ha producido un error al obtener todos los usuarios de la base de datos.");
 			return null;
 		}
 	}
@@ -76,6 +86,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public boolean borraUsuarioPorId(long id_usuario) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion" ,"borraUsuarioPorId", "Ha entrado en borraUsuarioPorId");
+			
 			// Eliminamos el usuario por el id
 			usuarioRepositorio.deleteById(id_usuario);
 			
@@ -87,6 +100,8 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			
 			return false; // En caso de que se haya encontrado un usuario con el id
 		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("UsuarioImplementacion" ,"borraUsuarioPorId", "El id introducido es null.");
 			return false;
 		}
 	}
@@ -94,6 +109,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public UsuarioDTO obtieneUsuarioPorId(long id_usuario) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion" ,"obtieneUsuarioPorId", "Ha entrado en obtieneUsuarioPorId");
+						
 			// Obtenemos el usuario
 			Optional<Usuario> usuarioEncontrado = usuarioRepositorio.findById(id_usuario);
 			
@@ -106,14 +124,23 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			
 			// Devolvemos el usuario convertido a DTO
 			return usuarioDTO;
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("UsuarioImplementacion" ,"obtieneUsuarioPorId", "El id del usuario es null");
 			return null;
+		} catch (NoSuchElementException e) {
+			// Log
+			Util.logError("UsuarioImplementacion" ,"obtieneUsuarioPorId", "El elemento no existe o no tiene valor");
+			return null;			
 		}
 	}
 	
 	@Override
 	public boolean actualizaUsuario(UsuarioDTO usuarioDTO) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion" ,"actualizaUsuario", "Ha entrado en actualizaUsuario");
+			
 			// Con el id del usuario pasado obtenemos el usuario de la base de datos
 			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorId(usuarioDTO.getId_usuario()));
 			
@@ -128,21 +155,32 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			usuarioRepositorio.save(usuarioEncontrado);
 			
 			return true;
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("UsuarioImplementacion" ,"actualizaUsuario", "El objeto usuario es null.");
+			return false;
+		} catch (OptimisticLockingFailureException e) {
+			// Log
+			Util.logError("UsuarioImplementacion" ,"actualizaUsuario", "Concurrencia optimista. La entidad no existe en la base de datos o utiliza optimistic locking");
 			return false;
 		}
 	}
 	
 	@Override
 	public Boolean registrarUsuario(UsuarioDTO usuario) {
-		//
+		
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion" ,"registrarUsuario", "Ha entrado en registrarUsuario");
+						
 			// Buscamos si existe un usuario con el email introducido
 			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorEmail(usuario.getEmail_usuario());
 
 			if (usuarioEncontrado != null) {
 				// Se ha encontrado un usuario con el email introducido
 				// Luego devolveremos false
+				// Log
+				Util.logInfo("UsuarioImplementacion" ,"registrarUsuario", "Ya existe un usuario con el email introducido.");
 				return false;
 			}
 			
@@ -167,13 +205,15 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			}
 			return usuarioDevuelto != null;
 		} catch (IllegalArgumentException  e) {
-			System.out.println("[Error-AccesoImplementacion-registrarUsuario] Error el usuario es nulo");
+			// Log
+			Util.logError("UsuarioImplementacion" ,"registrarUsuario", "El objeto usuario es null");
 			return null;
 		} catch (OptimisticLockingFailureException e) {
 		    // Excepcion de concurrencia optimista
 		    // Esto puede ocurrir si otro proceso ha modificado los datos mientras
 		    // esta transacción estaba realizando sus operaciones.
-		    System.out.println("[Error-AccesoImplementacion-registrarUsuario] Error de concurrencia optimista");
+			// Log
+			Util.logError("UsuarioImplementacion" ,"registrarUsuario", "concurrencia optimista");
 			return null;
 		}
 	}
@@ -181,6 +221,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public boolean activaCuenta(String token) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion" ,"activaCuenta", "Ha entrado en activaCuenta");
+						
 			// Obtenemos el token de la base de datos
 			Token tokenDao = tokenImplementacion.obtieneToken(token);
 			
@@ -191,6 +234,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			// Comparamos la fechaActual con la fecha del token
 			if (fechaActual.compareTo(tokenDao.getFch_fin_token()) < 0 || fechaActual.compareTo(tokenDao.getFch_fin_token()) == 0) {
 				// La fecha actual es menor que la fecha del token o son iguales, luego seguimos con el proceso
+				// Obtenemos el usuario del token
 				Usuario usuarioDao = tokenDao.getUsuario();
 				
 				// Modificamos la propiedad estaActivado y la ponemos en true
@@ -198,6 +242,8 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 				
 				// Actualizamos en la base de datos
 				Usuario usuarioDevuelto =  usuarioRepositorio.save(usuarioDao);
+				
+				// Comprobamos si se ha actualizado correctamente
 				if(usuarioDevuelto != null && usuarioDevuelto.isEstaActivado_usuario()) {
 					return true; // El usuario ha sido activado
 				} else {
@@ -205,16 +251,21 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 				}
 	        } else {
 	        	// La fecha actual es mayor que la fecha del token, luego ha caducado
+	        	// Log
+	        	Util.logInfo("UsuarioImplementacion" ,"activaCuenta", "El token ha caducado");
 	        	return false;
 	        }
 		} catch (NullPointerException e) {
-			System.out.println("[Error-AccesoImplementacion-activaCuenta] Error al intentar compararse un calendario nulo.");
+			// Log
+			Util.logError("UsuarioImplementacion" ,"activaCuenta", "calendario nulo");
 			return false;
 		} catch (IllegalArgumentException e) {
-			System.out.println("[Error-AccesoImplementacion-activaCuenta] Error objeto nulo o invalido.");
+			// Log
+			Util.logError("UsuarioImplementacion" ,"activaCuenta", "objeto nulo o invalido");
 			return false;
 		} catch (OptimisticLockingFailureException e) {
-			System.out.println("[Error-AccesoImplementacion-activaCuenta] Error de concurrencia optimista.");
+			// Log
+			Util.logError("UsuarioImplementacion" ,"activaCuenta", "concurrencia optimista.");
 			return false;
 		}
 	}
@@ -222,6 +273,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public Boolean restablecePassword(UsuarioDTO usuarioDto) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion" ,"restablecePassword", "Ha entrado en restablecePassword");
+			
 			// Obtenemos el usuario de la base de datos
 			Usuario usuarioEncontrado = Util.usuarioADao(obtieneUsuarioPorEmail(usuarioDto.getEmail_usuario()));
 			
@@ -237,6 +291,8 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			else 
 				return null; // Se ha producido un error al enviar el correo
 		} catch (Exception e) {
+			// Log
+			Util.logError("UsuarioImplementacion" ,"restablecePassword", "Se ha producido un error.");
 			return null; // Se ha producido un error al enviar el correo
 		}
 	}
@@ -244,6 +300,9 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public boolean modificaPassword(String token, UsuarioDTO usuarioDTO) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion" ,"modificaPassword", "Ha entrado en modificaPassword");
+						
 			// Obtenemos el token
 			Token tokenDao = tokenImplementacion.obtieneToken(token);
 			
@@ -256,6 +315,7 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 					|| fechaActual.compareTo(tokenDao.getFch_fin_token()) == 0) {
 				// La fecha actual es menor que la fecha del token o son iguales, luego seguimos
 				// con el proceso
+				// Obtenemos el usuario
 				Usuario usuarioDao = tokenDao.getUsuario();
 
 				// Modificamos la contraseña
@@ -267,10 +327,21 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 				return true;
 			} else {
 				// La fecha actual es mayor que la fecha del token, luego ha caducado
+				// Log
+				Util.logInfo("UsuarioImplementacion" ,"modificaPassword", "El token ha caducado.");
 				return false;
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
+		} catch (NullPointerException e) {
+			// Log
+			Util.logError("UsuarioImplementacion" ,"modificaPassword", "al comparar un calendario null");
+			return false;
+		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("UsuarioImplementacion" ,"modificaPassword", "la entidad es null");
+			return false;
+		} catch (OptimisticLockingFailureException e) {
+			// Log
+			Util.logError("UsuarioImplementacion" ,"modificaPassword", "concurrencia optimista");
 			return false;
 		}
 	}
@@ -278,12 +349,17 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 	@Override
 	public boolean agregaUsuario(UsuarioDTO usuarioDTO) {
 		try {
+			// Log
+			Util.logInfo("UsuarioImplementacion" ,"agregaUsuario", "Ha entrado en agregaUsuario");
+			
 			// Buscamos si existe un usuario con el email introducido
 			UsuarioDTO usuarioEncontrado = obtieneUsuarioPorEmail(usuarioDTO.getEmail_usuario());
 
 			if (usuarioEncontrado != null) {
 				// Se ha encontrado un usuario con el email introducido
 				// Luego devolveremos false
+				// Log
+				Util.logInfo("UsuarioImplementacion" ,"agregaUsuario", "El email introducido ya existe");
 				return false;
 			}
 			
@@ -298,7 +374,13 @@ public class UsuarioImplementacion implements UsuarioInterfaz {
 			usuarioRepositorio.save(Util.usuarioADao(usuarioDTO));
 			
 			return true;
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
+			// Log
+			Util.logError("UsuarioImplementacion" ,"agregaUsuario", "La entidad es null");
+			return false;
+		} catch (OptimisticLockingFailureException e) {
+			// Log
+			Util.logError("UsuarioImplementacion" ,"agregaUsuario", "concurrencia optimista");
 			return false;
 		}
 	}

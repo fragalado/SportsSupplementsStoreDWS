@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 import com.proyectoFinalDWS.Servicios.UsuarioImplementacion;
+import com.proyectoFinalDWS.Utiles.Util;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -35,8 +36,13 @@ public class ActivaCuentaControlador {
 	public String vistaActivarCuenta(Model model, HttpServletRequest request) {
 		
 		try {
+			// Log
+			Util.logInfo("ActivaCuentaControlador", "vistaActivarCuenta", "Ha entrado en vistaActivarCuenta.");
+			
 			// Control de sesion
 			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				// Log
+				Util.logInfo("ActivaCuentaControlador", "vistaActivarCuenta", "El usuario ya ha iniciado sesión. Se redirige a home.");
 				return "redirect:/home";
 			}
 			
@@ -46,6 +52,8 @@ public class ActivaCuentaControlador {
 			// Devolvemos la vista register
 			return "confirmarEmail";
 		} catch (Exception e) {
+			// Log
+			Util.logError("ActivaCuentaControlador", "vistaActivarCuenta", "Se ha producido un error.");
 			return "redirect:/login";
 		}
 	}
@@ -61,13 +69,20 @@ public class ActivaCuentaControlador {
 	public String activarCuenta(@ModelAttribute("tk") String token, HttpServletRequest request) {
 		
 		try {
+			// Log
+			Util.logInfo("ActivaCuentaControlador", "activarCuenta", "Ha entrado en activarCuenta");
+			
 			// Control de sesion
 			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				// Log
+				Util.logInfo("ActivaCuentaControlador", "activarCuenta", "El usuario ya ha iniciado sesión. Se redirige a home.");
 				return "redirect:/home";
 			}
 			
 			// Controlamos que el token no este vacio
 			if(token.isEmpty()) {
+				// Log
+				Util.logInfo("ActivaCuentaControlador", "activarCuenta", "El token esta vacio. Se redirige a login.");
 				return "redirect:/login";
 			}
 			
@@ -75,13 +90,15 @@ public class ActivaCuentaControlador {
 			boolean ok = usuarioImplementacion.activaCuenta(token);
 			
 			if(ok) {
-				// Redirigimos a estado-cuenta con un parametro success
+				// Redirigimos a activa-cuenta con un parametro success
 				return "redirect:/activa-cuenta/estado?success";
 			} else {
-				// Redirigimos a estado-cuenta con un parametro de error
+				// Redirigimos a activa-cuenta con un parametro de error
 				return "redirect:/activa-cuenta/estado?error";
 			}
 		} catch (Exception e) {
+			// Log
+			Util.logError("ActivaCuentaControlador", "activarCuenta", "Se ha producido un error.");
 			return "redirect:/login";
 		}
 	}

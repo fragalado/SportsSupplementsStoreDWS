@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import com.proyectoFinalDWS.DAOs.Carrito;
@@ -42,6 +43,9 @@ public class OrdenImplementacion implements OrdenInterfaz {
 	@Override
 	public boolean comprarCarritoUsuario(String email_usuario) {
 		try {
+			// Log
+			Util.logInfo("OrdenImplementacion", "comprarCarritoUsuario", "Ha entrado en comprarCarritoUsuario");
+			
 			// Obtenemos el usuario
 			Usuario usuarioDAO = Util.usuarioADao(usuarioImplementacion.obtieneUsuarioPorEmail(email_usuario));
 			
@@ -85,8 +89,11 @@ public class OrdenImplementacion implements OrdenInterfaz {
 			}
 			
 			return true;
-		} catch (Exception e) {
-			// TODO: handle exception
+		} catch (IllegalArgumentException e) {
+			Util.logError("OrdenImplementacion", "comprarCarritoUsuario", "El objeto es nulo");
+			return false;
+		} catch (OptimisticLockingFailureException e) {
+			Util.logError("OrdenImplementacion", "comprarCarritoUsuario", "Concurrencia optimista");
 			return false;
 		}
 	}

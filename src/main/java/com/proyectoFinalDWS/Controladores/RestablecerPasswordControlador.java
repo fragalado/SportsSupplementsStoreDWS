@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 import com.proyectoFinalDWS.Servicios.UsuarioImplementacion;
+import com.proyectoFinalDWS.Utiles.Util;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -37,8 +38,12 @@ public class RestablecerPasswordControlador {
 	public String vistaModificarContrasenya(Model model, HttpServletRequest request) {
 		
 		try {
+			// Log
+			Util.logInfo("RestablecerPasswordControlador", "vistaModificarContrasenya", "Ha entrado en vistaModificarContrasenya");
 			// Control de sesion
 			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				// Log
+				Util.logInfo("RestablecerPasswordControlador", "vistaModificarContrasenya", "El usuario ya ha iniciado sesión. Se redirige a home.");
 				return "redirect:/home";
 			}
 						
@@ -48,6 +53,8 @@ public class RestablecerPasswordControlador {
 			// Devolvemos la vista register
 			return "modificarContrasenya";
 		} catch (Exception e) {
+			// Log
+			Util.logError("RestablecerPasswordControlador", "vistaModificarContrasenya", "Se ha producido un error.");
 			return "modificarContrasenya";
 		}
 	}
@@ -55,6 +62,7 @@ public class RestablecerPasswordControlador {
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/restablecer/cambia-password"
 	 * 
+	 * @param token Token
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return El nombre de la vista que se mostrará al usuario
@@ -63,13 +71,19 @@ public class RestablecerPasswordControlador {
 	public String vistaCambiaPassword(@ModelAttribute("tk") String token, Model model, HttpServletRequest request) {
 		
 		try {
+			// Log
+			Util.logInfo("RestablecerPasswordControlador", "vistaCambiaPassword", "Ha entrado en vistaCambiaPassword");
 			// Control de sesion
 			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				// Log
+				Util.logInfo("RestablecerPasswordControlador", "vistaCambiaPassword", "El usuario ya ha iniciado sesión. Se redirige a home.");
 				return "redirect:/home";
 			}
 			
 			// Controlamos que el token no este vacio
 			if (token.isEmpty()) {
+				// Log
+				Util.logInfo("RestablecerPasswordControlador", "vistaCambiaPassword", "El token esta vacio. Se redirige a login.");
 				return "redirect:/login";
 			}
 
@@ -83,6 +97,8 @@ public class RestablecerPasswordControlador {
 			// Devolvemos la vista
 			return "cambiarPassword";
 		} catch (Exception e) {
+			// Log
+			Util.logError("RestablecerPasswordControlador", "vistaCambiaPassword", "Se ha producido un error.");
 			return "cambiarPassword";
 		}
 	}
@@ -97,8 +113,12 @@ public class RestablecerPasswordControlador {
 	@PostMapping()
 	public String restablecerPassword(@ModelAttribute("usuarioDTO") UsuarioDTO usuario, HttpServletRequest request) {
 		try {
+			// Log
+			Util.logInfo("RestablecerPasswordControlador", "restablecerPassword", "Ha entrado en restablecerPassword");
 			// Control de sesion
 			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				// Log
+				Util.logInfo("RestablecerPasswordControlador", "restablecerPassword", "El usuario ya ha iniciado sesión. Se redirige a home.");
 				return "redirect:/home";
 			}
 			
@@ -115,7 +135,8 @@ public class RestablecerPasswordControlador {
 				return "redirect:/restablecer?email";
 			}
 		} catch (Exception e) {
-			System.out.println("[Error-RestablecerPasswordControlador-restablecerPassowrd] Error al mandar correo para restablecer contraseña");
+			// Log
+			Util.logError("RestablecerPasswordControlador", "restablecerPassword", "Se ha producido un error.");
 			return "redirect:/restablecer?error";
 		}
 	}
@@ -131,8 +152,12 @@ public class RestablecerPasswordControlador {
 	@PostMapping("/cambiar-password")
 	public String cambiaPassword(@RequestParam String token, @ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO, HttpServletRequest request) {
 		try {
+			// Log
+			Util.logInfo("RestablecerPasswordControlador", "cambiaPassword", "Ha entrado en cambiaPassword");
 			// Control de sesion
 			if(request.isUserInRole("ROLE_ADMIN") || request.isUserInRole("ROLE_USER")) {
+				// Log
+				Util.logInfo("RestablecerPasswordControlador", "cambiaPassword", "El usuario ya ha iniciado sesión. Se redirige a home.");
 				return "redirect:/home";
 			}
 			
@@ -149,7 +174,8 @@ public class RestablecerPasswordControlador {
 			else
 				return "redirect:/restablecer/cambiar-password?error&tk="+token;
 		} catch (Exception e) {
-			// TODO
+			// Log
+			Util.logError("RestablecerPasswordControlador", "cambiaPassword", "Se ha producido un error.");
 			return "redirect:/restablecer/cambiar-password?error&tk="+token;
 		}
 	}

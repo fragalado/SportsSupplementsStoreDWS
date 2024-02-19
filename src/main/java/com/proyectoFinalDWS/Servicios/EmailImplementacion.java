@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.proyectoFinalDWS.DAOs.Token;
 import com.proyectoFinalDWS.DAOs.Usuario;
+import com.proyectoFinalDWS.Utiles.Util;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -35,6 +36,9 @@ public class EmailImplementacion implements EmailInterfaz {
 	public boolean enviarEmail(String direccion, boolean esActivarCuenta, Usuario usuario) {
 
 		try {
+			// Log
+			Util.logInfo("EmailImplementacion", "enviarEmail", "Ha entrado en enviarEmail");
+			
 			// Generamos un token
 			UUID uuid = UUID.randomUUID();
 			String token = uuid.toString();
@@ -71,26 +75,26 @@ public class EmailImplementacion implements EmailInterfaz {
 				// Enviamos el correo utilizando el JavaMailSender
 				mailSender.send(message);
 
-				System.out.println("Email enviado correctamente");
+				Util.logInfo("EmailImplementacion", "enviarEmail", "Email enviado correctamente");
 				return true;
 			} else {
 				return false;
 			}
 
 		} catch (IllegalArgumentException e) {
-			System.out.println("[Error-EmailImplementacion-enviarEmail] Error el objeto pasado es nulo");
+			Util.logError("EmailImplementacion", "enviarEmail", "El objeto es nulo");
 			return false;
 		} catch (OptimisticLockingFailureException e) {
-			System.out.println("[Error-EmailImplementacion-enviarEmail] Error de concurrencia optimista");
+			Util.logError("EmailImplementacion", "enviarEmail", "Concurrencia optimista");
 			return false;
 		} catch (MailAuthenticationException e) {
-			System.out.println("[Error-EmailImplementacion-enviarEmail] Error al autentificar el mail");
+			Util.logError("EmailImplementacion", "enviarEmail", "error al autentificar el mail");
 			return false;
 		} catch (MailSendException e) {
-			System.out.println("[Error-EmailImplementacion-enviarEmail] Error al enviar el email");
+			Util.logError("EmailImplementacion", "enviarEmail", "error al enviar el email");
 			return false;
 		} catch (MessagingException e) {
-			System.out.println("[Error-EmailImplementacion-enviarEmail] Error general mail");
+			Util.logInfo("EmailImplementacion", "enviarEmail", "error general mail");
 			return false;
 		}
 	}

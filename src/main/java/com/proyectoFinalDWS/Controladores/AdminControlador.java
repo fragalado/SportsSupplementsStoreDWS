@@ -39,7 +39,8 @@ public class AdminControlador {
 	private UsuarioImplementacion usuarioImplementacion;
 	
 	/**
-	 * Método que maneja las solicitudes GET para la ruta "/admin/estado/administracion-usuarios"
+	 * Método que maneja las solicitudes GET para la ruta "/admin/administracion-usuarios"
+	 * 
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return Devuelve el nombre de la vista
@@ -47,8 +48,13 @@ public class AdminControlador {
 	@GetMapping("/administracion-usuarios")
 	public String vistaAdministracionUsuarios(Model model, HttpServletRequest request) {
 		try {
+			// Log
+			Util.logInfo("AdminControlador", "vistaAdministracionUsuarios", "Ha entrado en vistaAdministracionUsuarios");
+			
 			// Control de sesión
 			if(!request.isUserInRole("ROLE_ADMIN")) {
+				// Log
+				Util.logInfo("AdminControlador", "vistaAdministracionUsuarios", "El usuario no es admin. Se redirige a home.");
 				return "redirect:/home";
 			}
 			
@@ -62,12 +68,15 @@ public class AdminControlador {
 			// Devolvemos la vista
 			return "administracionUsuarios";
 		} catch (Exception e) {
+			// Log
+			Util.logError("AdminControlador", "vistaAdministracionUsuarios", "Se ha producido un error.");
 			return "redirect:/home";
 		}
 	}
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/admin/administracion-suplementos"
+	 * 
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return Devuelve el nombre de la vista
@@ -76,8 +85,12 @@ public class AdminControlador {
 	public String vistaAdministracionSuplementos(Model model, HttpServletRequest request) {
 
 		try {
+			// Log
+			Util.logInfo("AdminControlador", "vistaAdministracionSuplementos", "Ha entrado en vistaAdministracionSuplementos");
 			// Control de sesión
 			if (!request.isUserInRole("ROLE_ADMIN")) {
+				// Log
+				Util.logInfo("AdminControlador", "vistaAdministracionSuplementos", "El usuario no es admin. Se redirige a home");
 				return "redirect:/home";
 			}
 
@@ -87,12 +100,15 @@ public class AdminControlador {
 			// Devolvemos la vista
 			return "administracionSuplementos";
 		} catch (Exception e) {
+			// Log
+			Util.logError("AdminControlador", "vistaAdministracionSuplementos", "Se ha producido un error.");
 			return "redirect:/home";
 		}
 	}
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/admin/editar-usuario/{id_usuario}"
+	 * 
 	 * @param id_usuario Id del usuario a editar
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
@@ -102,8 +118,12 @@ public class AdminControlador {
 	public String vistaEditarUsuario(@PathVariable long id_usuario, Model model, HttpServletRequest request) {
 
 		try {
+			// Log
+			Util.logInfo("AdminControlador", "vistaEditarUsuario", "Ha entrado en vistaEditarUsuario.");
 			// Control de sesión
 			if (!request.isUserInRole("ROLE_ADMIN")) {
+				// Log
+				Util.logInfo("AdminControlador", "vistaEditarUsuario", "El usuario no es admin. Se redirige a home");
 				return "redirect:/home";
 			}
 
@@ -116,12 +136,15 @@ public class AdminControlador {
 			// Devolvemos la vista
 			return "editarUsuario";
 		} catch (Exception e) {
+			// Log
+			Util.logError("AdminControlador", "vistaEditarUsuario", "Se ha producido un error.");
 			return "redirect:/home";
 		}
 	}
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/admin/editar-suplemento/{id_suplemento}"
+	 * 
 	 * @param id_suplemento Id del suplemento a editar
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
@@ -131,8 +154,12 @@ public class AdminControlador {
 	public String vistaEditarSuplemento(@PathVariable long id_suplemento, Model model, HttpServletRequest request) {
 
 		try {
+			// Log
+			Util.logInfo("AdminControlador", "vistaEditarSuplemento", "Ha entrado en vistaEditarSuplemento.");
 			// Control de sesión
 			if (!request.isUserInRole("ROLE_ADMIN")) {
+				// Log
+				Util.logInfo("AdminControlador", "vistaEditarSuplemento", "El usuario no es admin. Se redirige a home");
 				return "redirect:/home";
 			}
 
@@ -145,12 +172,15 @@ public class AdminControlador {
 			// Devolvemos la vista
 			return "editarSuplemento";
 		} catch (Exception e) {
+			// Log
+			Util.logError("AdminControlador", "vistaEditarSuplemento", "Se ha producido un error.");
 			return "redirect:/home";
 		}
 	}
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/admin/agrega-suplemento"
+	 * 
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return Devuelve el nombre de la vista
@@ -159,8 +189,12 @@ public class AdminControlador {
 	public String vistaAgregarSuplemento(Model model, HttpServletRequest request) {
 
 		try {
+			// Log
+			Util.logInfo("AdminControlador", "vistaAgregarSuplemento", "Ha entrado en vistaAgregarSuplemento.");
 			// Control de sesión
 			if (!request.isUserInRole("ROLE_ADMIN")) {
+				// Log
+				Util.logInfo("AdminControlador", "vistaAgregarSuplemento", "El usuario no es admin. Se redirige a home");
 				return "redirect:/home";
 			}
 
@@ -170,6 +204,8 @@ public class AdminControlador {
 			// Devolvemos la vista
 			return "agregarSuplemento";
 		} catch (Exception e) {
+			// Log
+			Util.logError("AdminControlador", "vistaAgregarSuplemento", "Se ha producido un error.");
 			return "redirect:/home";
 		}
 	}
@@ -183,8 +219,12 @@ public class AdminControlador {
 	@GetMapping("/agrega-usuario")
 	public String vistaAgregarUsuario(Model model, HttpServletRequest request) {
 		try {
+			// Log
+			Util.logInfo("AdminControlador", "vistaAgregarUsuario", "Ha entrado en vistaAgregarUsuario.");
 			// Control de sesión
 			if (!request.isUserInRole("ROLE_ADMIN")) {
+				// Log
+				Util.logInfo("AdminControlador", "vistaAgregarUsuario", "El usuario no es admin. Se redirige a home");
 				return "redirect:/home";
 			}
 			
@@ -194,12 +234,15 @@ public class AdminControlador {
 			// Devolvemos el nombre de la vista
 			return "agregarUsuario";
 		} catch (Exception e) {
+			// Log
+			Util.logError("AdminControlador", "vistaAgregarUsuario", "Se ha producido un error.");
 			return "redirect:/home";
 		}
 	}
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/admin/borra-usuario/{id_usuario}"
+	 * 
 	 * @param id_usuario Id del usuario a borrar
 	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return Devuelve el nombre de la vista
@@ -208,8 +251,12 @@ public class AdminControlador {
 	public String borraUsuario(@PathVariable long id_usuario, HttpServletRequest request) {
 
 		try {
+			// Log
+			Util.logInfo("AdminControlador", "borraUsuario", "Ha entrado en borraUsuario.");
 			// Control de sesión
 			if (!request.isUserInRole("ROLE_ADMIN")) {
+				// Log
+				Util.logInfo("AdminControlador", "borraUsuario", "El usuario no es admin. Se redirige a home.");
 				return "redirect:/home";
 			}
 
@@ -222,12 +269,15 @@ public class AdminControlador {
 			else
 				return "redirect:/admin/administracion-usuarios?error";
 		} catch (Exception e) {
+			// Log
+			Util.logError("AdminControlador", "borraUsuario", "Se ha producido un error.");
 			return "redirect:/admin/administracion-usuarios?error";
 		}
 	}
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/admin/borra-suplemento/{id_suplemento}"
+	 * 
 	 * @param id_suplemento Id del suplemento a borrar
 	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
 	 * @return Devuelve el nombre de la vista
@@ -236,8 +286,12 @@ public class AdminControlador {
 	public String borraSuplemento(@PathVariable long id_suplemento, HttpServletRequest request) {
 
 		try {
+			// Log
+			Util.logInfo("AdminControlador", "borraSuplemento", "Ha entrado en borraSuplemento.");
 			// Control de sesión
 			if (!request.isUserInRole("ROLE_ADMIN")) {
+				// Log
+				Util.logInfo("AdminControlador", "borraSuplemento", "El usuario no es admin. Se redirige a home.");
 				return "redirect:/home";
 			}
 
@@ -250,12 +304,15 @@ public class AdminControlador {
 			else
 				return "redirect:/admin/administracion-suplementos?error";
 		} catch (Exception e) {
+			// Log
+			Util.logError("AdminControlador", "borraSuplemento", "Se ha producido un error.");
 			return "redirect:/admin/administracion-suplementos?error";
 		}
 	}
 	
 	/**
 	 * Método que maneja las solicitudes POST para la ruta "/admin/editar-usuario"
+	 * 
 	 * @param usuario Objeto usuario con los datos del formulario
 	 * @param imagenFile Objeto MultipartFile que contiene la imagen
 	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
@@ -265,8 +322,12 @@ public class AdminControlador {
 	public String editaUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuario, @RequestPart("imagenFile") MultipartFile imagenFile, HttpServletRequest request) {
 		
 		try {
+			// Log
+			Util.logInfo("AdminControlador", "editaUsuario", "Ha entrado en editaUsuario.");
 			// Control de sesión
 			if (!request.isUserInRole("ROLE_ADMIN")) {
+				// Log
+				Util.logInfo("AdminControlador", "editaUsuario", "El usuario no es admin. Se redirige a home.");
 				return "redirect:/home";
 			}
 			
@@ -284,15 +345,30 @@ public class AdminControlador {
 			else
 				return "redirect:/admin/administracion-usuarios?usuarioEditadoError";
 		} catch (Exception e) {
+			// Log
+			Util.logError("AdminControlador", "editaUsuario", "Se ha producido un error.");
 			return "redirect:/admin/administracion-usuarios?usuarioEditadoError";
 		}
 	}
 	
+	/**
+	 * Método que realiza la operación de agregar un usuario a la base de datos.
+	 * 
+	 * @param usuarioDTO Objeto UsuarioDTO con los datos del usuario a agregar.
+	 * @param imagenFile Objeto MultipartFile con la imagen del usuario.
+	 * @param request Objeto HttpServletRequest con datos de la sesión
+	 * @return Devuelve una redirección.
+	 */
 	@PostMapping("/agregar-usuario")
 	public String agregaUsuario(@ModelAttribute("usuarioDTO") UsuarioDTO usuarioDTO, @RequestPart("imagenFile") MultipartFile imagenFile, HttpServletRequest request) {
 		try {
+			// Log
+			Util.logInfo("AdminControlador", "agregaUsuario", "Ha entrado en agregaUsuario.");
+			
 			// Control de sesión
 			if (!request.isUserInRole("ROLE_ADMIN")) {
+				// Log
+				Util.logInfo("AdminControlador", "agregaUsuario", "El usuario no es admin. Se redirige a home.");
 				return "redirect:/home";
 			}
 			
@@ -310,12 +386,15 @@ public class AdminControlador {
 			else
 				return "redirect:/admin/administracion-usuarios?usuarioAgregadoExiste";
 		} catch (Exception e) {
+			// Log
+			Util.logError("AdminControlador", "agregaUsuario", "Se ha producido un error.");
 			return "redirect:/admin/administracion-usuarios?usuarioAgregadoError";
 		}
 	}
 	
 	/**
 	 * Método que maneja las solicitudes POST para la ruta "/admin/editar-suplemento"
+	 * 
 	 * @param suplementoDTO Objeto suplemento con los datos del formulario
 	 * @param imagenFile Objeto MultipartFile que contiene la imagen
 	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
@@ -325,8 +404,12 @@ public class AdminControlador {
 	public String editaSuplemento(@ModelAttribute("suplementoDTO") SuplementoDTO suplementoDTO, @RequestPart("imagenFile") MultipartFile imagenFile, HttpServletRequest request) {
 		
 		try {
+			// Log
+			Util.logInfo("AdminControlador", "editaSuplemento", "Ha entrado en editaSuplemento.");
 			// Control de sesión
 			if (!request.isUserInRole("ROLE_ADMIN")) {
+				// Log
+				Util.logInfo("AdminControlador", "editaSuplemento", "El usuario no es admin. Se redirige a home.");
 				return "redirect:/home";
 			}
 			
@@ -344,12 +427,15 @@ public class AdminControlador {
 			else
 				return "redirect:/admin/administracion-suplementos?suplementoEditadoError";
 		} catch (Exception e) {
+			// Log
+			Util.logError("AdminControlador", "editaSuplemento", "Se ha producido un error.");
 			return "redirect:/admin/administracion-suplementos?suplementoEditadoError";
 		}
 	}
 	
 	/**
 	 * Método que maneja las solicitudes POST para la ruta "/admin/agregar-suplemento"
+	 * 
 	 * @param suplementoDTO Objeto suplemento con los datos del formulario
 	 * @param imagenFile Objeto MultipartFile que contiene la imagen
 	 * @param request Objeto HttpServletRequest para poder acceder a información sobre la solicitud HTTP
@@ -359,8 +445,12 @@ public class AdminControlador {
 	public String agregaSuplemento(@ModelAttribute("suplementoDTO") SuplementoDTO suplementoDTO, @RequestPart("imagenFile") MultipartFile imagenFile, HttpServletRequest request) {
 		
 		try {
+			// Log
+			Util.logInfo("AdminControlador", "agregaSuplemento", "Ha entrado en agregaSuplemento.");
 			// Control de sesión
 			if (!request.isUserInRole("ROLE_ADMIN")) {
+				// Log
+				Util.logInfo("AdminControlador", "agregaSuplemento", "El usuario no es admin. Se redirige a home.");
 				return "redirect:/home";
 			}
 			
@@ -378,6 +468,8 @@ public class AdminControlador {
 			else
 				return "redirect:/admin/administracion-suplementos?suplementoAgregadoError";
 		} catch (Exception e) {
+			// Log
+			Util.logError("AdminControlador", "agregaSuplemento", "Se ha producido un error.");
 			return "redirect:/admin/administracion-suplementos?suplementoAgregadoError";
 		}
 	}

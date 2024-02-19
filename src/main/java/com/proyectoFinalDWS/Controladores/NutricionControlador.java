@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.proyectoFinalDWS.DTOs.SuplementoDTO;
 import com.proyectoFinalDWS.Servicios.CarritoImplementacion;
 import com.proyectoFinalDWS.Servicios.SuplementoImplementacion;
+import com.proyectoFinalDWS.Utiles.Util;
 
 /**
  * Clase controlador para la vista Nutrición
@@ -32,6 +33,7 @@ public class NutricionControlador {
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/nutricion/{tipo}"
+	 * 
 	 * @param tipo Tipo del suplemento que se va a mostrar (1:Proteína; 2:Creatina; 3:Todo)
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @return Devuelve el nombre de la vista
@@ -40,6 +42,8 @@ public class NutricionControlador {
 	public String vistaNutricion(@PathVariable int tipo, Model model) {
 		
 		try {
+			// Log
+			Util.logInfo("NutricionControlador", "vistaNutricion", "Ha entrado en vistaNutricion");
 			// Obtenemos todos los suplementos
 			List<SuplementoDTO> listaSuplementosDTO = suplementoImplementacion.obtieneTodosLosSuplementos();
 
@@ -56,12 +60,15 @@ public class NutricionControlador {
 			// Devolvemos la vista
 			return "suplementos";
 		} catch (Exception e) {
+			// Log
+			Util.logError("NutricionControlador", "vistaNutricion", "Se ha producido un error.");
 			return "suplementos";
 		}
 	}
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/nutricion/agrega-carrito/{id_suplemento}"
+	 * 
 	 * @param id_suplemento Id del suplemento a agregar al carrito
 	 * @param autentificacion Objeto Authentication que proporciona Spring security que contiene los datos de la sesión
 	 * @return Devuelve el nombre de la vista
@@ -69,6 +76,8 @@ public class NutricionControlador {
 	@GetMapping("/agrega-carrito/{id_suplemento}")
 	public String agregaSuplementoCarrito(@PathVariable("id_suplemento") long id_suplemento, Authentication autentificacion) {
 		try {
+			// Log
+			Util.logInfo("NutricionControlador", "agregaSuplementoCarrito", "Ha entrado en agregaSuplementoCarrito");
 			// Agregamos el suplemento al carrito
 			boolean ok = carritoImplementacion.agregaSuplemento(id_suplemento, autentificacion.getName());
 			
@@ -77,6 +86,8 @@ public class NutricionControlador {
 			
 			return "redirect:/nutricion/3?error";
 		} catch (Exception e) {
+			// Log
+			Util.logError("NutricionControlador", "agregaSuplementoCarrito", "Se ha producido un error.");
 			return "redirect:/nutricion/3?error";
 		}
 	}

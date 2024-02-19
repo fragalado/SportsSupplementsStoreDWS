@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyectoFinalDWS.DTOs.CarritoDTO;
 import com.proyectoFinalDWS.Servicios.CarritoImplementacion;
+import com.proyectoFinalDWS.Utiles.Util;
 
 /**
  * Clase controlador para la vista Carrito
@@ -28,6 +29,7 @@ public class CarritoControlador {
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/carrito"
+	 * 
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @param authentication Objeto Authentication que proporciona Spring security que contiene los datos de la sesión
 	 * @return Devuelve el nombre de la vista
@@ -36,6 +38,8 @@ public class CarritoControlador {
 	public String vistaCarrito(Model model, Authentication authentication) {
 		
 		try {
+			// Log
+			Util.logInfo("CarritoControlador", "vistaCarrito", "Ha entrado en vistaCarrito");
 			// Obtenemos el carrito del usuario
 			List<CarritoDTO> listaCarritoDTO = carritoImplementacion.obtieneCarritoUsuario(authentication.getName());
 
@@ -51,18 +55,23 @@ public class CarritoControlador {
 			// Devolvemos la vista
 			return "carrito";
 		} catch (Exception e) {
+			// Log
+			Util.logError("CarritoControlador", "vistaCarrito", "Se ha producido un error.");
 			return "redirect:/home";
 		}
 	}
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/carrito/borra-suplemento/{id_carrito}"
+	 * 
 	 * @param id_carrito Id del carrito a borrar
 	 * @return Devuelve el nombre de la vista
 	 */
 	@GetMapping("/borra-suplemento/{id_carrito}")
 	public String borraSuplementoCarrito(@PathVariable("id_carrito") long id_carrito) {
 		try {
+			// Log
+			Util.logInfo("CarritoControlador", "borraSuplementoCarrito", "Ha entrado en borraSuplementoCarrito");
 			// Borramos el carrito
 			boolean ok = carritoImplementacion.borraCarrito(id_carrito);
 			
@@ -71,6 +80,8 @@ public class CarritoControlador {
 			else
 				return "redirect:/carrito?error";
 		} catch (Exception e) {
+			// Log
+			Util.logError("CarritoControlador", "borraSuplementoCarrito", "Se ha producido un error.");
 			return "redirect:/carrito?error";
 		}
 	}

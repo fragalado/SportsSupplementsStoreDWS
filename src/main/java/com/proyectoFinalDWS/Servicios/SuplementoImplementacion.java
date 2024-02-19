@@ -1,9 +1,11 @@
 package com.proyectoFinalDWS.Servicios;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import com.proyectoFinalDWS.DAOs.Suplemento;
@@ -28,6 +30,9 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 	@Override
 	public List<SuplementoDTO> obtieneTodosLosSuplementos() {
 		try {
+			// Log
+			Util.logInfo("SuplementoImplementacion", "obtieneTodosLosSuplementos", "Ha entrado en obtieneTodosLosSuplementos");
+			
 			// Obtenemos todos los suplementos de la base de datos y lo guardamos en una lista de tipo Suplemento (DAO)
 			List<Suplemento> listaSuplementosDao = suplementoRepositorio.findAll();
 			
@@ -41,7 +46,7 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 			 * return Util.listaUsuariosADto(usuarioRepositorio.findAll());
 			 */
 		} catch (Exception e) {
-			System.out.println("[Error-AdminImplementacion-obtieneTodosLosSuplementos] Error al obtener todos los suplementos");
+			Util.logError("SuplementoImplementacion", "obtieneTodosLosSuplementos", "Se ha producido un error");
 			return null;
 		}
 	}
@@ -49,6 +54,9 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 	@Override
 	public boolean borraSuplementoPorId(long id_suplemento) {
 		try {
+			// Log
+			Util.logInfo("SuplementoImplementacion", "borraSuplementoPorId", "Ha entrado en borraSuplementoPorId");
+			
 			// Eliminamos el suplemento por el id
 			suplementoRepositorio.deleteById(id_suplemento);
 			
@@ -64,6 +72,7 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 			 * return suplementoRepositorio.findById(id_suplemento).isEmpty();
 			 */
 		} catch (IllegalArgumentException e) {
+			Util.logError("SuplementoImplementacion", "borraSuplementoPorId", "El id del suplemento es null");
 			return false;
 		}
 	}
@@ -71,6 +80,9 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 	@Override
 	public SuplementoDTO obtieneSuplementoPorId(long id_suplemento) {
 		try {
+			// Log
+			Util.logInfo("SuplementoImplementacion", "obtieneSuplementoPorId", "Ha entrado en obtieneSuplementoPorId");
+			
 			// Obtenemos el suplemento
 			Optional<Suplemento> suplementoEncontrado = suplementoRepositorio.findById(id_suplemento);
 			
@@ -83,7 +95,11 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 			
 			// Devolvemos el suplemento convertido a DTO
 			return suplementoDTO;
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
+			Util.logError("SuplementoImplementacion", "obtieneSuplementoPorId", "El id del suplemento es null");
+			return null;
+		} catch (NoSuchElementException e) {
+			Util.logError("SuplementoImplementacion", "obtieneSuplementoPorId", "El objeto no existe o no tiene valor");
 			return null;
 		}
 	}
@@ -91,6 +107,9 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 	@Override
 	public boolean agregaSuplemento(SuplementoDTO suplementoDTO) {
 		try {
+			// Log
+			Util.logInfo("SuplementoImplementacion", "agregaSuplemento", "Ha entrado en agregaSuplemento");
+			
 			// Convertimos el suplemento de DTO a DAO
 			Suplemento suplementoDAO = Util.suplementoADao(suplementoDTO);
 			
@@ -106,7 +125,11 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 			/* OTRA OPCION
 			 * return suplementoRepositorio.save(suplementoDAO) != null
 			 */
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
+			Util.logError("SuplementoImplementacion", "agregaSuplemento", "El objeto es nulo");
+			return false;
+		} catch (OptimisticLockingFailureException e) {
+			Util.logError("SuplementoImplementacion", "agregaSuplemento", "Concurrencia optimista");
 			return false;
 		}
 	}
@@ -114,6 +137,9 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 	@Override
 	public boolean actualizaSuplemento(SuplementoDTO suplementoDTO) {
 		try {
+			// Log
+			Util.logInfo("SuplementoImplementacion", "actualizaSuplemento", "Ha entrado en actualizaSuplemento");
+			
 			// Con el id del suplemento pasado obtenemos el suplemento de la base de datos
 			Suplemento suplementoEncontrado = suplementoRepositorio.findById(suplementoDTO.getId_suplemento()).get();
 			
@@ -130,7 +156,11 @@ public class SuplementoImplementacion implements SuplementoInterfaz {
 			suplementoRepositorio.save(suplementoEncontrado);
 			
 			return true;
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
+			Util.logError("SuplementoImplementacion", "actualizaSuplemento", "El objeto es nulo o no existe");
+			return false;
+		} catch (OptimisticLockingFailureException e) {
+			Util.logError("SuplementoImplementacion", "actualizaSuplemento", "Concurrencia optimista");
 			return false;
 		}
 	}

@@ -1,5 +1,8 @@
 package com.proyectoFinalDWS.Utiles;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -243,5 +246,43 @@ public class Util {
 			return Base64.getDecoder().decode(base64);
 		
 		return null;
+	}
+	
+	/**
+	 * Método para info que escribe en un fichero de texto
+	 * 
+	 * @param nombreClase Nombre de la clase
+	 * @param nombreMetodo Nombre del método
+	 * @param mensaje Mensaje a escribir en el fichero de texto
+	 */
+	public static void logInfo(String nombreClase, String nombreMetodo, String mensaje) {
+		try {
+			FileWriter file = new FileWriter("C:\\FicherosProg\\logsJava\\fichero.log", true);
+			PrintWriter pw = new PrintWriter(file);
+			pw.println("["+ LocalDateTime.now() + "]-[INFO-" + nombreClase + "-" + nombreMetodo + "] " + mensaje);
+			pw.close();
+			file.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	/**
+	 * Método para errores que escribe en un fichero de texto
+	 * 
+	 * @param nombreClase Nombre de la clase
+	 * @param nombreMetodo Nombre del método
+	 * @param mensaje Mensaje a escribir en el fichero de texto
+	 */
+	public static void logError(String nombreClase, String nombreMetodo, String mensaje) {
+		try {
+			FileWriter file = new FileWriter("C:\\FicherosProg\\logsJava\\fichero.log", true);
+			PrintWriter pw = new PrintWriter(file);
+			pw.println("["+ LocalDateTime.now() + "]-[ERROR-" + nombreClase + "-" + nombreMetodo + "] Error: " + mensaje);
+			pw.close();
+			file.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }

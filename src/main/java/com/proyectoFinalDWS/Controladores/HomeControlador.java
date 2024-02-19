@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyectoFinalDWS.DTOs.SuplementoDTO;
 import com.proyectoFinalDWS.Servicios.SuplementoImplementacion;
+import com.proyectoFinalDWS.Utiles.Util;
 
 
 /**
- * Clase Controlador para las vistas relacionados con el home/bienvenida
+ * Clase Controlador para las vistas relacionados con el home
  * @author Fran Gallego
  */
 @Controller
@@ -26,6 +27,7 @@ public class HomeControlador {
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/home"
+	 * 
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @return Devuelve el nombre de la vista
 	 */
@@ -33,6 +35,8 @@ public class HomeControlador {
 	public String vistaHome(Model model) {
 		
 		try {
+			// Log
+			Util.logInfo("HomeControlador", "vistaHome", "Ha entrado en vistaHome");
 			// Obtenemos todos los suplementos
 			List<SuplementoDTO> listaSuplementosDTO = suplementoImplementacion.obtieneTodosLosSuplementos();
 
@@ -46,6 +50,8 @@ public class HomeControlador {
 			// Devolvemos la vista home
 			return "home";
 		} catch (Exception e) {
+			// Log
+			Util.logError("HomeControlador", "vistaHome", "Se ha producido un error.");
 			return "home";
 		}
 	}

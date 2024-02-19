@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.proyectoFinalDWS.DTOs.UsuarioDTO;
 import com.proyectoFinalDWS.Servicios.UsuarioImplementacion;
+import com.proyectoFinalDWS.Utiles.Util;
 
 /**
  * Clase controlador para la vista perfil
@@ -24,6 +25,7 @@ public class PerfilControlador {
 	
 	/**
 	 * Método que maneja las solicitudes GET para la ruta "/perfil"
+	 * 
 	 * @param model Objeto Model que proporciona Spring para enviar datos a la vista
 	 * @param authentication Objeto Authentication que proporciona Spring security que contiene los datos de la sesion
 	 * @return Devuelve el nombre de la vista
@@ -31,7 +33,8 @@ public class PerfilControlador {
 	@GetMapping()
 	public String vistaPerfil(Model model, Authentication authentication) {
 		try {
-			
+			// Log
+			Util.logInfo("PerfilControlador", "vistaPerfil", "Ha entrado en vistaPerfil");
 			// Obtenemos el usuario por el email
 			UsuarioDTO usuario = usuarioImplementacion.obtieneUsuarioPorEmail(authentication.getName());
 			
@@ -45,7 +48,8 @@ public class PerfilControlador {
 				return "redirect:/home";
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			// Log
+			Util.logError("PerfilControlador", "vistaPerfil", "Se ha producido un error.");
 			return "redirect:/home";
 		}
 	}

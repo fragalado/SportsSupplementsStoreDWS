@@ -12,9 +12,10 @@ import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import com.proyectoFinalDWS.Paypal.PaypalImplementacion;
 import com.proyectoFinalDWS.Servicios.OrdenImplementacion;
+import com.proyectoFinalDWS.Utiles.Util;
 
 /**
- * Controlador para la operación de compra con paypal
+ * Controlador para la operación de compra y compra con paypal
  * @author Fran Gallego
  * Fecha: 08/02/2024
  */
@@ -49,11 +50,14 @@ public class OrderControlador {
 	/**
 	 * Método que realiza el pago beta
 	 * 
+	 * @param authentication Objeto Authentication que contiene los datos de la sesión
 	 * @return Devuelve el nombre de la vista
 	 */
 	@PostMapping("/normal")
 	public String pago(Authentication authentication) {
 		try {
+			// Log
+			Util.logInfo("OrderControlador", "pago", "Ha entrado en normal");
             // Realizamos la compra del carrito del usuario
 			boolean ok = ordenImplementacion.comprarCarritoUsuario(authentication.getName());
             
@@ -62,6 +66,8 @@ public class OrderControlador {
 			else
 				return "redirect:/carrito?cancel";
         } catch (Exception e) {
+        	// Log
+			Util.logError("OrderControlador", "pago", "Se ha producido un error.");
             return "redirect:/carrito?cancel";
         }
 	}

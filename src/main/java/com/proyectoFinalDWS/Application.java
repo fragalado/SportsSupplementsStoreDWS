@@ -3,6 +3,10 @@ package com.proyectoFinalDWS;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Clase principal
+ * @author Fran Gallego
+ */
 @SpringBootApplication
 public class Application {
 

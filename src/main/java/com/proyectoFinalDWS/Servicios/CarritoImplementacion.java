@@ -3,6 +3,7 @@ package com.proyectoFinalDWS.Servicios;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import com.proyectoFinalDWS.DAOs.Carrito;
@@ -35,6 +36,9 @@ public class CarritoImplementacion implements CarritoInterfaz {
 	@Override
 	public List<CarritoDTO> obtieneCarritoUsuario(String emailUsuario) {
 		try {
+			// Log
+			Util.logInfo("CarritoImplementacion", "obtieneCarritoUsuario", "Ha entrado en obtieneCarritoUsuario");
+			
 			// Obtenemos el usuario por el email
 			UsuarioDTO usuarioDTO = usuarioImplementacion.obtieneUsuarioPorEmail(emailUsuario);
 			
@@ -47,6 +51,7 @@ public class CarritoImplementacion implements CarritoInterfaz {
 			// Devolvemos la lista
 			return listaCarritoDTO;
 		} catch (Exception e) {
+			Util.logError("CarritoImplementacion", "obtieneCarritoUsuario", "Se ha producido un error");
 			return null;
 		}
 	}
@@ -54,6 +59,9 @@ public class CarritoImplementacion implements CarritoInterfaz {
 	@Override
 	public boolean borraCarrito(long id_carrito) {
 		try {
+			// Log
+			Util.logInfo("CarritoImplementacion", "borraCarrito", "Ha entrado en borraCarrito");
+			
 			// Borramos el carrito
 			carritoRepositorio.deleteById(id_carrito);
 			
@@ -62,7 +70,8 @@ public class CarritoImplementacion implements CarritoInterfaz {
 				return false; // Se ha encontrado, luego no se ha borrado
 			
 			return true; // No se ha encontrado el carrito, luego se ha borrado
-		} catch (Exception e) {
+		} catch (IllegalArgumentException e) {
+			Util.logError("CarritoImplementacion", "borraCarrito", "El id del carrito es nulo");
 			return false;
 		}
 	}
@@ -70,6 +79,9 @@ public class CarritoImplementacion implements CarritoInterfaz {
 	@Override
 	public boolean agregaSuplemento(long id_suplemento, String email_usuario) {
 		try {
+			// Log
+			Util.logInfo("CarritoImplementacion", "agregaSuplemento", "Ha entrado en agregaSuplemento");
+			
 			// Obtenemos el usuario por el email
 			UsuarioDTO usuarioDTO = usuarioImplementacion.obtieneUsuarioPorEmail(email_usuario);
 			
@@ -97,7 +109,14 @@ public class CarritoImplementacion implements CarritoInterfaz {
 			}
 			
 			return true; // Devolvemos true
+		} catch (IllegalArgumentException e) {
+			Util.logError("CarritoImplementacion", "agregaSuplemento", "La entidad es nula");
+			return false;
+		} catch (OptimisticLockingFailureException e) {
+			Util.logError("CarritoImplementacion", "agregaSuplemento", "Concurrencia optimista");
+			return false;
 		} catch (Exception e) {
+			Util.logError("CarritoImplementacion", "agregaSuplemento", "Se ha producido un error");
 			return false;
 		}
 	}
@@ -105,6 +124,9 @@ public class CarritoImplementacion implements CarritoInterfaz {
 	@Override
 	public float obtienePrecioTotalCarrito(List<CarritoDTO> listaCarrito) {
 		try {
+			// Log
+			Util.logInfo("CarritoImplementacion", "obtienePrecioTotalCarrito", "Ha entrado en obtienePrecioTotalCarrito");
+			
 			// Obtenemos el precio total
 			float total = 0;
 			for (CarritoDTO aux : listaCarrito)
@@ -113,6 +135,7 @@ public class CarritoImplementacion implements CarritoInterfaz {
 			// Devolvemos el total
 			return total;
 		} catch (Exception e) {
+			Util.logError("CarritoImplementacion", "obtienePrecioTotalCarrito", "Se ha producido un error");
 			return 0f;
 		}
 	}

@@ -133,7 +133,7 @@ public class CarritoImplementacion implements CarritoInterfaz {
 				total += aux.getCantidad() * aux.getSuplementoDTO().getPrecio_suplemento();
 			
 			// Devolvemos el total
-			return total;
+			return (float) (Math.round(total * 100.0) / 100.0);
 		} catch (Exception e) {
 			Util.logError("CarritoImplementacion", "obtienePrecioTotalCarrito", "Se ha producido un error");
 			return 0f;

@@ -263,7 +263,7 @@ public class Util {
 			pw.close();
 			file.close();
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println("[ERROR-Util-logInfo] Error: no se ha podido escribir la info en el fichero log");
 		}
 	}
 	
@@ -282,7 +282,7 @@ public class Util {
 			pw.close();
 			file.close();
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println("[ERROR-Util-logError] Error: no se ha podido escribir el error en el fichero log");
 		}
 	}
 }

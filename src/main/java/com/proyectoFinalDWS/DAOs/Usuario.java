@@ -28,13 +28,13 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_usuario;
 	
-	@Column(name = "nombre_usuario", nullable = false)
+	@Column(name = "nombre_usuario", nullable = false, length = 50)
 	private String nombre_usuario;
 	
 	@Column(name = "tlf_usuario", nullable = false)
 	private String tlf_usuario;
 	
-	@Column(name = "email_usuario", nullable = false)
+	@Column(name = "email_usuario", nullable = false, length = 50)
 	private String email_usuario;
 	
 	@Column(name = "psswd_usuario", nullable = false)

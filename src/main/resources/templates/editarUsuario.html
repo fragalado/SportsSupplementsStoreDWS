@@ -63,7 +63,9 @@
 			</div>
 		</nav>
 	</header>
+	<!-- Fin navbar -->
 	
+	<!-- Contenedor -->
 	<div class="container">
 		<main role="main" class="pb-3">
 			<div class="row">
@@ -84,15 +86,15 @@
 								</div>
 								<div class="mb-3">
 									<label for="emailForm" class="form-label">Email</label>
-									<input type="email" class="form-control inputVistaEditar" id="emailForm" th:field="*{email_usuario}">
+									<input type="email" class="form-control inputVistaEditar" id="emailForm" th:field="*{email_usuario}" maxlength="50">
 								</div>
 								<div class="mb-3">
 									<label for="nombreForm" class="form-label">Nombre</label>
-									<input type="text" class="form-control inputVistaEditar" id="nombreForm" th:field="*{nombre_usuario}">
+									<input type="text" class="form-control inputVistaEditar" id="nombreForm" th:field="*{nombre_usuario}" maxlength="50">
 								</div>
 								<div class="mb-3">
 									<label for="tlfForm" class="form-label">Teléfono</label>
-									<input type="text" class="form-control inputVistaEditar" id="tlfForm" th:field="*{tlf_usuario}">
+									<input type="text" class="form-control inputVistaEditar" id="tlfForm" th:field="*{tlf_usuario}" maxlength="15">
 								</div>
 								<input type="text" class="form-control" name="id_usuario" th:field="*{id_usuario}"
 									style="display:none">
@@ -106,6 +108,8 @@
 			</div>
 		</main>
 	</div>
+	<!-- Fin Contenedor -->
+	
 	<script>
 	    let profilePic = document.getElementById("profile-pic");
 	    let inputFile = document.getElementById("imagenForm");

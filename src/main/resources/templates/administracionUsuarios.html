@@ -189,6 +189,24 @@
 	</script>
 	<!-- Fin Control agregar -->
 	
+	<!-- Control actualizar -->
+	<script th:if="${param.usuarioEditadoSuccess}">
+		Swal.fire({
+			title: "Éxito!",
+			text: "El usuario ha sido actualizado con éxito!",
+			icon: "success"
+		});
+	</script>
+	
+	<script th:if="${param.usuarioEditadoError}">
+		Swal.fire({
+			title: "Error!",
+			text: "Se ha producido un error. Vuelva a intentarlo más tarde!",
+			icon: "error"
+		});
+	</script>
+	<!-- Fin Control actualizar -->
+	
 	<!-- Fin Control de alertas -->
 </body>
 

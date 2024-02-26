@@ -331,11 +331,19 @@ public class AdminControlador {
 				return "redirect:/home";
 			}
 			
-			// Pasamos la imagen a String
-			String foto = Util.convertirABase64(imagenFile.getBytes());
+			// Controlamos los valores
+			if(usuario.getNombre_usuario().length() > 50 || usuario.getEmail_usuario().length() > 50 
+					|| usuario.getTlf_usuario().length() > 15)
+				return "redirect:/admin/administracion-usuarios?usuarioAgregadoError";
 			
-			// Le añadimos la imagen al usuarioDTO
-			usuario.setImagen_usuario(foto);
+			// Si la imagen no esta vacia se la añadimos al usuario
+			if(!imagenFile.isEmpty()) {
+				// Pasamos la imagen a String
+				String foto = Util.convertirABase64(imagenFile.getBytes());
+				
+				// Le añadimos la imagen al usuarioDTO
+				usuario.setImagen_usuario(foto);
+			}
 			
 			// Actualizamos el usuario
 			boolean ok = usuarioImplementacion.actualizaUsuario(usuario);
@@ -372,11 +380,20 @@ public class AdminControlador {
 				return "redirect:/home";
 			}
 			
-			// Pasamos la imagen a String
-			String foto = Util.convertirABase64(imagenFile.getBytes());
+			// Controlamos los valores
+			if(usuarioDTO.getNombre_usuario().length() > 50 || usuarioDTO.getEmail_usuario().length() > 50 
+					|| usuarioDTO.getTlf_usuario().length() > 15 || usuarioDTO.getPsswd_usuario().length() > 255)
+				return "redirect:/admin/administracion-usuarios?usuarioAgregadoError";
 			
-			// Le añadimos la imagen al usuarioDTO
-			usuarioDTO.setImagen_usuario(foto);
+			// Si la imagen no esta vacia se la añadimos al usuario
+			if(!imagenFile.isEmpty()) {
+				// Pasamos la imagen a String
+				String foto = Util.convertirABase64(imagenFile.getBytes());
+				
+				// Le añadimos la imagen al usuarioDTO
+				usuarioDTO.setImagen_usuario(foto);
+			}
+
 			
 			// Actualizamos el suplemento
 			boolean ok = usuarioImplementacion.agregaUsuario(usuarioDTO);
@@ -411,6 +428,13 @@ public class AdminControlador {
 				// Log
 				Util.logInfo("AdminControlador", "editaSuplemento", "El usuario no es admin. Se redirige a home.");
 				return "redirect:/home";
+			}
+			
+			// Controlamos los valores
+			if(suplementoDTO.getPrecio_suplemento() > 999 || suplementoDTO.getNombre_suplemento().length() > 255 
+					|| suplementoDTO.getDesc_suplemento().length() > 255 || suplementoDTO.getMarca_suplemento().length() > 255 
+					|| suplementoDTO.getTipo_suplemento().length() > 255) {
+				return "redirect:/admin/administracion-suplementos?suplementoEditadoError";
 			}
 			
 			// Pasamos la imagen a String
@@ -452,6 +476,13 @@ public class AdminControlador {
 				// Log
 				Util.logInfo("AdminControlador", "agregaSuplemento", "El usuario no es admin. Se redirige a home.");
 				return "redirect:/home";
+			}
+			
+			// Controlamos los valores
+			if(suplementoDTO.getPrecio_suplemento() > 999 || suplementoDTO.getNombre_suplemento().length() > 255 
+					|| suplementoDTO.getDesc_suplemento().length() > 255 || suplementoDTO.getMarca_suplemento().length() > 255 
+					|| suplementoDTO.getTipo_suplemento().length() > 255) {
+				return "redirect:/admin/administracion-suplementos?suplementoAgregadoError";
 			}
 			
 			// Pasamos la imagen a String
